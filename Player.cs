@@ -1,17 +1,16 @@
 class Player : MoveableObject
 {
-
     //statiska variabler
     public static int score = 0;
 
-    // public static List<Items> Inventory;
+    public List<Items> Inventory = new List<Items>();
 
     float dashDuration = 0;
     float dashCooldown = 0;
     float shootCooldown = 0;
     float dashSpeed = 2000f;
 
-    //konstanter
+    //player stats
     float gravity = 2300f;
     float moveSpeed = 900f;
     float jumpForce = 1300f;
@@ -20,15 +19,33 @@ class Player : MoveableObject
     float fastFallSpeed = 1400f;
     Color color = new Color(12, 0, 235, 255);
 
-    //bullet konstanter
+    //bullet stats
+    // Projectile playerProjectile = PlayerBullet;
     float setShootCooldown = 0.5f;
     float bulletWidth = 40;
     float bulletHeight = 20;
     float bulletDamage = 50;
     float bulletSpeed = 1800;
-    float bullryGravity = 0;
+    float bulletGravity = 0;
 
- 
+    public void PrintPlayerStats()
+    {
+        Console.WriteLine(@$"Stats:
+gravity:                 {gravity}
+move speed:              {moveSpeed}
+jump force:              {jumpForce}
+dash duration:           {setDashDuration}
+dash cooldown:           {setDashCooldown}
+fastfall speed:          {fastFallSpeed}
+shoot cooldown:          {setShootCooldown}");
+
+        Console.WriteLine("inventory:");
+        foreach (Items items in Inventory)
+        {
+            Console.WriteLine(items.name);
+        }
+    }
+
     //keybinds
     bool LeftKeyPressed() => Raylib.IsKeyDown(KeyboardKey.A) || Raylib.IsKeyDown(KeyboardKey.Left);
     bool RightKeyPressed() => Raylib.IsKeyDown(KeyboardKey.D) || Raylib.IsKeyDown(KeyboardKey.Right);
@@ -98,17 +115,22 @@ class Player : MoveableObject
         if (ShootKeyPressed() && shootCooldown <= 0 && !UpKeyPressed())
         {
             shootCooldown = setShootCooldown;
-            new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletSpeed, 0,bullryGravity, bulletDamage);
+            new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletSpeed, 0, bulletGravity, bulletDamage);
         }
         else if (ShootKeyPressed() && shootCooldown <= 0 && UpKeyPressed())
         {
             shootCooldown = setShootCooldown;
-            new PlayerBullet(x, y, bulletWidth, bulletHeight, 0, bulletSpeed, bullryGravity, bulletDamage);
-        }   
+            new PlayerBullet(x, y, bulletWidth, bulletHeight, 0, bulletSpeed, bulletGravity, bulletDamage);
+        }
     }
 
     public override void Update()
     {
+        for (int i = 0; i < Inventory.Count; i++)
+        {
+            Inventory[i].Update();
+        }
+
         dashCooldown = MathF.Max(dashCooldown - Raylib.GetFrameTime(), 0);
         dashDuration = MathF.Max(dashDuration - Raylib.GetFrameTime(), 0);
         shootCooldown = MathF.Max(shootCooldown - Raylib.GetFrameTime(), 0);
@@ -120,7 +142,7 @@ class Player : MoveableObject
         Shooting();
 
         MoveObject(gravity);
-    
+
     }
 
     public override void Draw()
@@ -143,16 +165,16 @@ class Player : MoveableObject
         Setup.currentlyGibbing = false;
     }
 
-    public Player(int x, int y)
+    public Player()
     {
         objectIdentifier = "player";
-        this.x = x;
-        this.y = y;
+        x = 800;
+        y = 450;
         width = Setup.windowWidth * 0.05f;
         height = Setup.windowWidth * 0.05f;
         gameList.Add(this);
         maxHP = 20;
         hp = maxHP;
-        
+
     }
 }

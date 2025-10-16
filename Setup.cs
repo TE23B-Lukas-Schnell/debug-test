@@ -8,7 +8,7 @@ static class Setup
 
     static string scoreFilePath = "./scores.txt";
 
-    static Player playerReference = new Player(800, 450);
+    static Player playerReference = new Player();
 
     public static bool playerDead = false;
 
@@ -108,6 +108,38 @@ Objective:
     public static void GameLoop()
     {
 
+        while (Setup.currentlyGibbing == false)
+        {
+
+            Console.WriteLine(@"Choose an action
+1. Start playing
+2. Show your score
+3. Show high scores
+4. Show player stats");
+            string answer = Console.ReadLine();
+
+            switch (answer)
+            {
+                case "1":
+                    Console.WriteLine(Setup.WindowGame() + " died a deathly death");
+                    answer = "";
+                    break;
+
+                case "2":
+                    Console.WriteLine($"Your score is: {Player.score}");
+                    break;
+                case "3":
+                    Setup.WriteDictionary(Setup.highscores);
+                    break;
+                case "4":
+                    playerReference.PrintPlayerStats();
+                    break;
+                default:
+                    Console.WriteLine("invalid input");
+                    break;
+            }
+        }
+
     }
 
     // this is the actual game!!!11 veri important
@@ -138,13 +170,14 @@ Objective:
                     MoveableObject.gameList[i].Despawn();
                 }*/
             }
+
             //denna rad skrevs av mikael 
             MoveableObject.gameList.RemoveAll(obj => obj.remove == true);
 
-
+            // gör det enklare att debugga
             /*for (int i = 0; i < MoveableObject.gameList.Count; i++)
             {
-                Console.WriteLine(MoveableObject.gameList[i]); // gör det enklare att debugga
+                Console.WriteLine(MoveableObject.gameList[i]); 
             }*/
 
             Raylib.DrawText(Raylib.GetFPS().ToString(), 0, 0, 30, Color.Black);
