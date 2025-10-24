@@ -1,21 +1,18 @@
-class Items
+abstract class Items
 {
     public string name;
     public string description;
     Player playerReference;
+    public List<float> valuesToChange;
+    public float valueAmount;
+    public bool pickedUp;
 
-    public void OnPickepUp()
+    Items(float valueChange, Player playerReference, string name, string description)
     {
+        valueAmount = valueChange;
+        this.playerReference = playerReference;
+        this.playerReference.Inventory.Add(this);
 
-    }
-    
-    public void Update()
-    {
-        
-    }
 
-    Items(ref float playerStatToChange)
-    {
-        playerReference.Inventory.Add(this);
     }
 }

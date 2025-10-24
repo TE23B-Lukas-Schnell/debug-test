@@ -1,11 +1,12 @@
 class VariableReference<variable>
 {
-    public variable Value;
+    public variable variabel;
+    
     public VariableReference(variable value)
     {
-        Value = value;
-        Console.WriteLine(Value);
-        Console.WriteLine(Value);
+        variabel = value;
+        Console.WriteLine(value);
+        Console.WriteLine(variabel);
     }
-
+                
 }
