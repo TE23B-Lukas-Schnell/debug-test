@@ -125,14 +125,7 @@ Objective:
                     MoveableObject survivor = Setup.WindowGame();
                     Console.WriteLine(survivor + " died a deathly death");
 
-                    Items båt = new Items(
-                        new List<float>() {playerReference.gravity}, 
-                        new List<float>() {1.2f},
-                        "test Item 1",
-                        "köttigt item för att testa köttig spel"
-                    );
-                    båt.PrintStats();
-                    playerReference.Inventory.Add(båt);
+                   
                     break;
 
                 case "2":
@@ -198,8 +191,6 @@ Objective:
 
             Raylib.EndDrawing();
         }
-
-        // new StatItems köttigItem = new StatItems(playerReference.Jumping,)
 
         if (MoveableObject.gameList.Contains(playerReference))
         {

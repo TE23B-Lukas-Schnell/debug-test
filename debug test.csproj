@@ -3,8 +3,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <!-- byt target framework till 8.0 på skoldaorn och 9.0 hemma -->
-    <!--  <TargetFramework>net8.0</TargetFramework> -->
-    <TargetFramework>net9.0</TargetFramework>
+     <TargetFramework>net8.0</TargetFramework>
+    <!-- <TargetFramework>net9.0</TargetFramework> -->
     <RootNamespace>debug_test</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>

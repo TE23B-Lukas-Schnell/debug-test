@@ -6,24 +6,24 @@ class Player : MoveableObject
     public List<Items> Inventory = new List<Items>();
 
     //player stats
-    public float gravity = 2300f;
-    public float moveSpeed = 900f;
-    public float jumpForce = 1300f;
-    public float setDashDuration = 0.2f;
-    public float setDashCooldown = 0.43f;
-    public float fastFallSpeed = 1400f;
-    public float dashSpeed = 2000f;
+    public Property gravity = new Property(2300f);
+    public Property moveSpeed = new Property(900f);
+    public Property jumpForce = new Property(1300f);
+    public Property setDashDuration = new Property(0.2f);
+    public Property setDashCooldown = new Property(0.43f);
+    public Property fastFallSpeed = new Property(1400f);
+    public Property dashSpeed = new Property(2000f);
     Color color = new Color(12, 0, 235, 255);
-
 
     //bullet stats
     // Projectile playerProjectile = PlayerBullet;
-    public float setShootCooldown = 0.5f;
-    public float bulletWidth = 40;
-    public float bulletHeight = 20;
-    public float bulletDamage = 50;
-    public float bulletSpeed = 1800;
-    public float bulletGravity = 0;
+    public Property setShootCooldown = new Property(0.5f);
+    public Property bulletWidth = new Property(40f);
+    public Property bulletHeight = new Property(20f);
+    public Property bulletDamage = new Property(50f);
+    public Property bulletSpeed = new Property(1800f);
+    public Property bulletGravity = new Property(0f);
+
 
     //variabler
     float dashDuration = 0;
@@ -34,13 +34,13 @@ class Player : MoveableObject
     public void PrintPlayerStats()
     {
         Console.WriteLine(@$"Stats:
-gravity:                 {gravity}
-move speed:              {moveSpeed}
-jump force:              {jumpForce}
-dash duration:           {setDashDuration}
-dash cooldown:           {setDashCooldown}
-fastfall speed:          {fastFallSpeed}
-shoot cooldown:          {setShootCooldown}");
+gravity:                 {gravity.Stat}
+move speed:              {moveSpeed.Stat}
+jump force:              {jumpForce.Stat}
+dash duration:           {setDashDuration.Stat}
+dash cooldown:           {setDashCooldown.Stat}
+fastfall speed:          {fastFallSpeed.Stat}
+shoot cooldown:          {setShootCooldown.Stat}");
 
         Console.WriteLine("inventory:");
         foreach (Items items in Inventory)
@@ -48,6 +48,8 @@ shoot cooldown:          {setShootCooldown}");
             Console.WriteLine(items.name);
         }
     }
+
+
 
     //keybinds
     bool LeftKeyPressed() => Raylib.IsKeyDown(KeyboardKey.A) || Raylib.IsKeyDown(KeyboardKey.Left);
@@ -64,11 +66,11 @@ shoot cooldown:          {setShootCooldown}");
     {
         if (LeftKeyPressed())
         {
-            xSpeed = -moveSpeed;
+            xSpeed = -moveSpeed.Stat;
         }
         else if (RightKeyPressed())
         {
-            xSpeed = moveSpeed;
+            xSpeed = moveSpeed.Stat;
         }
         else xSpeed = 0;
     }
@@ -77,7 +79,7 @@ shoot cooldown:          {setShootCooldown}");
     {
         if (DownKeyPressed() && !Grounded())
         {
-            ySpeed = -fastFallSpeed;
+            ySpeed = -fastFallSpeed.Stat;
         }
     }
     //makes the player jump
@@ -85,7 +87,7 @@ shoot cooldown:          {setShootCooldown}");
     {
         if (JumpKeyPressed() && Grounded())
         {
-            ySpeed = jumpForce;
+            ySpeed = jumpForce.Stat;
         }
     }
     //makes the player dash
@@ -95,20 +97,20 @@ shoot cooldown:          {setShootCooldown}");
         {
             if (LeftKeyPressed())
             {
-                dashSpeed = -dashSpeed;
-                dashDuration = setDashDuration;
+                dashSpeed.Stat = -dashSpeed.Stat;
+                dashDuration = setDashDuration.Stat;
             }
             else if (RightKeyPressed())
             {
-                dashSpeed = Math.Abs(dashSpeed);
-                dashDuration = setDashDuration;
+                dashSpeed.Stat = Math.Abs(dashSpeed.Stat);
+                dashDuration = setDashDuration.Stat;
             }
         }
         if (dashDuration > 0)
         {
-            xSpeed = dashSpeed;
+            xSpeed = dashSpeed.Stat;
             ySpeed = 0;
-            dashCooldown = setDashCooldown;
+            dashCooldown = setDashCooldown.Stat;
         }
     }
     //makes the player shoot
@@ -116,17 +118,17 @@ shoot cooldown:          {setShootCooldown}");
     {
         if (ShootKeyPressed() && shootCooldown <= 0 && !UpKeyPressed())
         {
-            shootCooldown = setShootCooldown;
-            new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletSpeed, 0, bulletGravity, bulletDamage);
+            shootCooldown = setShootCooldown.Stat;
+            new PlayerBullet(x, y, bulletWidth.Stat, bulletHeight.Stat, bulletSpeed.Stat, 0, bulletGravity.Stat, bulletDamage.Stat);
         }
         else if (ShootKeyPressed() && shootCooldown <= 0 && UpKeyPressed())
         {
-            shootCooldown = setShootCooldown;
-            new PlayerBullet(x, y, bulletWidth, bulletHeight, 0, bulletSpeed, bulletGravity, bulletDamage);
+            shootCooldown = setShootCooldown.Stat;
+            new PlayerBullet(x, y, bulletWidth.Stat, bulletHeight.Stat, 0, bulletSpeed.Stat, bulletGravity.Stat, bulletDamage.Stat);
         }
     }
 
-    public void ApplyBuffsFromItem(/*HEJ JAG HETER  ANTON*/)
+    public void ApplyBuffsFromItem()
     {
         if (Inventory.Count > 0)
         {
@@ -135,13 +137,12 @@ shoot cooldown:          {setShootCooldown}");
                 Console.WriteLine($"now applying buffs to player: {Inventory[i].name}");
                 Inventory[i].ApplyBuff();
             }
-        }else Console.WriteLine("tomt inventory");
+        }
+        else Console.WriteLine("tomt inventory");
     }
 
     public override void Update()
     {
-
-
         dashCooldown = MathF.Max(dashCooldown - Raylib.GetFrameTime(), 0);
         dashDuration = MathF.Max(dashDuration - Raylib.GetFrameTime(), 0);
         shootCooldown = MathF.Max(shootCooldown - Raylib.GetFrameTime(), 0);
@@ -152,8 +153,7 @@ shoot cooldown:          {setShootCooldown}");
         Dashing();
         Shooting();
 
-        MoveObject(gravity);
-
+        MoveObject(gravity.Stat);
     }
 
     public override void Draw()
