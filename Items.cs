@@ -2,7 +2,8 @@ class Items
 {
     public string name;
     public string description;
-    public enum playerStats
+    Player playerReference;
+    public enum playerStats//𐛅ퟖ𓀧ɷꬤ 𐃵ꃔ𐛅 
     {
         gravity,
         moveSpeed,
@@ -20,10 +21,10 @@ class Items
         bulletGravity
     }
 
-    
+   
     public void ApplyBuff()
     {
-
+        
     }
 
     public void PrintStats()
@@ -33,8 +34,9 @@ class Items
 
     }
 
-    public Items(string name, string description)
+    public Items(string name, string description, Player playerReference)
     {
+        this.playerReference = playerReference;
         this.name = name;
         this.description = description;
     }

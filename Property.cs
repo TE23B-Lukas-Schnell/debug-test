@@ -5,7 +5,6 @@ class Property
     {
         /*kiran*/get => stat;
         set => stat = Math.Clamp(value, minValue, maxValue);
-        
     }
 
     float stat;

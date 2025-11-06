@@ -158,7 +158,7 @@ Objective:
         currentlyGibbing = true;
         Raylib.InitWindow(Setup.windowWidth, Setup.windowHeight, "Game");
 
-        Enemy enemy = new Enemy((int)(Raylib.GetScreenWidth() * 0.5f), 0);
+        Karim enemy = new Karim((int)(Raylib.GetScreenWidth() * 0.5f), 0);
 
         MoveableObject loser = playerReference;
 
