@@ -115,14 +115,24 @@ Objective:
 1. Start playing
 2. Show your score
 3. Show high scores
-4. Show player stats");
+4. Show player stats
+5. Apply item stats");
             string answer = Console.ReadLine();
 
             switch (answer)
             {
                 case "1":
-                    Console.WriteLine(Setup.WindowGame() + " died a deathly death");
-                    answer = "";
+                    MoveableObject survivor = Setup.WindowGame();
+                    Console.WriteLine(survivor + " died a deathly death");
+
+                    Items båt = new Items(
+                        new List<float>() {playerReference.gravity}, 
+                        new List<float>() {1.2f},
+                        "test Item 1",
+                        "köttigt item för att testa köttig spel"
+                    );
+                    båt.PrintStats();
+                    playerReference.Inventory.Add(båt);
                     break;
 
                 case "2":
@@ -133,6 +143,10 @@ Objective:
                     break;
                 case "4":
                     playerReference.PrintPlayerStats();
+                    break;
+
+                case "5": 
+                    playerReference.ApplyBuffsFromItem();
                     break;
                 default:
                     Console.WriteLine("invalid input");
@@ -184,6 +198,8 @@ Objective:
 
             Raylib.EndDrawing();
         }
+
+        // new StatItems köttigItem = new StatItems(playerReference.Jumping,)
 
         if (MoveableObject.gameList.Contains(playerReference))
         {

@@ -5,28 +5,31 @@ class Player : MoveableObject
 
     public List<Items> Inventory = new List<Items>();
 
-    float dashDuration = 0;
-    float dashCooldown = 0;
-    float shootCooldown = 0;
-    float dashSpeed = 2000f;
-
     //player stats
-    float gravity = 2300f;
-    float moveSpeed = 900f;
-    float jumpForce = 1300f;
-    float setDashDuration = 0.2f;
-    float setDashCooldown = 0.43f;
-    float fastFallSpeed = 1400f;
+    public float gravity = 2300f;
+    public float moveSpeed = 900f;
+    public float jumpForce = 1300f;
+    public float setDashDuration = 0.2f;
+    public float setDashCooldown = 0.43f;
+    public float fastFallSpeed = 1400f;
+    public float dashSpeed = 2000f;
     Color color = new Color(12, 0, 235, 255);
+
 
     //bullet stats
     // Projectile playerProjectile = PlayerBullet;
-    float setShootCooldown = 0.5f;
-    float bulletWidth = 40;
-    float bulletHeight = 20;
-    float bulletDamage = 50;
-    float bulletSpeed = 1800;
-    float bulletGravity = 0;
+    public float setShootCooldown = 0.5f;
+    public float bulletWidth = 40;
+    public float bulletHeight = 20;
+    public float bulletDamage = 50;
+    public float bulletSpeed = 1800;
+    public float bulletGravity = 0;
+
+    //variabler
+    float dashDuration = 0;
+    float dashCooldown = 0;
+    float shootCooldown = 0;
+
 
     public void PrintPlayerStats()
     {
@@ -57,7 +60,7 @@ shoot cooldown:          {setShootCooldown}");
 
 
     //moves the player
-    void MovingLeftAndRight()
+    void MovingLeftAndRight(/*HEJ JAG HETER  ANTON*/)
     {
         if (LeftKeyPressed())
         {
@@ -70,7 +73,7 @@ shoot cooldown:          {setShootCooldown}");
         else xSpeed = 0;
     }
     //makes the player fastfall
-    void FastFalling()
+    void FastFalling(/*HEJ JAG HETER  ANTON*/)
     {
         if (DownKeyPressed() && !Grounded())
         {
@@ -78,7 +81,7 @@ shoot cooldown:          {setShootCooldown}");
         }
     }
     //makes the player jump
-    public void Jumping()
+    void Jumping(/*HEJ JAG HETER  ANTON*/)
     {
         if (JumpKeyPressed() && Grounded())
         {
@@ -86,7 +89,7 @@ shoot cooldown:          {setShootCooldown}");
         }
     }
     //makes the player dash
-    void Dashing()
+    void Dashing(/*HEJ JAG HETER  ANTON*/)
     {
         if (DashKeyPressed() && dashCooldown == 0)
         {
@@ -108,9 +111,8 @@ shoot cooldown:          {setShootCooldown}");
             dashCooldown = setDashCooldown;
         }
     }
-
     //makes the player shoot
-    void Shooting()
+    void Shooting(/*HEJ JAG HETER  ANTON*/)
     {
         if (ShootKeyPressed() && shootCooldown <= 0 && !UpKeyPressed())
         {
@@ -124,12 +126,21 @@ shoot cooldown:          {setShootCooldown}");
         }
     }
 
+    public void ApplyBuffsFromItem(/*HEJ JAG HETER  ANTON*/)
+    {
+        if (Inventory.Count > 0)
+        {
+            for (int i = 0; i < Inventory.Count; i++)
+            {
+                Console.WriteLine($"now applying buffs to player: {Inventory[i].name}");
+                Inventory[i].ApplyBuff();
+            }
+        }else Console.WriteLine("tomt inventory");
+    }
+
     public override void Update()
     {
-        for (int i = 0; i < Inventory.Count; i++)
-        {
-            Inventory[i].Update();
-        }
+
 
         dashCooldown = MathF.Max(dashCooldown - Raylib.GetFrameTime(), 0);
         dashDuration = MathF.Max(dashDuration - Raylib.GetFrameTime(), 0);
