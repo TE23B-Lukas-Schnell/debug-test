@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <!-- byt target framework till 8.0 på skoldaorn och 9.0 hemma -->
+    <!-- byt target framework till 8.0 på skoldatorn och 9.0 hemma -->
      <!-- <TargetFramework>net8.0</TargetFramework> -->
     <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>debug_test</RootNamespace>
@@ -12,7 +12,10 @@
 
   <ItemGroup>
     <PackageReference Include="Raylib-cs" Version="7.0.1" />
-    <Content Include="scores.txt"  CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="scores.txt" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/karimryde-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/mikaelbergstrom-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
+
   </ItemGroup>
 
 </Project>

@@ -5,4 +5,3 @@ Setup.StartGame();
 
 //main loop
 Setup.GameLoop();
-

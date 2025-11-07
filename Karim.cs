@@ -59,7 +59,8 @@ class Karim : Boss
     }
     public override void Draw()
     {
-        Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, color);
+        // Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, color);
+        DrawTexture(sprite, color);
         ShowHitboxes();
         Raylib.DrawRectangle(50, 50, (int)hp, 50, Color.Green);
         DisplayHealthBar(50, 50, 1);
@@ -71,15 +72,17 @@ class Karim : Boss
 
     public Karim(int x, int y)
     {
-        objectIdentifier = "enemy";
         this.x = x;
         this.y = y;
-        width = Setup.windowWidth * 0.11f;
-        height = Setup.windowWidth * 0.11f;
+        width = 250;
+        height = 250;
         gameList.Add(this);
         moveSpeed = 500f;
         maxHP = 600;
         hp = maxHP;
+        sprite = Raylib.LoadTexture(@"./Sprites/karimryde-scaled-600x600.jpg");
+        sprite = ChangeSpriteSize(sprite,(int)width,(int)height);
+        objectIdentifier = "enemy";
     }
 
 
