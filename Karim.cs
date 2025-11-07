@@ -14,8 +14,6 @@ class Karim : Boss
     readonly float bulletHeight = 40;
     readonly float bulletDamage = 2;
 
-
-
     void moveCycle(float value, float minValue, float maxValue)
     {
         if (value >= maxValue)
@@ -54,6 +52,8 @@ class Karim : Boss
         curvedLaser();
         // straightLaser();
 
+        ContactDamage(0.1f,"player");
+
         moveCycle(x, Raylib.GetScreenWidth() * 0.7f, Raylib.GetScreenWidth() - width);
         MoveObject(gravity);
     }
@@ -67,7 +67,7 @@ class Karim : Boss
     }
     public override void Despawn()
     {
-        Setup.currentlyGibbing = false; 
+        GibbManager.currentlyGibbing = false; 
     }
 
     public Karim(int x, int y)

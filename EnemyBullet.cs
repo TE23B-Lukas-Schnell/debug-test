@@ -32,5 +32,6 @@ class EnemyBullet : Projectile
         this.damage = damage;
         gameList.Add(this);
         canGoOffscreen = true;
+        objectIdentifier = "båt";
     }
 }

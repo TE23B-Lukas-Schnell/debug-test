@@ -5,24 +5,32 @@ class Player : MoveableObject
 
     public List<Items> Inventory = new List<Items>();
 
-    //player stats
-    public PlayerStat gravity = new PlayerStat(2300f);
-    public PlayerStat moveSpeed = new PlayerStat(900f);
-    public PlayerStat jumpForce = new PlayerStat(1300f);
-    public PlayerStat setDashDuration = new PlayerStat(0.2f);
-    public PlayerStat setDashCooldown = new PlayerStat(0.43f);
-    public PlayerStat fastFallSpeed = new PlayerStat(1400f);
-    public PlayerStat dashSpeed = new PlayerStat(2000f);
-    Color color = new Color(12, 0, 235, 255);
+    public static List<PlayerStat> playerStats = new List<PlayerStat>();
+
+    //player stats 
+    public PlayerStat gravity = new PlayerStat(playerStats,2300f);
+    public PlayerStat moveSpeed = new PlayerStat(playerStats,900f);
+    public PlayerStat jumpForce = new PlayerStat(playerStats,1300f);
+    public PlayerStat setDashDuration = new PlayerStat(playerStats,0.2f);
+    public PlayerStat setDashCooldown = new PlayerStat(playerStats,0.43f);
+    public PlayerStat fastFallSpeed = new PlayerStat(playerStats,1400f);
+    public PlayerStat dashSpeed = new PlayerStat(playerStats,2000f);
+   
 
     //bullet stats
     // Projectile playerProjectile = PlayerBullet;
-    public PlayerStat setShootCooldown = new PlayerStat(0.5f);
-    public PlayerStat bulletWidth = new PlayerStat(40f);
-    public PlayerStat bulletHeight = new PlayerStat(20f);
-    public PlayerStat bulletDamage = new PlayerStat(50f);
-    public PlayerStat bulletSpeed = new PlayerStat(1800f);
-    public PlayerStat bulletGravity = new PlayerStat(0f);
+    public PlayerStat setShootCooldown = new PlayerStat(playerStats,0.5f);
+    public PlayerStat bulletWidth = new PlayerStat(playerStats,40f);
+    public PlayerStat bulletHeight = new PlayerStat(playerStats,20f);
+    public PlayerStat bulletDamage = new PlayerStat(playerStats,50f);
+    public PlayerStat bulletSpeed = new PlayerStat(playerStats,1800f);
+    public PlayerStat bulletGravity = new PlayerStat(playerStats,0f);
+
+    //färger
+    public PlayerStat colorR = new PlayerStat(playerStats,12);
+    public PlayerStat colorG = new PlayerStat(playerStats, 0);
+    public PlayerStat colorB = new PlayerStat(playerStats, 235);
+    public PlayerStat colorA = new PlayerStat(playerStats,254);
 
 
     //variabler
@@ -48,8 +56,6 @@ shoot cooldown:          {setShootCooldown.Stat}");
             Console.WriteLine(items.name);
         }
     }
-
-
 
     //keybinds
     bool LeftKeyPressed() => Raylib.IsKeyDown(KeyboardKey.A) || Raylib.IsKeyDown(KeyboardKey.Left);
@@ -167,13 +173,13 @@ shoot cooldown:          {setShootCooldown.Stat}");
             AddTrailEffects(new Color(0, 88, 255, 0), 100, 100, 0, 130);
         }
         DisplayHealthBar(50, 145, 10);
-        Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, color);
+        Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, new Color(colorR.Stat,colorG.Stat,colorB.Stat,colorA.Stat));
         ShowHitboxes();
     }
     public override void Despawn()
     {
         Console.WriteLine("köttigaste inputen");
-        Setup.currentlyGibbing = false;
+        GibbManager.currentlyGibbing = false;
     }
 
     public Player()
@@ -181,11 +187,10 @@ shoot cooldown:          {setShootCooldown.Stat}");
         objectIdentifier = "player";
         x = 800;
         y = 450;
-        width = Setup.windowWidth * 0.05f;
-        height = Setup.windowWidth * 0.05f;
+        width = GibbManager.windowWidth * 0.05f;
+        height = GibbManager.windowWidth * 0.05f;
         gameList.Add(this);
         maxHP = 20;
         hp = maxHP;
-
     }
 }

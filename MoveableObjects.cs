@@ -7,12 +7,15 @@ abstract class MoveableObject()
     public string objectIdentifier = "";
     protected float maxHP;
     protected float hp;
-    protected float damageMultiplier = 1;
+    public bool healthy = true;
+    public bool remove = false;
+    public float damageMultiplier = 1;
+    public float healMultiplier = 1;
     protected float x, y;
     protected float xSpeed, ySpeed;
     protected float width, height;
     protected bool canGoOffscreen = false;
-    public bool remove = false;
+
     protected bool Grounded() => y >= Raylib.GetScreenHeight() - width;
 
     protected void DisplayHealthBar(float xpos, float ypos, float sizeMultiplier)
@@ -49,14 +52,61 @@ abstract class MoveableObject()
         return null;
     }
 
+    bool changeHp(MoveableObject target, float changeAmount, float changeMultiplier, float limit, bool isLimitFloorOrRoof/*true for floor, false for roof*/)
+    {
+        bool limitReached;
+
+        if (isLimitFloorOrRoof)
+        {
+            target.hp -= changeAmount * changeMultiplier;
+            if (limit >= hp)
+            {
+                hp = limit;
+                limitReached = true;
+            }
+            else limitReached = false;
+        }
+        else
+        {
+            target.hp += changeAmount * changeMultiplier;
+            if (limit <= hp)
+            {
+                hp = limit;
+                limitReached = true;
+            }
+            else limitReached = false;
+
+        }
+
+        return limitReached;
+    }
+
     //objektet hp minskar, tas bort om det är < 0
     public void TakeDamage(float damage, MoveableObject target)
     {
-        target.hp -= damage * damageMultiplier;
-        if (hp <= 0)
+        if (changeHp(target, damage, damageMultiplier, 0, true))
         {
             Despawn();
             target.remove = true;
+        }
+    }
+
+    public void healDamage(float healAmount, MoveableObject target)
+    {
+        if (changeHp(target, healAmount, healMultiplier, maxHP, false))
+        {
+            target.healthy = true;
+        }
+    }
+
+    //since there is no invin frames after you take damage, make sure the damage is very small
+    protected void ContactDamage(float damage, string objectIdentifier)
+    {
+        MoveableObject köttigBåt = CheckCollisions();
+        if(köttigBåt != null)
+        {
+            if(köttigBåt.objectIdentifier == objectIdentifier)
+            TakeDamage(damage,köttigBåt);
         }
     }
 

@@ -1,4 +1,4 @@
-static class Setup
+static class GibbManager
 {
     public static int targetFrameRate;
     public static int windowWidth = 1600;
@@ -108,7 +108,7 @@ Objective:
     public static void GameLoop()
     {
 
-        while (Setup.currentlyGibbing == false)
+        while (GibbManager.currentlyGibbing == false)
         {
 
             Console.WriteLine(@"Choose an action
@@ -122,14 +122,14 @@ Objective:
             switch (answer)
             {
                 case "1":
-                    MoveableObject survivor = Setup.WindowGame();
+                    MoveableObject survivor = GibbManager.WindowGame();
                     Console.WriteLine(survivor + " died a deathly death");
                     break;
                 case "2":
                     Console.WriteLine($"Your score is: {Player.score}");
                     break;
                 case "3":
-                    Setup.WriteDictionary(Setup.highscores);
+                    GibbManager.WriteDictionary(GibbManager.highscores);
                     break;
                 case "4":
                     playerReference.PrintPlayerStats();
@@ -142,7 +142,6 @@ Objective:
                     break;
             }
         }
-
     }
 
     // this is the actual game!!!11 veri important
@@ -152,7 +151,7 @@ Objective:
         //fixa game manager!!!! 1
         // kommer inte fixa game manager!!!11
         currentlyGibbing = true;
-        Raylib.InitWindow(Setup.windowWidth, Setup.windowHeight, "Game");
+        Raylib.InitWindow(GibbManager.windowWidth, GibbManager.windowHeight, "Game");
 
         Karim enemy = new Karim((int)(Raylib.GetScreenWidth() * 0.5f), 0);
 

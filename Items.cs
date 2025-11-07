@@ -2,8 +2,8 @@ class Items
 {
     public string name;
     public string description;
-    Player playerReference;
-   
+    MoveableObject target;
+
     public void ApplyBuff()
     {
         
@@ -16,9 +16,11 @@ class Items
 
     }
 
-    public Items(string name, string description, Player playerReference)
+    
+
+    public Items(string name, string description, MoveableObject targetToModify )
     {
-        this.playerReference = playerReference;
+        targetToModify = target;
         this.name = name;
         this.description = description;
     }

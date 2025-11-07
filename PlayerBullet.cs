@@ -23,6 +23,7 @@ class PlayerBullet : Projectile
     {
         this.x = x;
         this.y = y;
+        objectIdentifier = "båt";
 
         gameList.Add(this);
         this.xSpeed = xSpeed;
