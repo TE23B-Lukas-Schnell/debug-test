@@ -6,23 +6,23 @@ class Player : MoveableObject
     public List<Items> Inventory = new List<Items>();
 
     //player stats
-    public Property gravity = new Property(2300f);
-    public Property moveSpeed = new Property(900f);
-    public Property jumpForce = new Property(1300f);
-    public Property setDashDuration = new Property(0.2f);
-    public Property setDashCooldown = new Property(0.43f);
-    public Property fastFallSpeed = new Property(1400f);
-    public Property dashSpeed = new Property(2000f);
+    public PlayerStat gravity = new PlayerStat(2300f);
+    public PlayerStat moveSpeed = new PlayerStat(900f);
+    public PlayerStat jumpForce = new PlayerStat(1300f);
+    public PlayerStat setDashDuration = new PlayerStat(0.2f);
+    public PlayerStat setDashCooldown = new PlayerStat(0.43f);
+    public PlayerStat fastFallSpeed = new PlayerStat(1400f);
+    public PlayerStat dashSpeed = new PlayerStat(2000f);
     Color color = new Color(12, 0, 235, 255);
 
     //bullet stats
     // Projectile playerProjectile = PlayerBullet;
-    public Property setShootCooldown = new Property(0.5f);
-    public Property bulletWidth = new Property(40f);
-    public Property bulletHeight = new Property(20f);
-    public Property bulletDamage = new Property(50f);
-    public Property bulletSpeed = new Property(1800f);
-    public Property bulletGravity = new Property(0f);
+    public PlayerStat setShootCooldown = new PlayerStat(0.5f);
+    public PlayerStat bulletWidth = new PlayerStat(40f);
+    public PlayerStat bulletHeight = new PlayerStat(20f);
+    public PlayerStat bulletDamage = new PlayerStat(50f);
+    public PlayerStat bulletSpeed = new PlayerStat(1800f);
+    public PlayerStat bulletGravity = new PlayerStat(0f);
 
 
     //variabler

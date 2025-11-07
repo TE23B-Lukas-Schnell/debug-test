@@ -74,6 +74,8 @@ class Karim : Boss
     {
         this.x = x;
         this.y = y;
+        screenSizeX = 1600;
+        screenSizeY = 900;
         width = 250;
         height = 250;
         gameList.Add(this);

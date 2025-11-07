@@ -124,10 +124,7 @@ Objective:
                 case "1":
                     MoveableObject survivor = Setup.WindowGame();
                     Console.WriteLine(survivor + " died a deathly death");
-
-                   
                     break;
-
                 case "2":
                     Console.WriteLine($"Your score is: {Player.score}");
                     break;
@@ -137,7 +134,6 @@ Objective:
                 case "4":
                     playerReference.PrintPlayerStats();
                     break;
-
                 case "5": 
                     playerReference.ApplyBuffsFromItem();
                     break;

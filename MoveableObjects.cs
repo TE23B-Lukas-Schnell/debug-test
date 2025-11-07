@@ -5,26 +5,26 @@ abstract class MoveableObject()
     public static float globalGravityMultiplier = 1;
 
     public string objectIdentifier = "";
-    public float maxHP;
-    public float hp;
-    public float damageMultiplier = 1;
-    public float x, y;
-    public float xSpeed, ySpeed;
-    public float width, height;
-    public bool canGoOffscreen = false;
+    protected float maxHP;
+    protected float hp;
+    protected float damageMultiplier = 1;
+    protected float x, y;
+    protected float xSpeed, ySpeed;
+    protected float width, height;
+    protected bool canGoOffscreen = false;
     public bool remove = false;
-    public bool Grounded() => y >= Raylib.GetScreenHeight() - width;
+    protected bool Grounded() => y >= Raylib.GetScreenHeight() - width;
 
-    public void DisplayHealthBar(float xpos, float ypos, float sizeMultiplier)
+    protected void DisplayHealthBar(float xpos, float ypos, float sizeMultiplier)
     {
         Raylib.DrawRectangle((int)xpos, (int)ypos, (int)(maxHP * sizeMultiplier) + 10, 60, Color.Gray);
         Raylib.DrawRectangle((int)xpos + 5, (int)ypos + 5, (int)(hp * sizeMultiplier), 50, Color.Green);
     }
 
-    public Rectangle GetHitbox() => new Rectangle(x, y, width, height);
-    public bool ShowHitboxesSwitch() => Raylib.IsKeyDown(KeyboardKey.E);
+    protected Rectangle GetHitbox() => new Rectangle(x, y, width, height);
+    protected bool ShowHitboxesSwitch() => Raylib.IsKeyDown(KeyboardKey.E);
 
-    public void ShowHitboxes()//enklare att testa programmet och kan hjälpa senare när hitboxes inte matchar spriten
+    protected void ShowHitboxes()//enklare att testa programmet och kan hjälpa senare när hitboxes inte matchar spriten
     {
         if (ShowHitboxesSwitch())
         {
@@ -33,7 +33,7 @@ abstract class MoveableObject()
     }
 
     //returnar objektet som kollideras med 
-    public MoveableObject? CheckCollisions()
+    protected MoveableObject? CheckCollisions()
     {
         foreach (MoveableObject obj in gameList)
         {
@@ -65,7 +65,7 @@ abstract class MoveableObject()
     int positionIndex = 0;
 
     //denna funktion gjordes av chatgpt
-    public void AddTrailEffects(Color trailColorSet, float rMultiplier, float gMultiPlier, float bMultiplier, float aMultiplier)
+    protected void AddTrailEffects(Color trailColorSet, float rMultiplier, float gMultiPlier, float bMultiplier, float aMultiplier)
     {
 
         lastPositions[positionIndex] = (x, y);
@@ -86,7 +86,7 @@ abstract class MoveableObject()
     //funktioner relaterade till positions värden
 
     // förklarar sig själv tycker jag, positionen kan aldrig gå offscreen
-    public void LimitMovement()
+    protected void LimitMovement()
     {
         x = Math.Clamp(x, 0, Raylib.GetScreenWidth() - width);
         y = Math.Clamp(y, width, Raylib.GetScreenHeight() - width);
@@ -94,7 +94,7 @@ abstract class MoveableObject()
 
 
     //tar bort objekt om de är offscreen
-    public void HandleOffscreen()
+    protected void HandleOffscreen()
     {
         if (canGoOffscreen)
         {
@@ -113,7 +113,7 @@ abstract class MoveableObject()
     }
 
     //gör så att objektet blir påverkat av gravitation, specifiera i parametern
-    public void ApplyGravity(float gravity)
+    protected void ApplyGravity(float gravity)
     {
         if (y <= Raylib.GetScreenHeight() - width)
         {
@@ -126,7 +126,7 @@ abstract class MoveableObject()
     }
 
     //flyttar objekt, denna funktion behövs för alla objekt som rör på sig
-    public void MoveObject(float gravity)
+    protected void MoveObject(float gravity)
     {
         x += xSpeed * Raylib.GetFrameTime();
         y -= ySpeed * Raylib.GetFrameTime();
