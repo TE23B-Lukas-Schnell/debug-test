@@ -55,8 +55,6 @@ Objective:
         }
         return targetFrameRate;
     }
-
-
     static string[] ReadSaveFile(string filePath)
     {
         if (filePath != null)
@@ -110,7 +108,6 @@ Objective:
 
         while (GibbManager.currentlyGibbing == false)
         {
-
             Console.WriteLine(@"Choose an action
 1. Start playing
 2. Show your score
@@ -134,7 +131,7 @@ Objective:
                 case "4":
                     playerReference.PrintPlayerStats();
                     break;
-                case "5": 
+                case "5":
                     playerReference.ApplyBuffsFromItem();
                     break;
                 default:

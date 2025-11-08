@@ -100,13 +100,15 @@ abstract class MoveableObject()
     }
 
     //since there is no invin frames after you take damage, make sure the damage is very small
-    protected void ContactDamage(float damage, string objectIdentifier)
+     public void ContactDamage(float damage, string objectIdentifier)
     {
-        MoveableObject köttigBåt = CheckCollisions();
-        if(köttigBåt != null)
+        MoveableObject? target = CheckCollisions();
+        if (target != null)
         {
-            if(köttigBåt.objectIdentifier == objectIdentifier)
-            TakeDamage(damage,köttigBåt);
+            if (target.objectIdentifier == objectIdentifier)
+            {
+                target.TakeDamage(damage, target);
+            }
         }
     }
 

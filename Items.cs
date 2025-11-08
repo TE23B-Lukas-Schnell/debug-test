@@ -2,7 +2,8 @@ class Items
 {
     public string name;
     public string description;
-    MoveableObject target;
+    MoveableObject? target;
+    
 
     public void ApplyBuff()
     {
@@ -13,16 +14,17 @@ class Items
     {
         Console.WriteLine(name);
         Console.WriteLine(description);
-
     }
 
-    
-
-    public Items(string name, string description, MoveableObject targetToModify )
+    public static void GetPlayerStat(string statToChange)
     {
-        targetToModify = target;
+        
+    }
+
+    public Items(string name, string description, MoveableObject targetToModify)
+    {
+        target = targetToModify;
         this.name = name;
         this.description = description;
     }
-
 }

@@ -8,29 +8,29 @@ class Player : MoveableObject
     public static List<PlayerStat> playerStats = new List<PlayerStat>();
 
     //player stats 
-    public PlayerStat gravity = new PlayerStat(playerStats,2300f);
-    public PlayerStat moveSpeed = new PlayerStat(playerStats,900f);
-    public PlayerStat jumpForce = new PlayerStat(playerStats,1300f);
-    public PlayerStat setDashDuration = new PlayerStat(playerStats,0.2f);
-    public PlayerStat setDashCooldown = new PlayerStat(playerStats,0.43f);
-    public PlayerStat fastFallSpeed = new PlayerStat(playerStats,1400f);
-    public PlayerStat dashSpeed = new PlayerStat(playerStats,2000f);
+    public PlayerStat gravity = new PlayerStat(playerStats,2300f, "gravity");
+    public PlayerStat moveSpeed = new PlayerStat(playerStats,900f, "moveSpeed");
+    public PlayerStat jumpForce = new PlayerStat(playerStats,1300f, "jumpForce");
+    public PlayerStat setDashDuration = new PlayerStat(playerStats,0.2f, "setDashDuration");
+    public PlayerStat setDashCooldown = new PlayerStat(playerStats,0.43f, "setDashCooldown");
+    public PlayerStat fastFallSpeed = new PlayerStat(playerStats,1400f, "fastFallSpeed");
+    public PlayerStat dashSpeed = new PlayerStat(playerStats,2000f, "dashSpeed");
    
 
     //bullet stats
     // Projectile playerProjectile = PlayerBullet;
-    public PlayerStat setShootCooldown = new PlayerStat(playerStats,0.5f);
-    public PlayerStat bulletWidth = new PlayerStat(playerStats,40f);
-    public PlayerStat bulletHeight = new PlayerStat(playerStats,20f);
-    public PlayerStat bulletDamage = new PlayerStat(playerStats,50f);
-    public PlayerStat bulletSpeed = new PlayerStat(playerStats,1800f);
-    public PlayerStat bulletGravity = new PlayerStat(playerStats,0f);
+    public PlayerStat setShootCooldown = new PlayerStat(playerStats,0.5f,"setShootCooldown");
+    public PlayerStat bulletWidth = new PlayerStat(playerStats,40f,"bulletWidth");
+    public PlayerStat bulletHeight = new PlayerStat(playerStats,20f, "bulletHeight");
+    public PlayerStat bulletDamage = new PlayerStat(playerStats,50f, "bulletDamage");
+    public PlayerStat bulletSpeed = new PlayerStat(playerStats,1800f, "bulletSpeed");
+    public PlayerStat bulletGravity = new PlayerStat(playerStats,0f, "bulletGravity");
 
     //färger
-    public PlayerStat colorR = new PlayerStat(playerStats,12);
-    public PlayerStat colorG = new PlayerStat(playerStats, 0);
-    public PlayerStat colorB = new PlayerStat(playerStats, 235);
-    public PlayerStat colorA = new PlayerStat(playerStats,254);
+    public PlayerStat colorR = new PlayerStat(playerStats,12,"");
+    public PlayerStat colorG = new PlayerStat(playerStats, 0,"");
+    public PlayerStat colorB = new PlayerStat(playerStats, 235,"");
+    public PlayerStat colorA = new PlayerStat(playerStats,254,"");
 
 
     //variabler
