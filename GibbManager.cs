@@ -6,6 +6,17 @@ static class GibbManager
     public static bool currentlyGibbing = false;
     public static bool fullscreen = false;
 
+    public static List<Items> AvailableItems = new List<Items>()
+    {
+        new Items("mikaels kött", "ökar gravity med 50% men minskar shootcooldown med 30%",new Dictionary<string, float>{
+            {"gravity", 1.5f},{"shootCooldown",0.7f}
+            }),
+        new Items("Hej jag heter anton", "inversar kontrollerna men ökar din damage med 69%", new Dictionary<string, float>
+        {
+            {"moveSpeed",-1},{"bulletDamage", 1.69f}    
+        } ),
+    };
+
     static string scoreFilePath = "./scores.txt";
 
     static Player playerReference = new Player();
@@ -106,7 +117,7 @@ Objective:
     public static void GameLoop()
     {
 
-        while (GibbManager.currentlyGibbing == false)
+        while (currentlyGibbing == false)
         {
             Console.WriteLine(@"Choose an action
 1. Start playing
@@ -119,14 +130,14 @@ Objective:
             switch (answer)
             {
                 case "1":
-                    MoveableObject survivor = GibbManager.WindowGame();
+                    MoveableObject survivor = WindowGame();
                     Console.WriteLine(survivor + " died a deathly death");
                     break;
                 case "2":
                     Console.WriteLine($"Your score is: {Player.score}");
                     break;
                 case "3":
-                    GibbManager.WriteDictionary(GibbManager.highscores);
+                    WriteDictionary(highscores);
                     break;
                 case "4":
                     playerReference.PrintPlayerStats();

@@ -6,17 +6,16 @@ class PlayerStat
         set => stat = Math.Clamp(value, minValue, maxValue);
     }
 
-
     public string name;
     float stat;
-    float minValue;
-    float maxValue;
+    readonly float minValue;
+    readonly float maxValue;
 
     public PlayerStat(List<PlayerStat> listToAddTo, float stat, string name)
     {
         this.stat = stat;
-        minValue = -1_000_000;
-        maxValue = 1_000_000;
+        minValue = float.MinValue;
+        maxValue = float.MaxValue;
         listToAddTo.Add(this);
         this.name = name;
     }

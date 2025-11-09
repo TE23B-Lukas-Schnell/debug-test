@@ -8,29 +8,29 @@ class Player : MoveableObject
     public static List<PlayerStat> playerStats = new List<PlayerStat>();
 
     //player stats 
-    public PlayerStat gravity = new PlayerStat(playerStats,2300f, "gravity");
-    public PlayerStat moveSpeed = new PlayerStat(playerStats,900f, "moveSpeed");
-    public PlayerStat jumpForce = new PlayerStat(playerStats,1300f, "jumpForce");
-    public PlayerStat setDashDuration = new PlayerStat(playerStats,0.2f, "setDashDuration");
-    public PlayerStat setDashCooldown = new PlayerStat(playerStats,0.43f, "setDashCooldown");
-    public PlayerStat fastFallSpeed = new PlayerStat(playerStats,1400f, "fastFallSpeed");
-    public PlayerStat dashSpeed = new PlayerStat(playerStats,2000f, "dashSpeed");
-   
+    public PlayerStat gravity = new PlayerStat(playerStats, 2300f, 0, float.MaxValue, "gravity");
+    public PlayerStat moveSpeed = new PlayerStat(playerStats, 900f, "moveSpeed");
+    public PlayerStat jumpForce = new PlayerStat(playerStats, 1300f, "jumpForce");
+    public PlayerStat setDashDuration = new PlayerStat(playerStats, 0.2f, "dashDuration");
+    public PlayerStat setDashCooldown = new PlayerStat(playerStats, 0.43f, "dashCooldown");
+    public PlayerStat fastFallSpeed = new PlayerStat(playerStats, 1400f, "fastFallSpeed");
+    public PlayerStat dashSpeed = new PlayerStat(playerStats, 2000f, "dashSpeed");
+
 
     //bullet stats
     // Projectile playerProjectile = PlayerBullet;
-    public PlayerStat setShootCooldown = new PlayerStat(playerStats,0.5f,"setShootCooldown");
-    public PlayerStat bulletWidth = new PlayerStat(playerStats,40f,"bulletWidth");
-    public PlayerStat bulletHeight = new PlayerStat(playerStats,20f, "bulletHeight");
-    public PlayerStat bulletDamage = new PlayerStat(playerStats,50f, "bulletDamage");
-    public PlayerStat bulletSpeed = new PlayerStat(playerStats,1800f, "bulletSpeed");
-    public PlayerStat bulletGravity = new PlayerStat(playerStats,0f, "bulletGravity");
+    public PlayerStat setShootCooldown = new PlayerStat(playerStats, 0.5f, "shootCooldown");
+    public PlayerStat bulletWidth = new PlayerStat(playerStats, 40f, "bulletWidth");
+    public PlayerStat bulletHeight = new PlayerStat(playerStats, 20f, "bulletHeight");
+    public PlayerStat bulletDamage = new PlayerStat(playerStats, 50f, "bulletDamage");
+    public PlayerStat bulletSpeed = new PlayerStat(playerStats, 1800f, "bulletSpeed");
+    public PlayerStat bulletGravity = new PlayerStat(playerStats, 0f, "bulletGravity");
 
     //färger
-    public PlayerStat colorR = new PlayerStat(playerStats,12,"");
-    public PlayerStat colorG = new PlayerStat(playerStats, 0,"");
-    public PlayerStat colorB = new PlayerStat(playerStats, 235,"");
-    public PlayerStat colorA = new PlayerStat(playerStats,254,"");
+    public PlayerStat colorR = new PlayerStat(playerStats, 12f, "r");
+    public PlayerStat colorG = new PlayerStat(playerStats, 0f, "g");
+    public PlayerStat colorB = new PlayerStat(playerStats, 235f, "b");
+    public PlayerStat colorA = new PlayerStat(playerStats, 254f, "a");
 
 
     //variabler
@@ -140,11 +140,14 @@ shoot cooldown:          {setShootCooldown.Stat}");
         {
             for (int i = 0; i < Inventory.Count; i++)
             {
-                Console.WriteLine($"now applying buffs to player: {Inventory[i].name}");
-                Inventory[i].ApplyBuff();
+                if (!Inventory[i].buffActivated)
+                {
+                    Inventory[i].ApplyBuff();
+                    Inventory[i].buffActivated = true;
+                }
             }
         }
-        else Console.WriteLine("tomt inventory");
+        // else Console.WriteLine("tomt inventory");
     }
 
     public override void Update()
@@ -173,7 +176,7 @@ shoot cooldown:          {setShootCooldown.Stat}");
             AddTrailEffects(new Color(0, 88, 255, 0), 100, 100, 0, 130);
         }
         DisplayHealthBar(50, 145, 10);
-        Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, new Color(colorR.Stat,colorG.Stat,colorB.Stat,colorA.Stat));
+        Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, new Color(colorR.Stat, colorG.Stat, colorB.Stat, colorA.Stat));
         ShowHitboxes();
     }
     public override void Despawn()
@@ -185,7 +188,7 @@ shoot cooldown:          {setShootCooldown.Stat}");
     public Player()
     {
         objectIdentifier = "player";
-        x = 800;
+        x = 400;
         y = 450;
         width = GibbManager.windowWidth * 0.05f;
         height = GibbManager.windowWidth * 0.05f;
