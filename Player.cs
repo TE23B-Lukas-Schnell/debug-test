@@ -1,4 +1,4 @@
-class Player : MoveableObject
+class Player : FightableObject
 {
     //statiska variabler
     public static int score = 0;
@@ -15,7 +15,6 @@ class Player : MoveableObject
     public PlayerStat setDashCooldown = new PlayerStat(playerStats, 0.43f, "dashCooldown");
     public PlayerStat fastFallSpeed = new PlayerStat(playerStats, 1400f, "fastFallSpeed");
     public PlayerStat dashSpeed = new PlayerStat(playerStats, 2000f, "dashSpeed");
-
 
     //bullet stats
     // Projectile playerProjectile = PlayerBullet;

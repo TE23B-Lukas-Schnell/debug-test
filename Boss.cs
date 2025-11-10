@@ -1,4 +1,4 @@
-abstract class Boss : MoveableObject
+abstract class Boss : FightableObject
 {
     public int screenSizeX;
     public int screenSizeY;

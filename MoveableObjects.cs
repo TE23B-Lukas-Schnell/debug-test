@@ -5,9 +5,6 @@ abstract class MoveableObject()
     public static float globalGravityMultiplier = 1;
 
     public string objectIdentifier = "";
-    protected float maxHP;
-    protected float hp;
-    public bool healthy = true;
     public bool remove = false;
     public float damageMultiplier = 1;
     public float healMultiplier = 1;
@@ -16,13 +13,7 @@ abstract class MoveableObject()
     protected float width, height;
     protected bool canGoOffscreen = false;
 
-    protected bool Grounded() => y >= Raylib.GetScreenHeight() - width;
-
-    protected void DisplayHealthBar(float xpos, float ypos, float sizeMultiplier)
-    {
-        Raylib.DrawRectangle((int)xpos, (int)ypos, (int)(maxHP * sizeMultiplier) + 10, 60, Color.Gray);
-        Raylib.DrawRectangle((int)xpos + 5, (int)ypos + 5, (int)(hp * sizeMultiplier), 50, Color.Green);
-    }
+    protected bool Grounded() => y >= Raylib.GetScreenHeight() - height;
 
     protected Rectangle GetHitbox() => new Rectangle(x, y, width, height);
     protected bool ShowHitboxesSwitch() => Raylib.IsKeyDown(KeyboardKey.E);
@@ -51,67 +42,6 @@ abstract class MoveableObject()
         }
         return null;
     }
-
-    bool changeHp(MoveableObject target, float changeAmount, float changeMultiplier, float limit, bool isLimitFloorOrRoof/*true for floor, false for roof*/)
-    {
-        bool limitReached;
-
-        if (isLimitFloorOrRoof)
-        {
-            target.hp -= changeAmount * changeMultiplier;
-            if (limit >= hp)
-            {
-                hp = limit;
-                limitReached = true;
-            }
-            else limitReached = false;
-        }
-        else
-        {
-            target.hp += changeAmount * changeMultiplier;
-            if (limit <= hp)
-            {
-                hp = limit;
-                limitReached = true;
-            }
-            else limitReached = false;
-
-        }
-
-        return limitReached;
-    }
-
-    //objektet hp minskar, tas bort om det är < 0
-    public void TakeDamage(float damage, MoveableObject target)
-    {
-        if (changeHp(target, damage, damageMultiplier, 0, true))
-        {
-            Despawn();
-            target.remove = true;
-        }
-    }
-
-    public void healDamage(float healAmount, MoveableObject target)
-    {
-        if (changeHp(target, healAmount, healMultiplier, maxHP, false))
-        {
-            target.healthy = true;
-        }
-    }
-
-    //since there is no invin frames after you take damage, make sure the damage is very small
-    public void ContactDamage(float damage, string objectIdentifier)
-    {
-        MoveableObject? target = CheckCollisions();
-        if (target != null)
-        {
-            if (target.objectIdentifier == objectIdentifier)
-            {
-                target.TakeDamage(damage, target);
-            }
-        }
-    }
-
 
     (float x, float y)[] lastPositions = new (float x, float y)[20];
     int positionIndex = 0;

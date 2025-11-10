@@ -6,18 +6,22 @@ abstract class Projectile : MoveableObject
     // when you collide with an enemy, check whether 
     public void OnHit(float damage, string objectIdentifier)
     {
-        MoveableObject? target = CheckCollisions();
-        if (target != null)
+        FightableObject? target;
+
+        if (CheckCollisions() is FightableObject)
         {
-            if (target.objectIdentifier == objectIdentifier)
+            target = CheckCollisions() as FightableObject;
+            if (target != null)
             {
-                target.TakeDamage(damage, target);
-                if (!piercing)
+                if (target.objectIdentifier == objectIdentifier)
                 {
-                    remove = true;
+                    target.TakeDamage(damage, target);
+                    if (!piercing)
+                    {
+                        remove = true;
+                    }
                 }
             }
-
         }
     }
 }

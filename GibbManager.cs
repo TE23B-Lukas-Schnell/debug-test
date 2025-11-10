@@ -13,8 +13,17 @@ static class GibbManager
             }),
         new Items("Hej jag heter anton", "inversar kontrollerna men ökar din damage med 69%", new Dictionary<string, float>
         {
-            {"moveSpeed",-1},{"bulletDamage", 1.69f}    
+            {"moveSpeed",-1},{"bulletDamage", 1.69f}
         } ),
+        new Items("kasta gamekontorll av gustav", "ökar movespeed med 30%", new Dictionary<string, float>
+        {
+            {"moveSpeed", 1.3f},
+        }),
+        new Items("ching", "", new Dictionary<string, float>
+        {
+            {"moveSpeed", 1.3f},{"bulletDamage", 1.69f}
+        }),
+
     };
 
     static string scoreFilePath = "./scores.txt";
@@ -163,7 +172,7 @@ Objective:
 
         Karim enemy = new Karim((int)(Raylib.GetScreenWidth() * 0.5f), 0);
 
-        MoveableObject loser = playerReference;
+        FightableObject loser = playerReference;
 
         while (!Raylib.WindowShouldClose() && currentlyGibbing)
         {
