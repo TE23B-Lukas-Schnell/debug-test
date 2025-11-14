@@ -8,7 +8,7 @@ abstract class MoveableObject()
     public bool remove = false;
     public float damageMultiplier = 1;
     public float healMultiplier = 1;
-    protected float x, y;
+    public float x, y;
     protected float xSpeed, ySpeed;
     protected float width, height;
     protected bool canGoOffscreen = false;

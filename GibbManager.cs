@@ -14,17 +14,33 @@ static class GibbManager
         new Items("Hej jag heter anton", "inversar kontrollerna men ökar din damage med 69%", new Dictionary<string, float>
         {
             {"moveSpeed",-1},{"bulletDamage", 1.69f}
-        } ),
-        new Items("kasta gamekontorll av gustav", "ökar movespeed med 30%", new Dictionary<string, float>
+        }),
+        new Items("kasta gamekontroll av gustav", "ökar movespeed med 30%", new Dictionary<string, float>
         {
             {"moveSpeed", 1.3f},
         }),
-        new Items("ching", "", new Dictionary<string, float>
-        {
-            {"moveSpeed", 1.3f},{"bulletDamage", 1.69f}
-        }),
 
+        new Items("delegate test", "båtig item", applier: (FightableObject objectToBuff) =>
+        {
+            if(objectToBuff.objectIdentifier == "player")
+            {
+                objectToBuff = objectToBuff as Player;
+                objectToBuff.x += 1000;
+            }
+            else if (objectToBuff.objectIdentifier == "enemy")
+            {
+                objectToBuff = objectToBuff as Boss;
+            }
+
+
+        } )
     };
+
+    public static int amountOfItemsToChooseFrom = 2;
+    static void GiveItem(int amount, Player player, Boss nextboss)
+    {
+
+    }
 
     static string scoreFilePath = "./scores.txt";
 
@@ -125,7 +141,7 @@ Objective:
 
     public static void GameLoop()
     {
-
+        // detta kan fixas med ett dictiononary med strings och actions, kom ihåg att fixa någon gång
         while (currentlyGibbing == false)
         {
             Console.WriteLine(@"Choose an action
@@ -141,6 +157,7 @@ Objective:
                 case "1":
                     MoveableObject survivor = WindowGame();
                     Console.WriteLine(survivor + " died a deathly death");
+                    playerReference.Inventory.Add(AvailableItems[3]);
                     break;
                 case "2":
                     Console.WriteLine($"Your score is: {Player.score}");

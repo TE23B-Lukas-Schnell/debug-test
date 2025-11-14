@@ -4,6 +4,9 @@ class Items
     public string description;
     public bool buffActivated = false;
 
+    public delegate void ApplyStatChanges(FightableObject objectToBuff);
+    public ApplyStatChanges båt;
+
     public Dictionary<string, float> playerStatsAndTheirChangeAmount = new Dictionary<string, float>();
 
     public void PrintStats()
@@ -17,11 +20,11 @@ class Items
     public void ApplyBuff()
     {
         string[] statNames = playerStatsAndTheirChangeAmount.Keys.ToArray();
-        for(int i = 0; i < playerStatsAndTheirChangeAmount.Count; i++)
+        for (int i = 0; i < playerStatsAndTheirChangeAmount.Count; i++)
         {
             string statName = statNames[i];
             float changeAmount = playerStatsAndTheirChangeAmount[statName];
-            
+
             PlayerStat? statToChange = GetPlayerStat(statName);
             if (statToChange != null)
             {
@@ -34,6 +37,12 @@ class Items
     public Items(string name, string description, Dictionary<string, float> playerStatsAndTheirChangeAmount)
     {
         this.playerStatsAndTheirChangeAmount = playerStatsAndTheirChangeAmount;
+        this.name = name;
+        this.description = description;
+    }
+    public Items(string name, string description, ApplyStatChanges applier)
+    {
+        båt = applier;
         this.name = name;
         this.description = description;
     }
