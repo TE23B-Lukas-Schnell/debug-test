@@ -3,7 +3,6 @@ class Player : FightableObject
     //statiska variabler
     public static int score = 0;
 
-    public List<Items> Inventory = new List<Items>();
 
     public static List<PlayerStat> playerStats = new List<PlayerStat>();
 
@@ -39,11 +38,11 @@ class Player : FightableObject
     public float bulletGravity = 0f;
 
     //färger
-    public Color color = new Color(12f, 0f, 235f, 254f);
-    public PlayerStat colorR = new PlayerStat(playerStats, 12f, "r");
-    public PlayerStat colorG = new PlayerStat(playerStats, 0f, "g");
-    public PlayerStat colorB = new PlayerStat(playerStats, 235f, "b");
-    public PlayerStat colorA = new PlayerStat(playerStats, 254f, "a");
+    public Color color = new Color(0, 0f, 235f, 254f);
+    // public PlayerStat colorR = new PlayerStat(playerStats, 12f, "r");
+    // public PlayerStat colorG = new PlayerStat(playerStats, 0f, "g");
+    // public PlayerStat colorB = new PlayerStat(playerStats, 235f, "b");
+    // public PlayerStat colorA = new PlayerStat(playerStats, 254f, "a");
 
 
     //variabler
@@ -56,13 +55,20 @@ class Player : FightableObject
     {
         Console.WriteLine(@$"Stats:
 pos                      {x} {y}
+size                     {width} {height}
+velocity                 {xSpeed} {ySpeed}
 gravity:                 {gravity}
 move speed:              {moveSpeed}
 jump force:              {jumpForce}
 dash duration:           {setDashDuration}
 dash cooldown:           {setDashCooldown}
 fastfall speed:          {fastFallSpeed}
-shoot cooldown:          {setShootCooldown}");
+shoot cooldown:          {setShootCooldown}
+bullet width             {bulletWidth}
+bullet height            {bulletHeight}
+bullet damage            {bulletDamage}
+bullet speed             {bulletSpeed}
+bullet gravity           {bulletGravity}");
 
         Console.WriteLine("inventory:");
         foreach (Items items in Inventory)
@@ -148,22 +154,7 @@ shoot cooldown:          {setShootCooldown}");
         }
     }
 
-    public void ApplyBuffsFromItem()
-    {
-        if (Inventory.Count > 0)
-        {
-            for (int i = 0; i < Inventory.Count; i++)
-            {
-                if (!Inventory[i].buffActivated)
-                {
-                    // Inventory[i].ApplyBuff();
-                    // Inventory[i].buffActivated = true;
-                    Inventory[i].båt(this);
-                }
-            }
-        }
-        // else Console.WriteLine("tomt inventory");
-    }
+    
 
     public override void Update()
     {
@@ -196,17 +187,18 @@ shoot cooldown:          {setShootCooldown}");
     }
     public override void Despawn()
     {
-        Console.WriteLine("köttigaste inputen");
+        Console.WriteLine("spelaren ahrn despawnat");
         GibbManager.currentlyGibbing = false;
     }
 
     public Player()
     {
+        lastPositions = new (float x, float y)[(int)(GibbManager.targetFrameRate * 0.1666666666667f)];
         objectIdentifier = "player";
         x = 400;
         y = 450;
-        width = GibbManager.windowWidth * 0.05f;
-        height = GibbManager.windowWidth * 0.05f;
+        width = 85;
+        height = 80;
         gameList.Add(this);
         maxHP = 20;
         hp = maxHP;

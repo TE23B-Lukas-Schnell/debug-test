@@ -4,6 +4,8 @@ abstract class FightableObject : MoveableObject
     protected float hp;
     public bool healthy = true;
 
+    public List<Items> Inventory = new List<Items>();
+
     protected void DisplayHealthBar(float xpos, float ypos, float sizeMultiplier)
     {
         Raylib.DrawRectangle((int)xpos, (int)ypos, (int)(maxHP * sizeMultiplier) + 10, 60, Color.Gray);
@@ -61,7 +63,6 @@ abstract class FightableObject : MoveableObject
     public void ContactDamage(float damage, string objectIdentifier)
     {
         FightableObject? target;
-
         if (CheckCollisions() is FightableObject)
         {
             target = CheckCollisions() as FightableObject;
@@ -70,6 +71,23 @@ abstract class FightableObject : MoveableObject
                 target.TakeDamage(damage, target);
             }
         }
+    }
+
+    public void ApplyBuffsFromItem()
+    {
+        if (Inventory.Count > 0)
+        {
+            for (int i = 0; i < Inventory.Count; i++)
+            {
+                if (!Inventory[i].buffActivated)
+                {
+                    // Inventory[i].ApplyBuff();
+                    // Inventory[i].buffActivated = true;
+                    Inventory[i].båt(this);
+                }
+            }
+        }
+        else Console.WriteLine("tomt inventory");
     }
 }
 

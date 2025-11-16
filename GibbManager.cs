@@ -8,7 +8,9 @@ static class GibbManager
 
     public static List<Items> AvailableItems = new List<Items>()
     {
-        new Items("mikaels kött", "ökar gravity med 50% men minskar shootcooldown med 30%",new Dictionary<string, float>{
+
+        // spara det här till jag är säker på att jag inte vill använda playerstat systemet längre
+      /*  new Items("mikaels kött", "ökar gravity med 50% men minskar shootcooldown med 30%",new Dictionary<string, float>{
             {"gravity", 1.5f},{"shootCooldown",0.7f}
             }),
         new Items("Hej jag heter anton", "inversar kontrollerna men ökar din damage med 69%", new Dictionary<string, float>
@@ -18,28 +20,71 @@ static class GibbManager
         new Items("kasta gamekontroll av gustav", "ökar movespeed med 30%", new Dictionary<string, float>
         {
             {"moveSpeed", 1.3f},
-        }),
+        }),*/
 
         new Items("delegate test", "båtig item", applier: (FightableObject objectToBuff) =>
         {
-            if(objectToBuff.objectIdentifier == "player")
+            if(objectToBuff is Player)
             {
-                objectToBuff = objectToBuff as Player;
-                objectToBuff.x += 1000;
+                Player p = objectToBuff as Player;
+                p.bulletSpeed *= 5;
             }
-            else if (objectToBuff.objectIdentifier == "enemy")
+            else if (objectToBuff is Boss)
             {
-                objectToBuff = objectToBuff as Boss;
+                Boss b = objectToBuff as Boss;
             }
+        }),
 
-
-        } )
+        new Items("martins fönster öppnare", "gör att estetare tar självmord", applier: (FightableObject objectToBuff) =>
+        {
+            if(objectToBuff is Player)
+            {
+                Player p = objectToBuff as Player;
+                p.jumpForce *= 2;
+            }
+            else if (objectToBuff is Boss)
+            {
+                Boss b = objectToBuff as Boss;
+            }
+        })
     };
 
     public static int amountOfItemsToChooseFrom = 2;
+
     static void GiveItem(int amount, Player player, Boss nextboss)
     {
+        string correctGrammar;
+        if (amountOfItemsToChooseFrom < 2) correctGrammar = "items"; else correctGrammar = "item";
+        Console.WriteLine($"Choose an item, the {correctGrammar} you don't will be used the next boss!");
+        Items[] choosableItems = GetRandomItems(amountOfItemsToChooseFrom, AvailableItems);
+        for (int i = 0; i < choosableItems.Length; i++)
+        {
+            Console.WriteLine($"{i}: {choosableItems[i].name} \n {choosableItems[i].description}");
+        }
+        int itemToChoose;
+        while (!int.TryParse(Console.ReadLine(), out itemToChoose))
+        {
+            Console.WriteLine("Invalid input, try again");
+        }
+        player.Inventory.Add(choosableItems[itemToChoose]);
+        nextboss.Inventory.AddRange(choosableItems);
+        /// kommer detta att funka??? 🧐🧐🧐
+         
+        
+    }
 
+    static Items[] GetRandomItems(int amount, List<Items> items)
+    {
+        amount = Math.Clamp(amount, 0, items.Count);
+        Items[] output = new Items[amount];
+        Random random = Random.Shared;
+        for (int i = 0; i < amount; i++)
+        {
+            int index = random.Next(0, items.Count);
+            output.Append(items[index]);
+            items.Remove(items[index]);
+        }
+        return output;
     }
 
     static string scoreFilePath = "./scores.txt";
@@ -72,8 +117,7 @@ static class GibbManager
     L or X to shoot
     Left shift or C to dash
 Objective: 
-    kill the green cube!!!11
-            ");
+    kill the green cube!!!11");
             Console.ReadLine();
         }
         else
@@ -81,16 +125,18 @@ Objective:
             return;
         }
     }
+
     public static int ChooseFPS()
     {
-        Console.WriteLine("How much FPS do you want?");
+        Console.WriteLine("How much FPS do you want? (0 for uncapped)");
 
-        while (!int.TryParse(Console.ReadLine(), out targetFrameRate) || targetFrameRate < 1)
+        while (!int.TryParse(Console.ReadLine(), out targetFrameRate) /*|| targetFrameRate < 1*/)
         {
             Console.WriteLine("Invalid input, try again");
         }
         return targetFrameRate;
     }
+
     static string[] ReadSaveFile(string filePath)
     {
         if (filePath != null)
@@ -157,7 +203,7 @@ Objective:
                 case "1":
                     MoveableObject survivor = WindowGame();
                     Console.WriteLine(survivor + " died a deathly death");
-                    playerReference.Inventory.Add(AvailableItems[3]);
+                    playerReference.Inventory.Add(AvailableItems[0]);
                     break;
                 case "2":
                     Console.WriteLine($"Your score is: {Player.score}");
@@ -187,7 +233,7 @@ Objective:
         currentlyGibbing = true;
         Raylib.InitWindow(GibbManager.windowWidth, GibbManager.windowHeight, "Game");
 
-        Karim enemy = new Karim((int)(Raylib.GetScreenWidth() * 0.5f), 0);
+        Boss enemy = new Nathalie();
 
         FightableObject loser = playerReference;
 

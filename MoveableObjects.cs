@@ -8,7 +8,7 @@ abstract class MoveableObject()
     public bool remove = false;
     public float damageMultiplier = 1;
     public float healMultiplier = 1;
-    public float x, y;
+    protected float x, y;
     protected float xSpeed, ySpeed;
     protected float width, height;
     protected bool canGoOffscreen = false;
@@ -43,13 +43,16 @@ abstract class MoveableObject()
         return null;
     }
 
-    (float x, float y)[] lastPositions = new (float x, float y)[20];
+
+    // längden på arrayen måste initileras när raylib window har startat och fpsen är stabil🤣🤣🤣🛶🛶🛶🛶
+    protected (float x, float y)[] lastPositions; /* = new (float x, float y)[(int)(GibbManager.targetFrameRate * 0.1666666666667f)];*/
     int positionIndex = 0;
 
     //denna funktion gjordes av chatgpt
     protected void AddTrailEffects(Color trailColorSet, float rMultiplier, float gMultiPlier, float bMultiplier, float aMultiplier)
     {
-
+        System.Console.WriteLine("mattigt bärre:" + (int)(GibbManager.targetFrameRate * 0.1666666666667f));
+        System.Console.WriteLine("köttig lastpositions array length:" + lastPositions.Length);
         lastPositions[positionIndex] = (x, y);
         positionIndex = (positionIndex + 1) % lastPositions.Length;
 
@@ -71,7 +74,7 @@ abstract class MoveableObject()
     protected void LimitMovement()
     {
         x = Math.Clamp(x, 0, Raylib.GetScreenWidth() - width);
-        y = Math.Clamp(y, width, Raylib.GetScreenHeight() - width);
+        y = Math.Clamp(y, height, Raylib.GetScreenHeight() - height);
     }
 
 
@@ -80,8 +83,7 @@ abstract class MoveableObject()
     {
         if (canGoOffscreen)
         {
-            bool isOffscreen = x + width < 0 || x > Raylib.GetScreenWidth() ||
-            y + height < 0 || y > Raylib.GetScreenHeight();
+            bool isOffscreen = x + width < 0 || x > Raylib.GetScreenWidth() || y + height < 0 || y > Raylib.GetScreenHeight();
 
             if (isOffscreen)
             {
@@ -97,7 +99,7 @@ abstract class MoveableObject()
     //gör så att objektet blir påverkat av gravitation, specifiera i parametern
     protected void ApplyGravity(float gravity)
     {
-        if (y <= Raylib.GetScreenHeight() - width)
+        if (!Grounded())
         {
             ySpeed -= gravity * globalGravityMultiplier * Raylib.GetFrameTime();
         }

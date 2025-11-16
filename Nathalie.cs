@@ -1,4 +1,4 @@
-class Karim : Boss
+class Nathalie : Boss
 {
     float shootCooldown = 0;
 
@@ -70,19 +70,20 @@ class Karim : Boss
         GibbManager.currentlyGibbing = false;
     }
 
-    public Karim()
+    public Nathalie()
     {
+
         x = 1400;
         y = (int)(Raylib.GetScreenHeight() * 0.5f);
         screenSizeX = 1600;
         screenSizeY = 900;
         width = 250;
-        height = 100;
+        height = 195;
         gameList.Add(this);
         moveSpeed = 500f;
         maxHP = 600;
         hp = maxHP;
-        sprite = Raylib.LoadTexture(@"./Sprites/karimryde-scaled-600x600.jpg");
+        sprite = Raylib.LoadTexture(@"./Sprites/nathaliezack-scaled-600x469.jpg");
         sprite = ChangeSpriteSize(sprite, (int)width, (int)height);
         objectIdentifier = "enemy";
     }
