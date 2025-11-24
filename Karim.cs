@@ -77,7 +77,7 @@ class Karim : Boss
         screenSizeX = 1600;
         screenSizeY = 900;
         width = 250;
-        height = 100;
+        height = 250;
         gameList.Add(this);
         moveSpeed = 500f;
         maxHP = 600;

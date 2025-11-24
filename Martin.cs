@@ -1,4 +1,4 @@
-class Nathalie : Boss
+class Martin : Boss
 {
     float shootCooldown = 0;
 
@@ -70,19 +70,19 @@ class Nathalie : Boss
         GibbManager.currentlyGibbing = false;
     }
 
-    public Nathalie()
+    public Martin()
     {
         x = 1400;
         y = (int)(Raylib.GetScreenHeight() * 0.5f);
         screenSizeX = 1600;
         screenSizeY = 900;
         width = 250;
-        height = 195;
+        height = 250;
         gameList.Add(this);
         moveSpeed = 500f;
         maxHP = 600;
         hp = maxHP;
-        sprite = Raylib.LoadTexture(@"./Sprites/nathaliezack-scaled-600x469.jpg");
+        sprite = Raylib.LoadTexture(@"./Sprites/martinsoderblom-scaled-600x600.jpg");
         sprite = ChangeSpriteSize(sprite, (int)width, (int)height);
         objectIdentifier = "enemy";
     }

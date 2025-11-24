@@ -43,16 +43,15 @@ abstract class MoveableObject()
         return null;
     }
 
-
     // längden på arrayen måste initileras när raylib window har startat och fpsen är stabil🤣🤣🤣🛶🛶🛶🛶
-    protected (float x, float y)[] lastPositions; /* = new (float x, float y)[(int)(GibbManager.targetFrameRate * 0.1666666666667f)];*/
+    protected (float x, float y)[] lastPositions = new (float x, float y)[20]; /* = new (float x, float y)[(int)(GibbManager.targetFrameRate * 0.1666666666667f)];*/
     int positionIndex = 0;
 
     //denna funktion gjordes av chatgpt
     protected void AddTrailEffects(Color trailColorSet, float rMultiplier, float gMultiPlier, float bMultiplier, float aMultiplier)
     {
-        System.Console.WriteLine("mattigt bärre:" + (int)(GibbManager.targetFrameRate * 0.1666666666667f));
-        System.Console.WriteLine("köttig lastpositions array length:" + lastPositions.Length);
+        // System.Console.WriteLine("mattigt bärre:" + (int)(GibbManager.targetFrameRate * 0.1666666666667f));
+        // System.Console.WriteLine("köttig lastpositions array length:" + lastPositions.Length);
         lastPositions[positionIndex] = (x, y);
         positionIndex = (positionIndex + 1) % lastPositions.Length;
 

@@ -187,13 +187,12 @@ bullet gravity           {bulletGravity}");
     }
     public override void Despawn()
     {
-        Console.WriteLine("spelaren ahrn despawnat");
+        Console.WriteLine("spelaren har despawnat");
         GibbManager.currentlyGibbing = false;
     }
 
     public Player()
     {
-        lastPositions = new (float x, float y)[(int)(GibbManager.targetFrameRate * 0.1666666666667f)];
         objectIdentifier = "player";
         x = 400;
         y = 450;

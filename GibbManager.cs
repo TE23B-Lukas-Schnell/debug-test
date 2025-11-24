@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices.JavaScript;
+
 static class GibbManager
 {
     public static int targetFrameRate;
@@ -5,6 +7,11 @@ static class GibbManager
     public static int windowHeight = 900;
     public static bool currentlyGibbing = false;
     public static bool fullscreen = false;
+
+    static List<Boss> PeakBossPeakBoss = new List<Boss>()
+    {
+        new Karim()
+    };
 
     public static List<Items> AvailableItems = new List<Items>()
     {
@@ -69,8 +76,23 @@ static class GibbManager
         player.Inventory.Add(choosableItems[itemToChoose]);
         nextboss.Inventory.AddRange(choosableItems);
         /// kommer detta att funka??? 🧐🧐🧐
-         
-        
+
+
+    }
+
+    static List<Boss> GenerateBossList(List<Boss> availableBosses, int amountOfBosses)
+    {
+        amountOfBosses = Math.Clamp(amountOfBosses, 0, availableBosses.Count);
+        Random random = Random.Shared;
+        List<Boss> output = new List<Boss>();
+
+        for (int i = 0; i < amountOfBosses; i++)
+        {
+            int index = random.Next(0, availableBosses.Count);
+            output.Add(availableBosses[index]);
+            availableBosses.Remove(availableBosses[index]);
+        }
+        return output;
     }
 
     static Items[] GetRandomItems(int amount, List<Items> items)
@@ -78,12 +100,14 @@ static class GibbManager
         amount = Math.Clamp(amount, 0, items.Count);
         Items[] output = new Items[amount];
         Random random = Random.Shared;
+
         for (int i = 0; i < amount; i++)
         {
             int index = random.Next(0, items.Count);
             output.Append(items[index]);
             items.Remove(items[index]);
         }
+
         return output;
     }
 
@@ -93,9 +117,9 @@ static class GibbManager
 
     public static bool playerDead = false;
 
-    public static Dictionary<string, int> highscores = new Dictionary<string, int>();
+    static Dictionary<string, int> highscores = new Dictionary<string, int>();
 
-    public static void WriteDictionary(Dictionary<string, int> dictionary)
+    static void WriteDictionary(Dictionary<string, int> dictionary)
     {
         if (dictionary != null)
         {
@@ -106,7 +130,7 @@ static class GibbManager
         }
     }
 
-    public static void Intructions()
+    static void Intructions()
     {
         Console.WriteLine("Do you want to see the instructions? [Y/N]");
         if (Console.ReadLine().ToLower() == "y")
@@ -126,7 +150,7 @@ Objective:
         }
     }
 
-    public static int ChooseFPS()
+    static int ChooseFPS()
     {
         Console.WriteLine("How much FPS do you want? (0 for uncapped)");
 
@@ -168,12 +192,12 @@ Objective:
         return highscores;
     }
 
-    public static void LoadSave()
+    static void LoadSave()
     {
         highscores = ReadSaveData(ReadSaveFile(scoreFilePath));
     }
 
-    public static void SaveGame()
+    static void SaveGame()
     {
         throw new NotImplementedException();
     }
@@ -185,11 +209,24 @@ Objective:
         Intructions();
     }
 
+
+
     public static void GameLoop()
     {
+
+        List<Boss> bossesToFightThisRun = GenerateBossList(PeakBossPeakBoss, 2);
+
+        int bossesBeaten = 0;
+
+        for (int i = 0; i < bossesToFightThisRun.Count; i++)
+        {
+            System.Console.WriteLine("köttig boss: " + bossesToFightThisRun[i]a);
+        }
+
         // detta kan fixas med ett dictiononary med strings och actions, kom ihåg att fixa någon gång
         while (currentlyGibbing == false)
         {
+
             Console.WriteLine(@"Choose an action
 1. Start playing
 2. Show your score
@@ -201,9 +238,11 @@ Objective:
             switch (answer)
             {
                 case "1":
+
                     MoveableObject survivor = WindowGame();
                     Console.WriteLine(survivor + " died a deathly death");
-                    playerReference.Inventory.Add(AvailableItems[0]);
+                    bossesBeaten++;
+                    GiveItem(2, playerReference, bossesToFightThisRun[bossesBeaten]);
                     break;
                 case "2":
                     Console.WriteLine($"Your score is: {Player.score}");
@@ -225,7 +264,7 @@ Objective:
     }
 
     // this is the actual game!!!11 veri important
-    public static MoveableObject WindowGame()
+    public static MoveableObject WindowGame(/*Boss bossToFight*/)
     {
 
         //fixa game manager!!!! 1
@@ -233,7 +272,7 @@ Objective:
         currentlyGibbing = true;
         Raylib.InitWindow(GibbManager.windowWidth, GibbManager.windowHeight, "Game");
 
-        Boss enemy = new Nathalie();
+        Boss enemy = new Karim();
 
         FightableObject loser = playerReference;
 
