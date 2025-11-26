@@ -43,29 +43,54 @@ abstract class MoveableObject()
         return null;
     }
 
-    // längden på arrayen måste initileras när raylib window har startat och fpsen är stabil🤣🤣🤣🛶🛶🛶🛶
-    protected (float x, float y)[] lastPositions = new (float x, float y)[20]; /* = new (float x, float y)[(int)(GibbManager.targetFrameRate * 0.1666666666667f)];*/
-    int positionIndex = 0;
+    Queue<(float x, float y)> lastPositions = new Queue<(float x, float y)>();
 
     //denna funktion gjordes av chatgpt
-    protected void AddTrailEffects(Color trailColorSet, float rMultiplier, float gMultiPlier, float bMultiplier, float aMultiplier)
+    protected void AddTrailEffects(Color trailColorSet, float rMultiplier, float gMultiplier, float bMultiplier, float aMultiplier)
     {
+        int maxTrailSize = (int)MathF.Round(Raylib.GetFPS() * 0.16666666667f);
         // System.Console.WriteLine("mattigt bärre:" + (int)(GibbManager.targetFrameRate * 0.1666666666667f));
-        // System.Console.WriteLine("köttig lastpositions array length:" + lastPositions.Length);
-        lastPositions[positionIndex] = (x, y);
-        positionIndex = (positionIndex + 1) % lastPositions.Length;
+        // System.Console.WriteLine("köttig lastpositions array length:" + lastPositions.Count);
 
-        for (int i = 0; i < lastPositions.Length; i++)
+        lastPositions.Enqueue((x, y));
+        // kortar ner antalet postioner till en sjättedel av fpsen
+        while (lastPositions.Count > maxTrailSize) lastPositions.Dequeue();
+
+        int count = lastPositions.Count;
+        int i = 0;
+
+        foreach (var pos in lastPositions)
         {
-            int index = (positionIndex + i) % lastPositions.Length;
-            var pos = lastPositions[index];
-
-            float trailTime = (float)(lastPositions.Length - i) / lastPositions.Length;
-            Color trailColor = new Color(trailColorSet.R + (int)(rMultiplier * trailTime), trailColorSet.G + (int)(gMultiPlier * trailTime), trailColorSet.B + (int)(bMultiplier * trailTime), trailColorSet.A + (int)(aMultiplier * trailTime));
-
+            float trailTime = (float)(count - i) / count;
+            Color trailColor = new Color(trailColorSet.R + (int)(rMultiplier * trailTime), trailColorSet.G + (int)(gMultiplier * trailTime), trailColorSet.B + (int)(bMultiplier * trailTime), trailColorSet.A + (int)(aMultiplier * trailTime));
             Raylib.DrawRectangle((int)pos.x, (int)pos.y, (int)width, (int)width, trailColor);
+            i++;
         }
     }
+
+    /*
+     protected (float x, float y)[] lastPositions = new (float x, float y)[20]; /* = new (float x, float y)[(int)(GibbManager.targetFrameRate * 0.1666666666667f)];
+     int positionIndex = 0;
+
+
+     protected void AddTrailEffects(Color trailColorSet, float rMultiplier, float gMultiPlier, float bMultiplier, float aMultiplier)
+     {
+         // System.Console.WriteLine("mattigt bärre:" + (int)(GibbManager.targetFrameRate * 0.1666666666667f));
+         // System.Console.WriteLine("köttig lastpositions array length:" + lastPositions.Length);
+         lastPositions[positionIndex] = (x, y);
+         positionIndex = (positionIndex + 1) % lastPositions.Length;
+
+         for (int i = 0; i < lastPositions.Length; i++)
+         {
+             int index = (positionIndex + i) % lastPositions.Length;
+             var pos = lastPositions[index];
+
+             float trailTime = (float)(lastPositions.Length - i) / lastPositions.Length;
+             Color trailColor = new Color(trailColorSet.R + (int)(rMultiplier * trailTime), trailColorSet.G + (int)(gMultiPlier * trailTime), trailColorSet.B + (int)(bMultiplier * trailTime), trailColorSet.A + (int)(aMultiplier * trailTime));
+
+             Raylib.DrawRectangle((int)pos.x, (int)pos.y, (int)width, (int)width, trailColor);
+         }
+     }*/
 
     //funktioner relaterade till positions värden
 

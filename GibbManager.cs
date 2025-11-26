@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices.JavaScript;
-
 static class GibbManager
 {
     public static int targetFrameRate;
@@ -10,7 +8,7 @@ static class GibbManager
 
     static List<Boss> PeakBossPeakBoss = new List<Boss>()
     {
-        new Karim()
+        // new Karim()
     };
 
     public static List<Items> AvailableItems = new List<Items>()
@@ -42,7 +40,7 @@ static class GibbManager
             }
         }),
 
-        new Items("martins fönster öppnare", "gör att estetare tar självmord", applier: (FightableObject objectToBuff) =>
+        new Items("martins fönster öppnare", "gör att estetare hoppar ut ur fönstret", applier: (FightableObject objectToBuff) =>
         {
             if(objectToBuff is Player)
             {
@@ -152,7 +150,7 @@ Objective:
 
     static int ChooseFPS()
     {
-        Console.WriteLine("How much FPS do you want? (0 for uncapped)");
+        Console.WriteLine("How much FPS do you want? (0 for uncapped)\nrecommended: 120 to 600");
 
         while (!int.TryParse(Console.ReadLine(), out targetFrameRate) /*|| targetFrameRate < 1*/)
         {
@@ -202,14 +200,33 @@ Objective:
         throw new NotImplementedException();
     }
 
-    public static void StartGame()
+    public static void Setup()
     {
         LoadSave();
         Raylib.SetTargetFPS(ChooseFPS());
         Intructions();
     }
 
+    static void StartGame()
+    {
+        MoveableObject survivor = WindowGame();
+        Console.WriteLine(survivor + " died a deathly death");
+        // bossesBeaten++;
+        // GiveItem(2, playerReference, bossesToFightThisRun[bossesBeaten]);
+    }
 
+
+    // glöm inte att implementera det här någon dag
+    static Dictionary<string, Action> menuActions = new Dictionary<string, Action>()
+    {
+        {"Start playing", StartGame},
+        {"Show your score", () =>   Console.WriteLine($"Your score is: {Player.score}")},
+        {"Show high scores", () =>  WriteDictionary(highscores)},            
+        {"Show player stats", () =>  playerReference.PrintPlayerStats()},
+        {"Apply item stats (temporary)", () =>  playerReference.ApplyBuffsFromItem()}
+    };
+
+   
 
     public static void GameLoop()
     {
@@ -220,12 +237,16 @@ Objective:
 
         for (int i = 0; i < bossesToFightThisRun.Count; i++)
         {
-            System.Console.WriteLine("köttig boss: " + bossesToFightThisRun[i]a);
+            System.Console.WriteLine("köttig boss: " + bossesToFightThisRun[i]);
         }
 
         // detta kan fixas med ett dictiononary med strings och actions, kom ihåg att fixa någon gång
+
+
         while (currentlyGibbing == false)
         {
+
+
 
             Console.WriteLine(@"Choose an action
 1. Start playing
@@ -241,8 +262,8 @@ Objective:
 
                     MoveableObject survivor = WindowGame();
                     Console.WriteLine(survivor + " died a deathly death");
-                    bossesBeaten++;
-                    GiveItem(2, playerReference, bossesToFightThisRun[bossesBeaten]);
+                    // bossesBeaten++;
+                    // GiveItem(2, playerReference, bossesToFightThisRun[bossesBeaten]);
                     break;
                 case "2":
                     Console.WriteLine($"Your score is: {Player.score}");
@@ -264,7 +285,7 @@ Objective:
     }
 
     // this is the actual game!!!11 veri important
-    public static MoveableObject WindowGame(/*Boss bossToFight*/)
+    static MoveableObject WindowGame(/*Boss bossToFight*/)
     {
 
         //fixa game manager!!!! 1

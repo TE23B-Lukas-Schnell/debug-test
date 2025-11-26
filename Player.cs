@@ -78,6 +78,10 @@ bullet gravity           {bulletGravity}");
     }
 
     //keybinds
+
+    KeyboardKey anton = KeyboardKey.Backspace;
+    string köttig = KeyboardKey.Backspace.ToString();
+
     bool LeftKeyPressed() => Raylib.IsKeyDown(KeyboardKey.A) || Raylib.IsKeyDown(KeyboardKey.Left);
     bool RightKeyPressed() => Raylib.IsKeyDown(KeyboardKey.D) || Raylib.IsKeyDown(KeyboardKey.Right);
     bool DownKeyPressed() => Raylib.IsKeyDown(KeyboardKey.S) || Raylib.IsKeyDown(KeyboardKey.Down);
@@ -86,6 +90,28 @@ bullet gravity           {bulletGravity}");
     bool DashKeyPressed() => Raylib.IsKeyDown(KeyboardKey.LeftShift) || Raylib.IsKeyDown(KeyboardKey.C);
     bool ShootKeyPressed() => Raylib.IsKeyDown(KeyboardKey.L) || Raylib.IsKeyDown(KeyboardKey.X);
 
+
+
+    /*     gör en skiss och schema på papper innan du gör något dumt!!!11111
+
+
+
+        bool LeftKeyPressed = false;
+        bool RightKeyPressed = false;
+        bool DownKeyPressed = false;
+        bool UpKeyPressed = false;
+        bool JumpKeyPressed = false;
+        bool DashKeyPressed = false;
+        bool ShootKeyPressed = false;
+
+
+        Dictionary<KeyboardKey, Action> keybinds = new Dictionary<KeyboardKey, Action>()
+        {
+            {KeyboardKey.A, () =>
+            {
+
+            } },
+        };*/
 
     //moves the player
     void MovingLeftAndRight(/*HEJ JAG HETER  ANTON*/)
@@ -121,16 +147,9 @@ bullet gravity           {bulletGravity}");
     {
         if (DashKeyPressed() && dashCooldown == 0)
         {
-            if (LeftKeyPressed())
-            {
-                dashSpeed = -dashSpeed;
-                dashDuration = setDashDuration;
-            }
-            else if (RightKeyPressed())
-            {
-                dashSpeed = Math.Abs(dashSpeed);
-                dashDuration = setDashDuration;
-            }
+            dashSpeed = Math.Abs(dashSpeed);
+            if (LeftKeyPressed()) dashSpeed = -dashSpeed;
+            dashDuration = setDashDuration;
         }
         if (dashDuration > 0)
         {
@@ -144,20 +163,22 @@ bullet gravity           {bulletGravity}");
     {
         if (ShootKeyPressed() && shootCooldown <= 0 && !UpKeyPressed())
         {
-            shootCooldown = setShootCooldown ;
-            new PlayerBullet(x, y, bulletWidth , bulletHeight , bulletSpeed , 0, bulletGravity , bulletDamage );
+            shootCooldown = setShootCooldown;
+            new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletSpeed, 0, bulletGravity, bulletDamage);
         }
         else if (ShootKeyPressed() && shootCooldown <= 0 && UpKeyPressed())
         {
-            shootCooldown = setShootCooldown ;
-            new PlayerBullet(x, y, bulletWidth , bulletHeight , 0, bulletSpeed , bulletGravity , bulletDamage );
+            shootCooldown = setShootCooldown;
+            new PlayerBullet(x, y, bulletWidth, bulletHeight, 0, bulletSpeed, bulletGravity, bulletDamage);
         }
     }
 
-    
+
 
     public override void Update()
     {
+        // System.Console.WriteLine(köttig );
+
         dashCooldown = MathF.Max(dashCooldown - Raylib.GetFrameTime(), 0);
         dashDuration = MathF.Max(dashDuration - Raylib.GetFrameTime(), 0);
         shootCooldown = MathF.Max(shootCooldown - Raylib.GetFrameTime(), 0);
@@ -168,9 +189,9 @@ bullet gravity           {bulletGravity}");
         Dashing();
         Shooting();
 
-        MoveObject(gravity );
+        MoveObject(gravity);
     }
-
+    //fixa delegatet actionms för alla skaer spelaraen kan göra
     public override void Draw()
     {
         if (dashDuration > 0)

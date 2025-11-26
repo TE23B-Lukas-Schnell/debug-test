@@ -1,7 +1,7 @@
 ﻿global using Raylib_cs;
 global using System;
 
-GibbManager.StartGame();
+GibbManager.Setup();
 
 //main loop
 GibbManager.GameLoop();
