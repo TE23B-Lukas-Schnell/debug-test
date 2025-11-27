@@ -2,8 +2,11 @@ class Player : FightableObject
 {
     //statiska variabler
     public static int score = 0;
-
-
+    ControlLayout currentLayout;
+    Dictionary<KeyboardKey, bool> keyActions = new Dictionary<KeyboardKey, bool>()
+    {
+        
+    };
     public static List<PlayerStat> playerStats = new List<PlayerStat>();
 
     //player stats 
@@ -90,28 +93,32 @@ bullet gravity           {bulletGravity}");
     bool DashKeyPressed() => Raylib.IsKeyDown(KeyboardKey.LeftShift) || Raylib.IsKeyDown(KeyboardKey.C);
     bool ShootKeyPressed() => Raylib.IsKeyDown(KeyboardKey.L) || Raylib.IsKeyDown(KeyboardKey.X);
 
+    // List<Dictionary<string, KeyboardKey>> controlSchemes
 
+  
 
-    /*     gör en skiss och schema på papper innan du gör något dumt!!!11111
+   
 
+    //     gör en skiss och schema på papper innan du gör något dumt!!!11111
 
+    /*
 
-        bool LeftKeyPressed = false;
-        bool RightKeyPressed = false;
-        bool DownKeyPressed = false;
-        bool UpKeyPressed = false;
-        bool JumpKeyPressed = false;
-        bool DashKeyPressed = false;
-        bool ShootKeyPressed = false;
+            bool LeftKeyPressed = false;
+            bool RightKeyPressed = false;
+            bool DownKeyPressed = false;
+            bool UpKeyPressed = false;
+            bool JumpKeyPressed = false;
+            bool DashKeyPressed = false;
+            bool ShootKeyPressed = false;
 
-
-        Dictionary<KeyboardKey, Action> keybinds = new Dictionary<KeyboardKey, Action>()
-        {
-            {KeyboardKey.A, () =>
+    /*
+            Dictionary<KeyboardKey, Action> keybinds = new Dictionary<KeyboardKey, Action>()
             {
+                {KeyboardKey.A, () =>
+                {
 
-            } },
-        };*/
+                } },
+            };*/
 
     //moves the player
     void MovingLeftAndRight(/*HEJ JAG HETER  ANTON*/)
