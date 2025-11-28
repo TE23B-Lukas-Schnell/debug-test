@@ -1,3 +1,6 @@
+using System.Data;
+using System.Net.WebSockets;
+
 class ControlLayout
 {
     public static List<ControlLayout> controlLayouts = new List<ControlLayout>();
@@ -19,19 +22,50 @@ class ControlLayout
         return tryName;
     }
 
+    public KeyboardKey bindKey()
+    {
+        int keyCode = Raylib.GetKeyPressed();
+
+        while (keyCode == 0)
+        {
+            keyCode = Raylib.GetKeyPressed();
+             Raylib.EndDrawing();
+        }
+        Console.WriteLine((KeyboardKey)keyCode);
+        return (KeyboardKey)keyCode;
+    }
+
+    // inte färdig, använd inte
     Dictionary<string, KeyboardKey> CreateContolLayout()
     {
+        int windowWidth = 1600;
+        int windowHeight = 900;
+        int textSize = 40;
         Dictionary<string, KeyboardKey> output = new Dictionary<string, KeyboardKey>();
 
-        Console.WriteLine("press your preferred up key");
 
-        KeyboardKey getToSet = Raylib.
-        while (Raylib.GetKeyPressed() == 0)
+        Raylib.InitWindow(windowWidth, windowHeight, "keybinding");
+        bool completetdControlLayout = false;
+        while (!Raylib.WindowShouldClose())
         {
-            
+            Raylib.BeginDrawing();
+            Raylib.ClearBackground(Color.White);
+            Raylib.DrawText("press your preferred up key", windowHeight / 2, windowWidth / 2, textSize, Color.Black);
+            output.Add("up", bindKey());
+
+            /* Raylib.DrawText("press your preferred up key", windowHeight / 2, windowWidth / 2, textSize, Color.Black);
+
+             while (keyCode == 0)
+             {
+                 keyCode = Raylib.GetKeyPressed();
+             }*/
+
+            Raylib.EndDrawing();
         }
+        Console.WriteLine(output["up"]);
+        Console.WriteLine(output["down"]);
 
-
+        return output;
     }
 
     public ControlLayout()

@@ -8,7 +8,7 @@ static class GibbManager
 
     static List<Boss> PeakBossPeakBoss = new List<Boss>()
     {
-        // new Karim()
+        new Karim()
     };
 
     public static List<Items> AvailableItems = new List<Items>()
@@ -117,13 +117,24 @@ static class GibbManager
 
     static Dictionary<string, int> highscores = new Dictionary<string, int>();
 
-    static void WriteDictionary(Dictionary<string, int> dictionary)
+    public static void WriteDictionary(Dictionary<string, int> dictionary)
     {
         if (dictionary != null)
         {
-            foreach (KeyValuePair<string, int> entry in highscores)
+            foreach (KeyValuePair<string, int> entry in dictionary)
             {
                 Console.WriteLine($"Name: {entry.Key}, Score: {entry.Value}");
+            }
+        }
+    }
+
+    public static void WriteDictionary(Dictionary<string, KeyboardKey> dictionary)
+    {
+        if (dictionary != null)
+        {
+            foreach (KeyValuePair<string, KeyboardKey> entry in dictionary)
+            {
+                Console.WriteLine($"action: {entry.Key}, keybind: {entry.Value}");
             }
         }
     }
@@ -221,12 +232,12 @@ Objective:
     {
         {"Start playing", StartGame},
         {"Show your score", () =>   Console.WriteLine($"Your score is: {Player.score}")},
-        {"Show high scores", () =>  WriteDictionary(highscores)},            
+        {"Show high scores", () =>  WriteDictionary(highscores)},
         {"Show player stats", () =>  playerReference.PrintPlayerStats()},
         {"Apply item stats (temporary)", () =>  playerReference.ApplyBuffsFromItem()}
     };
 
-   
+
 
     public static void GameLoop()
     {
@@ -237,7 +248,7 @@ Objective:
 
         for (int i = 0; i < bossesToFightThisRun.Count; i++)
         {
-            System.Console.WriteLine("köttig boss: " + bossesToFightThisRun[i]);
+            Console.WriteLine("köttig boss: " + bossesToFightThisRun[i]);
         }
 
         // detta kan fixas med ett dictiononary med strings och actions, kom ihåg att fixa någon gång
@@ -262,7 +273,7 @@ Objective:
 
                     MoveableObject survivor = WindowGame();
                     Console.WriteLine(survivor + " died a deathly death");
-                    // bossesBeaten++;
+                    bossesBeaten++;
                     // GiveItem(2, playerReference, bossesToFightThisRun[bossesBeaten]);
                     break;
                 case "2":
@@ -287,13 +298,16 @@ Objective:
     // this is the actual game!!!11 veri important
     static MoveableObject WindowGame(/*Boss bossToFight*/)
     {
-
-        //fixa game manager!!!! 1
-        // kommer inte fixa game manager!!!11
         currentlyGibbing = true;
         Raylib.InitWindow(GibbManager.windowWidth, GibbManager.windowHeight, "Game");
 
         Boss enemy = new Karim();
+
+        for (int i = 0; i < MoveableObject.gameList.Count; i++)
+        {
+            MoveableObject.gameList[i].BeginDraw();
+        }
+
 
         FightableObject loser = playerReference;
 

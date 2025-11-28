@@ -18,6 +18,10 @@ class PlayerBullet : Projectile
     {
 
     }
+    public override void BeginDraw()
+    {
+        
+    }
 
     public PlayerBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage)
     {

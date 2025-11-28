@@ -15,6 +15,11 @@ class EnemyBullet : Projectile
         Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, color);
         ShowHitboxes();
     }
+
+    public override void BeginDraw()
+    {
+    
+    }
      public override void Despawn()
     {
         

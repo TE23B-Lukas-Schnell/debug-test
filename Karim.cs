@@ -65,6 +65,12 @@ class Karim : Boss
         Raylib.DrawRectangle(50, 50, (int)hp, 50, Color.Green);
         DisplayHealthBar(50, 50, 1);
     }
+
+    public override void BeginDraw()
+    {
+        sprite = Raylib.LoadTexture(@"./Sprites/karimryde-scaled-600x600.jpg");
+        sprite = ChangeSpriteSize(sprite, (int)width, (int)height);
+    }
     public override void Despawn()
     {
         GibbManager.currentlyGibbing = false;
@@ -82,8 +88,6 @@ class Karim : Boss
         moveSpeed = 500f;
         maxHP = 600;
         hp = maxHP;
-        sprite = Raylib.LoadTexture(@"./Sprites/karimryde-scaled-600x600.jpg");
-        sprite = ChangeSpriteSize(sprite, (int)width, (int)height);
         objectIdentifier = "enemy";
     }
 
