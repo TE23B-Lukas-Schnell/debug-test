@@ -9,7 +9,7 @@ class ControlLayout
 
     public string name;
 
-    public string nameControlLayout()
+    string nameControlLayout()
     {
         Console.WriteLine("write the name of the control layout");
         string tryName = Console.ReadLine();
@@ -22,46 +22,42 @@ class ControlLayout
         return tryName;
     }
 
-    public KeyboardKey bindKey()
+    KeyValuePair<string, KeyboardKey> BindKey(string desiredKey)
     {
-        int keyCode = Raylib.GetKeyPressed();
-
-        while (keyCode == 0)
-        {
-            keyCode = Raylib.GetKeyPressed();
-             Raylib.EndDrawing();
-        }
-        Console.WriteLine((KeyboardKey)keyCode);
-        return (KeyboardKey)keyCode;
-    }
-
-    // inte färdig, använd inte
-    Dictionary<string, KeyboardKey> CreateContolLayout()
-    {
-        int windowWidth = 1600;
-        int windowHeight = 900;
+        int windowWidth = 1000;
+        int windowHeight = 600;
         int textSize = 40;
-        Dictionary<string, KeyboardKey> output = new Dictionary<string, KeyboardKey>();
-
-
+        KeyboardKey checkKey = KeyboardKey.Null;
         Raylib.InitWindow(windowWidth, windowHeight, "keybinding");
-        bool completetdControlLayout = false;
         while (!Raylib.WindowShouldClose())
         {
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.White);
-            Raylib.DrawText("press your preferred up key", windowHeight / 2, windowWidth / 2, textSize, Color.Black);
-            output.Add("up", bindKey());
+            Raylib.DrawText("press your preferred " + desiredKey + " key", windowWidth / 10, windowHeight / 2, textSize, Color.Black);
 
-            /* Raylib.DrawText("press your preferred up key", windowHeight / 2, windowWidth / 2, textSize, Color.Black);
-
-             while (keyCode == 0)
-             {
-                 keyCode = Raylib.GetKeyPressed();
-             }*/
+            checkKey = (KeyboardKey)Raylib.GetKeyPressed();
+            if (checkKey != KeyboardKey.Null)
+            {
+                break;
+            }
 
             Raylib.EndDrawing();
         }
+        Raylib.CloseWindow();
+        return new KeyValuePair<string, KeyboardKey>(desiredKey, checkKey);
+    }
+
+
+    Dictionary<string, KeyboardKey> CreateContolLayout()
+    {
+        Dictionary<string, KeyboardKey> output = new Dictionary<string, KeyboardKey>();
+
+        KeyValuePair<string, KeyboardKey> upBinding = BindKey("up");
+        output.Add(upBinding.Key, upBinding.Value);
+
+        KeyValuePair<string, KeyboardKey> downBinding = BindKey("down");
+        output.Add(downBinding.Key, downBinding.Value);
+
         Console.WriteLine(output["up"]);
         Console.WriteLine(output["down"]);
 

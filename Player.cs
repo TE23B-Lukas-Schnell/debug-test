@@ -95,10 +95,6 @@ bullet gravity           {bulletGravity}");
 
     // List<Dictionary<string, KeyboardKey>> controlSchemes
 
-  
-
-   
-
     //     gör en skiss och schema på papper innan du gör något dumt!!!11111
 
     /*
