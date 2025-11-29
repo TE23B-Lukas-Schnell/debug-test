@@ -5,6 +5,12 @@ static class GibbManager
     public static int windowHeight = 900;
     public static bool currentlyGibbing = false;
     public static bool fullscreen = false;
+    static string scoreFilePath = "./scores.txt";
+    public static int amountOfItemsToChooseFrom = 2;
+    static Dictionary<string, int> highscores = new Dictionary<string, int>();
+    public static ControlLayout currentControlLayout = defaultKeybindsWASD;
+    static Player playerReference = new Player(currentControlLayout);
+    public static bool playerDead = false;
 
     public static ControlLayout defaultKeybindsWASD = new ControlLayout(new Dictionary<string, KeyboardKey>()
     {
@@ -20,7 +26,16 @@ static class GibbManager
     }
     , "arrow keys");
 
-    public static ControlLayout currentControlLayout = defaultKeybindsWASD;
+    // glöm inte att implementera det här någon dag
+    static Dictionary<string, Action> menuActions = new Dictionary<string, Action>()
+    {
+        {"Start playing", StartGame},
+        {"Show your score", () =>   Console.WriteLine($"Your score is: {Player.score}")},
+        {"Show high scores", () =>  WriteDictionary(highscores)},
+        {"Show player stats", () =>  playerReference.PrintPlayerStats()},
+        {"Apply item stats (temporary)", () =>  playerReference.ApplyBuffsFromItem()}
+    };
+
 
     static List<Boss> PeakBossPeakBoss = new List<Boss>()
     {
@@ -29,26 +44,12 @@ static class GibbManager
 
     public static List<Items> AvailableItems = new List<Items>()
     {
-
-        // spara det här till jag är säker på att jag inte vill använda playerstat systemet längre
-      /*  new Items("mikaels kött", "ökar gravity med 50% men minskar shootcooldown med 30%",new Dictionary<string, float>{
-            {"gravity", 1.5f},{"shootCooldown",0.7f}
-            }),
-        new Items("Hej jag heter anton", "inversar kontrollerna men ökar din damage med 69%", new Dictionary<string, float>
-        {
-            {"moveSpeed",-1},{"bulletDamage", 1.69f}
-        }),
-        new Items("kasta gamekontroll av gustav", "ökar movespeed med 30%", new Dictionary<string, float>
-        {
-            {"moveSpeed", 1.3f},
-        }),*/
-
         new Items("delegate test", "båtig item", applier: (FightableObject objectToBuff) =>
         {
             if(objectToBuff is Player)
             {
                 Player p = objectToBuff as Player;
-                p.bulletSpeed *= 5;
+                p.bulletxSpeed *= 5;
             }
             else if (objectToBuff is Boss)
             {
@@ -69,8 +70,6 @@ static class GibbManager
             }
         })
     };
-
-    public static int amountOfItemsToChooseFrom = 2;
 
     static void GiveItem(int amount, Player player, Boss nextboss)
     {
@@ -125,14 +124,6 @@ static class GibbManager
         return output;
     }
 
-    static string scoreFilePath = "./scores.txt";
-
-    static Player playerReference = new Player(currentControlLayout);
-
-    public static bool playerDead = false;
-
-    static Dictionary<string, int> highscores = new Dictionary<string, int>();
-
     public static void WriteDictionary(Dictionary<string, int> dictionary)
     {
         if (dictionary != null)
@@ -144,14 +135,15 @@ static class GibbManager
         }
     }
 
-    
-
     static void Intructions()
     {
         Console.WriteLine("Do you want to see the instructions? [Y/N]");
         if (Console.ReadLine().ToLower() == "y")
         {
             Console.WriteLine(@"Controls:
+
+    Outdated!!!!11111 båt
+
     WASD or arrow keys to move
     Space or Z to jump
     L or X to shoot
@@ -232,19 +224,6 @@ Objective:
         // bossesBeaten++;
         // GiveItem(2, playerReference, bossesToFightThisRun[bossesBeaten]);
     }
-
-
-    // glöm inte att implementera det här någon dag
-    static Dictionary<string, Action> menuActions = new Dictionary<string, Action>()
-    {
-        {"Start playing", StartGame},
-        {"Show your score", () =>   Console.WriteLine($"Your score is: {Player.score}")},
-        {"Show high scores", () =>  WriteDictionary(highscores)},
-        {"Show player stats", () =>  playerReference.PrintPlayerStats()},
-        {"Apply item stats (temporary)", () =>  playerReference.ApplyBuffsFromItem()}
-    };
-
-
 
     public static void GameLoop()
     {

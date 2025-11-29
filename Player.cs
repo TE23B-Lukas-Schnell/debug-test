@@ -2,9 +2,8 @@ class Player : FightableObject
 {
     //statiska variabler
     public static int score = 0;
-    // denna dictionary ska checkas varje frame för om controlalayoutens knapp är nedtryckt och aktivera rätt bool som ska fixa vissa saker i koden
-    //fixigt värre
-    public Dictionary<string, bool> keyActions = new Dictionary<string, bool>()
+
+    public Dictionary<string, bool> keyPressed = new Dictionary<string, bool>()
     {
         {"up", false },
         {"down", false },
@@ -15,46 +14,28 @@ class Player : FightableObject
         {"shoot", false },
     };
 
-    public static List<PlayerStat> playerStats = new List<PlayerStat>();
+    public Action moveLeft;
 
     ControlLayout currentLayout;
+
     //player stats 
-    // public PlayerStat gravity = new PlayerStat(playerStats, 2300f, 0, float.MaxValue, "gravity");
     public float gravity = 2300f;
-    // public PlayerStat moveSpeed = new PlayerStat(playerStats, 900f, "moveSpeed");
     public float moveSpeed = 900f;
-    // public PlayerStat jumpForce = new PlayerStat(playerStats, 1300f, "jumpForce");
     public float jumpForce = 1300f;
-    // public PlayerStat setDashDuration = new PlayerStat(playerStats, 0.2f, "dashDuration");
     public float setDashDuration = 0.2f;
-    // public PlayerStat setDashCooldown = new PlayerStat(playerStats, 0.43f, "dashCooldown");
     public float setDashCooldown = 0.43f;
-    // public PlayerStat fastFallSpeed = new PlayerStat(playerStats, 1400f, "fastFallSpeed");
     public float fastFallSpeed = 1400f;
-    // public PlayerStat dashSpeed = new PlayerStat(playerStats, 2000f, "dashSpeed");
     public float dashSpeed = 2000f;
+    public Color color = new Color(0, 0f, 235f, 254f);
 
     //bullet stats
-    // Projectile playerProjectile = PlayerBullet;
-    // public PlayerStat setShootCooldown = new PlayerStat(playerStats, 0.5f, "shootCooldown");
     public float setShootCooldown = 0.5f;
-    // public PlayerStat bulletWidth = new PlayerStat(playerStats, 40f, "bulletWidth");
     public float bulletWidth = 40f;
-    // public PlayerStat bulletHeight = new PlayerStat(playerStats, 20f, "bulletHeight");
     public float bulletHeight = 20f;
-    // public PlayerStat bulletDamage = new PlayerStat(playerStats, 50f, "bulletDamage");
     public float bulletDamage = 50f;
-    // public PlayerStat bulletSpeed = new PlayerStat(playerStats, 1800f, "bulletSpeed");
-    public float bulletSpeed = 1800f;
-    // public PlayerStat bulletGravity = new PlayerStat(playerStats, 0f, "bulletGravity");
+    public float bulletxSpeed = 1800f;
+    public float bulletySpeed = 0f;
     public float bulletGravity = 0f;
-
-    //färger
-    public Color color = new Color(0, 0f, 235f, 254f);
-    // public PlayerStat colorR = new PlayerStat(playerStats, 12f, "r");
-    // public PlayerStat colorG = new PlayerStat(playerStats, 0f, "g");
-    // public PlayerStat colorB = new PlayerStat(playerStats, 235f, "b");
-    // public PlayerStat colorA = new PlayerStat(playerStats, 254f, "a");
 
     //variabler
     float dashDuration = 0;
@@ -77,7 +58,7 @@ shoot cooldown:          {setShootCooldown}
 bullet width             {bulletWidth}
 bullet height            {bulletHeight}
 bullet damage            {bulletDamage}
-bullet speed             {bulletSpeed}
+bullet speed             {bulletxSpeed} {bulletySpeed}
 bullet gravity           {bulletGravity}");
 
         Console.WriteLine("inventory:");
@@ -87,42 +68,17 @@ bullet gravity           {bulletGravity}");
         }
     }
 
-    //keybinds
 
-    KeyboardKey anton = KeyboardKey.Backspace;
-    string köttig = KeyboardKey.Backspace.ToString();
 
-    bool UpKeyPressed() => Raylib.IsKeyDown(KeyboardKey.W) || Raylib.IsKeyDown(KeyboardKey.Up);
-    bool DownKeyPressed() => Raylib.IsKeyDown(KeyboardKey.S) || Raylib.IsKeyDown(KeyboardKey.Down);
-    bool LeftKeyPressed() => Raylib.IsKeyDown(KeyboardKey.A) || Raylib.IsKeyDown(KeyboardKey.Left);
-    bool RightKeyPressed() => Raylib.IsKeyDown(KeyboardKey.D) || Raylib.IsKeyDown(KeyboardKey.Right);
-    bool JumpKeyPressed() => Raylib.IsKeyDown(KeyboardKey.Space) || Raylib.IsKeyDown(KeyboardKey.Z);
-    bool DashKeyPressed() => Raylib.IsKeyDown(KeyboardKey.LeftShift) || Raylib.IsKeyDown(KeyboardKey.C);
-    bool ShootKeyPressed() => Raylib.IsKeyDown(KeyboardKey.L) || Raylib.IsKeyDown(KeyboardKey.X);
-
-    // List<Dictionary<string, KeyboardKey>> controlSchemes
-
-    //     gör en skiss och schema på papper innan du gör något dumt!!!11111
-
-    /*
-            bool LeftKeyPressed = false;
-            bool RightKeyPressed = false;
-            bool DownKeyPressed = false;
-            bool UpKeyPressed = false;
-            bool JumpKeyPressed = false;
-            bool DashKeyPressed = false;
-            bool ShootKeyPressed = false;
-
-   */
 
     //moves the player
     void MovingLeftAndRight(/*HEJ JAG HETER  ANTON*/)
     {
-        if (keyActions["left"])
+        if (keyPressed["left"])
         {
             xSpeed = -moveSpeed;
         }
-        else if (keyActions["right"])
+        else if (keyPressed["right"])
         {
             xSpeed = moveSpeed;
         }
@@ -131,7 +87,7 @@ bullet gravity           {bulletGravity}");
     //makes the player fastfall
     void FastFalling(/*HEJ JAG HETER  ANTON*/)
     {
-        if (keyActions["down"] && !Grounded())
+        if (keyPressed["down"] && !Grounded())
         {
             ySpeed = -fastFallSpeed;
         }
@@ -139,7 +95,7 @@ bullet gravity           {bulletGravity}");
     //makes the player jump
     void Jumping(/*HEJ JAG HETER  ANTON*/)
     {
-        if (keyActions["jump"] && Grounded())
+        if (keyPressed["jump"] && Grounded())
         {
             ySpeed = jumpForce;
         }
@@ -147,10 +103,10 @@ bullet gravity           {bulletGravity}");
     //makes the player dash
     void Dashing(/*HEJ JAG HETER  ANTON*/)
     {
-        if (keyActions["dash"] && dashCooldown == 0)
+        if (keyPressed["dash"] && dashCooldown == 0)
         {
             dashSpeed = Math.Abs(dashSpeed);
-            if (keyActions["left"]) dashSpeed = -dashSpeed;
+            if (keyPressed["left"]) dashSpeed = -dashSpeed;
             dashDuration = setDashDuration;
         }
         if (dashDuration > 0)
@@ -163,36 +119,35 @@ bullet gravity           {bulletGravity}");
     //makes the player shoot
     void Shooting(/*HEJ JAG HETER  ANTON*/)
     {
-        if (keyActions["shoot"] && shootCooldown <= 0 && !keyActions["up"])
+        if (keyPressed["shoot"] && shootCooldown <= 0 && !keyPressed["up"])
         {
             shootCooldown = setShootCooldown;
-            new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletSpeed, 0, bulletGravity, bulletDamage);
+            new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletxSpeed, bulletySpeed, bulletGravity, bulletDamage);
         }
-        else if (keyActions["shoot"] && shootCooldown <= 0 && keyActions["up"])
+        else if (keyPressed["shoot"] && shootCooldown <= 0 && keyPressed["up"])
         {
             shootCooldown = setShootCooldown;
-            new PlayerBullet(x, y, bulletWidth, bulletHeight, 0, bulletSpeed, bulletGravity, bulletDamage);
+            new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletySpeed, bulletxSpeed, bulletGravity, bulletDamage);
         }
     }
-
-
 
     public override void Update()
     {
         // System.Console.WriteLine(köttig );
 
+        // inputigt värre här
         for (int i = 0; i < currentLayout.keybinds.Keys.Count; i++)
         {
-            string currentAction = keyActions.Keys.ToArray()[i];
+            string currentKey = keyPressed.Keys.ToArray()[i];
 
-            if (Raylib.IsKeyDown(currentLayout.keybinds[currentAction]))
+            if (Raylib.IsKeyDown(currentLayout.keybinds[currentKey]))
             {
-                Console.WriteLine(currentAction + " key pressed");
-                keyActions[currentAction] = true;
+                Console.WriteLine(currentKey + " key pressed");
+                keyPressed[currentKey] = true;
             }
             else
             {
-                keyActions[currentAction] = false;
+                keyPressed[currentKey] = false;
             }
 
         }
