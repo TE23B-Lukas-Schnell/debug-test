@@ -2,7 +2,6 @@ class Player : FightableObject
 {
     //statiska variabler
     public static int score = 0;
-
     public Dictionary<string, bool> keyPressed = new Dictionary<string, bool>()
     {
         {"up", false },
@@ -14,9 +13,20 @@ class Player : FightableObject
         {"shoot", false },
     };
 
-    public Action moveLeft;
-
     ControlLayout currentLayout;
+
+    //player actions
+    public Action moveLeft;
+    public Action moveRight;
+    public Action notmoving;
+    public Action fastFall;
+    public Action jump;
+    public Action leftDash;
+    public Action rightDash;
+    public Action duringDash;
+    public Action shoot;
+    public Action upShoot;
+    public Action takenDamage;
 
     //player stats 
     public float gravity = 2300f;
@@ -26,6 +36,7 @@ class Player : FightableObject
     public float setDashCooldown = 0.43f;
     public float fastFallSpeed = 1400f;
     public float dashSpeed = 2000f;
+    public float invincibilityTime = 0.5f;
     public Color color = new Color(0, 0f, 235f, 254f);
 
     //bullet stats
@@ -41,6 +52,7 @@ class Player : FightableObject
     float dashDuration = 0;
     float dashCooldown = 0;
     float shootCooldown = 0;
+
 
     public void PrintPlayerStats()
     {
@@ -68,73 +80,100 @@ bullet gravity           {bulletGravity}");
         }
     }
 
-
-
-
-    //moves the player
-    void MovingLeftAndRight(/*HEJ JAG HETER  ANTON*/)
+    //makes all the delegates work 
+    void InitializeDelegates()
     {
-        if (keyPressed["left"])
-        {
-            xSpeed = -moveSpeed;
-        }
-        else if (keyPressed["right"])
-        {
-            xSpeed = moveSpeed;
-        }
-        else xSpeed = 0;
-    }
-    //makes the player fastfall
-    void FastFalling(/*HEJ JAG HETER  ANTON*/)
-    {
-        if (keyPressed["down"] && !Grounded())
-        {
-            ySpeed = -fastFallSpeed;
-        }
-    }
-    //makes the player jump
-    void Jumping(/*HEJ JAG HETER  ANTON*/)
-    {
-        if (keyPressed["jump"] && Grounded())
-        {
-            ySpeed = jumpForce;
-        }
-    }
-    //makes the player dash
-    void Dashing(/*HEJ JAG HETER  ANTON*/)
-    {
-        if (keyPressed["dash"] && dashCooldown == 0)
-        {
-            dashSpeed = Math.Abs(dashSpeed);
-            if (keyPressed["left"]) dashSpeed = -dashSpeed;
-            dashDuration = setDashDuration;
-        }
-        if (dashDuration > 0)
+        moveLeft += () => xSpeed = -moveSpeed;
+        moveRight += () => xSpeed = moveSpeed;
+        notmoving += () => xSpeed = 0;
+        fastFall += () => ySpeed = -fastFallSpeed;
+        jump += () => ySpeed = jumpForce;
+        leftDash += () => dashSpeed = -Math.Abs(dashSpeed);
+        rightDash += () => dashSpeed = Math.Abs(dashSpeed);
+        duringDash += () =>
         {
             xSpeed = dashSpeed;
             ySpeed = 0;
             dashCooldown = setDashCooldown;
-        }
-    }
-    //makes the player shoot
-    void Shooting(/*HEJ JAG HETER  ANTON*/)
-    {
-        if (keyPressed["shoot"] && shootCooldown <= 0 && !keyPressed["up"])
+        };
+        shoot += () =>
         {
             shootCooldown = setShootCooldown;
             new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletxSpeed, bulletySpeed, bulletGravity, bulletDamage);
-        }
-        else if (keyPressed["shoot"] && shootCooldown <= 0 && keyPressed["up"])
+        };
+        upShoot += () =>
         {
             shootCooldown = setShootCooldown;
             new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletySpeed, bulletxSpeed, bulletGravity, bulletDamage);
-        }
+        };
+        takenDamage += () => invincibilityDuration = invincibilityTime;
+
     }
 
-    public override void Update()
+    //moves the player
+    void MoveCheck(/*HEJ JAG HETER  ANTON*/)
     {
-        // System.Console.WriteLine(köttig );
-
+        if (keyPressed["left"])
+        {
+            moveLeft();
+        }
+        else if (keyPressed["right"])
+        {
+            moveRight();
+        }
+        else notmoving();
+    }
+    //makes the player fastfall
+    void FastFallCheck(/*HEJ JAG HETER  ANTON*/)
+    {
+        if (keyPressed["down"] && !Grounded())
+        {
+            fastFall();
+        }
+    }
+    //makes the player jump
+    void JumpCheck(/*HEJ JAG HETER  ANTON*/)
+    {
+        if (keyPressed["jump"] && Grounded())
+        {
+            jump();
+        }
+    }
+    //makes the player dash
+    void DashCheck(/*HEJ JAG HETER  ANTON*/)
+    {
+        if (keyPressed["dash"] && dashCooldown == 0)
+        {
+            if (keyPressed["left"])
+            {
+                leftDash();
+            }
+            else
+            {
+                rightDash();
+            }
+            dashDuration = setDashDuration;
+        }
+        if (dashDuration > 0)
+        {
+            duringDash();
+        }
+    }
+    //makes the player shoot
+    void ShootCheck(/*HEJ JAG HETER  ANTON*/)
+    {
+        if (keyPressed["shoot"] && shootCooldown <= 0 && !keyPressed["up"])
+        {
+            shoot();
+        }
+        else if (keyPressed["shoot"] && shootCooldown <= 0 && keyPressed["up"])
+        {
+            upShoot();
+        }
+    }
+    //check the players inputs every frame
+    void Checkinputs(/*HEJ JAG HETER  ANTON*/)
+    {
         // inputigt värre här
         for (int i = 0; i < currentLayout.keybinds.Keys.Count; i++)
         {
@@ -142,7 +181,7 @@ bullet gravity           {bulletGravity}");
 
             if (Raylib.IsKeyDown(currentLayout.keybinds[currentKey]))
             {
-                Console.WriteLine(currentKey + " key pressed");
+                // Console.WriteLine(currentKey + " key pressed");
                 keyPressed[currentKey] = true;
             }
             else
@@ -152,15 +191,24 @@ bullet gravity           {bulletGravity}");
 
         }
 
+    }
+
+    public override void Update()
+    {
+        // System.Console.WriteLine(köttig );
+
         dashCooldown = MathF.Max(dashCooldown - Raylib.GetFrameTime(), 0);
         dashDuration = MathF.Max(dashDuration - Raylib.GetFrameTime(), 0);
         shootCooldown = MathF.Max(shootCooldown - Raylib.GetFrameTime(), 0);
+        invincibilityDuration = MathF.Max(invincibilityDuration - Raylib.GetFrameTime(), 0);
 
-        MovingLeftAndRight();
-        FastFalling();
-        Jumping();
-        Dashing();
-        Shooting();
+        Checkinputs();
+
+        MoveCheck();
+        FastFallCheck();
+        JumpCheck();
+        DashCheck();
+        ShootCheck();
 
         MoveObject(gravity);
     }
@@ -185,6 +233,11 @@ bullet gravity           {bulletGravity}");
 
     }
 
+    public override void TakenDamage()
+    {
+        takenDamage();
+    }
+
     public override void Despawn()
     {
         Console.WriteLine("spelaren har despawnat");
@@ -203,5 +256,6 @@ bullet gravity           {bulletGravity}");
         hp = maxHP;
         currentLayout = controlLayout;
 
+        InitializeDelegates();
     }
 }

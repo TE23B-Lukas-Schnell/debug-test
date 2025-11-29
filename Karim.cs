@@ -52,7 +52,7 @@ class Karim : Boss
         curvedLaser();
         // straightLaser();
 
-        ContactDamage(0.1f, "player");
+        ContactDamage(1, "player");
 
         moveCycle(x, Raylib.GetScreenWidth() * 0.7f, Raylib.GetScreenWidth() - width);
         MoveObject(gravity);
@@ -70,6 +70,11 @@ class Karim : Boss
     {
         sprite = Raylib.LoadTexture(@"./Sprites/karimryde-scaled-600x600.jpg");
         sprite = ChangeSpriteSize(sprite, (int)width, (int)height);
+    }
+
+    public override void TakenDamage()
+    {
+
     }
     public override void Despawn()
     {

@@ -3,6 +3,7 @@ abstract class FightableObject : MoveableObject
     protected float maxHP;
     protected float hp;
     public bool healthy = true;
+    protected float invincibilityDuration = 0;
 
     public List<Items> Inventory = new List<Items>();
 
@@ -12,11 +13,11 @@ abstract class FightableObject : MoveableObject
         Raylib.DrawRectangle((int)xpos + 5, (int)ypos + 5, (int)(hp * sizeMultiplier), 50, Color.Green);
     }
 
-    bool changeHp(FightableObject target, float changeAmount, float changeMultiplier, float limit, bool isLimitFloorOrRoof/*true for floor, false for roof*/)
+    bool changeHp(FightableObject target, float changeAmount, float changeMultiplier, float limit, bool isDamage)
     {
         bool limitReached;
 
-        if (isLimitFloorOrRoof)
+        if (isDamage)
         {
             target.hp -= changeAmount * changeMultiplier;
             if (limit >= hp)
@@ -35,19 +36,22 @@ abstract class FightableObject : MoveableObject
                 limitReached = true;
             }
             else limitReached = false;
-
         }
-
         return limitReached;
     }
 
     //objektet hp minskar, tas bort om det är < 0
     public void TakeDamage(float damage, FightableObject target)
     {
-        if (changeHp(target, damage, damageMultiplier, 0, true))
+        if (target.invincibilityDuration <= 0)
         {
-            Despawn();
-            target.remove = true;
+           
+            if (changeHp(target, damage, damageMultiplier, 0, true))
+            {
+                target.remove = true;
+                Despawn();
+            }
+            target.TakenDamage();
         }
     }
 
@@ -81,14 +85,15 @@ abstract class FightableObject : MoveableObject
             {
                 if (!Inventory[i].buffActivated)
                 {
-                    // Inventory[i].ApplyBuff();
-                    // Inventory[i].buffActivated = true;
+                    Inventory[i].buffActivated = true;
                     Inventory[i].båt(this);
                 }
             }
         }
         else Console.WriteLine("tomt inventory");
     }
+
+    public abstract void TakenDamage();
 }
 
 

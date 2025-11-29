@@ -8,8 +8,7 @@ static class GibbManager
     static string scoreFilePath = "./scores.txt";
     public static int amountOfItemsToChooseFrom = 2;
     static Dictionary<string, int> highscores = new Dictionary<string, int>();
-    public static ControlLayout currentControlLayout = defaultKeybindsWASD;
-    static Player playerReference = new Player(currentControlLayout);
+    
     public static bool playerDead = false;
 
     public static ControlLayout defaultKeybindsWASD = new ControlLayout(new Dictionary<string, KeyboardKey>()
@@ -26,6 +25,10 @@ static class GibbManager
     }
     , "arrow keys");
 
+
+    public static ControlLayout currentControlLayout = defaultKeybindsWASD;
+    static Player playerReference = new Player(currentControlLayout);
+
     // glöm inte att implementera det här någon dag
     static Dictionary<string, Action> menuActions = new Dictionary<string, Action>()
     {
@@ -35,7 +38,6 @@ static class GibbManager
         {"Show player stats", () =>  playerReference.PrintPlayerStats()},
         {"Apply item stats (temporary)", () =>  playerReference.ApplyBuffsFromItem()}
     };
-
 
     static List<Boss> PeakBossPeakBoss = new List<Boss>()
     {

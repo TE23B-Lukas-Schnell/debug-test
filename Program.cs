@@ -3,10 +3,7 @@ global using System;
 
 GibbManager.Setup();
 
-// fixa så att spelarens control layout manager
-/*ControlLayout båt = new ControlLayout();
-
-ControlLayout.PrintControlLayout(båt);*/
+// fixa spelarens invincibilitiy time
 
 //main loop
 GibbManager.GameLoop();
