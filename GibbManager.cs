@@ -6,9 +6,25 @@ static class GibbManager
     public static bool currentlyGibbing = false;
     public static bool fullscreen = false;
 
+    public static ControlLayout defaultKeybindsWASD = new ControlLayout(new Dictionary<string, KeyboardKey>()
+    {
+        {"up", KeyboardKey.W},{"down",KeyboardKey.S},{"left", KeyboardKey.A},{"right",KeyboardKey.D},
+        {"jump", KeyboardKey.Space },{"dash", KeyboardKey.LeftShift}, {"shoot",KeyboardKey.L}
+    }
+    , "wasd");
+
+    public static ControlLayout defaultKeybindsArrowKeys = new ControlLayout(new Dictionary<string, KeyboardKey>()
+    {
+        {"up", KeyboardKey.Up},{"down",KeyboardKey.Down},{"left", KeyboardKey.Left},{"right",KeyboardKey.Right},
+        {"jump", KeyboardKey.Z}, {"dash", KeyboardKey.C}, {"shoot", KeyboardKey.X}
+    }
+    , "arrow keys");
+
+    public static ControlLayout currentControlLayout = defaultKeybindsWASD;
+
     static List<Boss> PeakBossPeakBoss = new List<Boss>()
     {
-        new Karim()
+
     };
 
     public static List<Items> AvailableItems = new List<Items>()
@@ -111,7 +127,7 @@ static class GibbManager
 
     static string scoreFilePath = "./scores.txt";
 
-    static Player playerReference = new Player();
+    static Player playerReference = new Player(currentControlLayout);
 
     public static bool playerDead = false;
 
@@ -128,16 +144,7 @@ static class GibbManager
         }
     }
 
-    public static void WriteDictionary(Dictionary<string, KeyboardKey> dictionary)
-    {
-        if (dictionary != null)
-        {
-            foreach (KeyValuePair<string, KeyboardKey> entry in dictionary)
-            {
-                Console.WriteLine($"action: {entry.Key}, keybind: {entry.Value}");
-            }
-        }
-    }
+    
 
     static void Intructions()
     {

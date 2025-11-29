@@ -2,13 +2,22 @@ class Player : FightableObject
 {
     //statiska variabler
     public static int score = 0;
-    ControlLayout currentLayout;
-    Dictionary<KeyboardKey, bool> keyActions = new Dictionary<KeyboardKey, bool>()
+    // denna dictionary ska checkas varje frame för om controlalayoutens knapp är nedtryckt och aktivera rätt bool som ska fixa vissa saker i koden
+    //fixigt värre
+    public Dictionary<string, bool> keyActions = new Dictionary<string, bool>()
     {
-        
+        {"up", false },
+        {"down", false },
+        {"left", false },
+        {"right", false },
+        {"jump", false },
+        {"dash", false },
+        {"shoot", false },
     };
+
     public static List<PlayerStat> playerStats = new List<PlayerStat>();
 
+    ControlLayout currentLayout;
     //player stats 
     // public PlayerStat gravity = new PlayerStat(playerStats, 2300f, 0, float.MaxValue, "gravity");
     public float gravity = 2300f;
@@ -47,12 +56,10 @@ class Player : FightableObject
     // public PlayerStat colorB = new PlayerStat(playerStats, 235f, "b");
     // public PlayerStat colorA = new PlayerStat(playerStats, 254f, "a");
 
-
     //variabler
     float dashDuration = 0;
     float dashCooldown = 0;
     float shootCooldown = 0;
-
 
     public void PrintPlayerStats()
     {
@@ -85,10 +92,10 @@ bullet gravity           {bulletGravity}");
     KeyboardKey anton = KeyboardKey.Backspace;
     string köttig = KeyboardKey.Backspace.ToString();
 
+    bool UpKeyPressed() => Raylib.IsKeyDown(KeyboardKey.W) || Raylib.IsKeyDown(KeyboardKey.Up);
+    bool DownKeyPressed() => Raylib.IsKeyDown(KeyboardKey.S) || Raylib.IsKeyDown(KeyboardKey.Down);
     bool LeftKeyPressed() => Raylib.IsKeyDown(KeyboardKey.A) || Raylib.IsKeyDown(KeyboardKey.Left);
     bool RightKeyPressed() => Raylib.IsKeyDown(KeyboardKey.D) || Raylib.IsKeyDown(KeyboardKey.Right);
-    bool DownKeyPressed() => Raylib.IsKeyDown(KeyboardKey.S) || Raylib.IsKeyDown(KeyboardKey.Down);
-    bool UpKeyPressed() => Raylib.IsKeyDown(KeyboardKey.W) || Raylib.IsKeyDown(KeyboardKey.Up);
     bool JumpKeyPressed() => Raylib.IsKeyDown(KeyboardKey.Space) || Raylib.IsKeyDown(KeyboardKey.Z);
     bool DashKeyPressed() => Raylib.IsKeyDown(KeyboardKey.LeftShift) || Raylib.IsKeyDown(KeyboardKey.C);
     bool ShootKeyPressed() => Raylib.IsKeyDown(KeyboardKey.L) || Raylib.IsKeyDown(KeyboardKey.X);
@@ -98,7 +105,6 @@ bullet gravity           {bulletGravity}");
     //     gör en skiss och schema på papper innan du gör något dumt!!!11111
 
     /*
-
             bool LeftKeyPressed = false;
             bool RightKeyPressed = false;
             bool DownKeyPressed = false;
@@ -107,23 +113,16 @@ bullet gravity           {bulletGravity}");
             bool DashKeyPressed = false;
             bool ShootKeyPressed = false;
 
-    /*
-            Dictionary<KeyboardKey, Action> keybinds = new Dictionary<KeyboardKey, Action>()
-            {
-                {KeyboardKey.A, () =>
-                {
-
-                } },
-            };*/
+   */
 
     //moves the player
     void MovingLeftAndRight(/*HEJ JAG HETER  ANTON*/)
     {
-        if (LeftKeyPressed())
+        if (keyActions["left"])
         {
             xSpeed = -moveSpeed;
         }
-        else if (RightKeyPressed())
+        else if (keyActions["right"])
         {
             xSpeed = moveSpeed;
         }
@@ -132,7 +131,7 @@ bullet gravity           {bulletGravity}");
     //makes the player fastfall
     void FastFalling(/*HEJ JAG HETER  ANTON*/)
     {
-        if (DownKeyPressed() && !Grounded())
+        if (keyActions["down"] && !Grounded())
         {
             ySpeed = -fastFallSpeed;
         }
@@ -140,7 +139,7 @@ bullet gravity           {bulletGravity}");
     //makes the player jump
     void Jumping(/*HEJ JAG HETER  ANTON*/)
     {
-        if (JumpKeyPressed() && Grounded())
+        if (keyActions["jump"] && Grounded())
         {
             ySpeed = jumpForce;
         }
@@ -148,10 +147,10 @@ bullet gravity           {bulletGravity}");
     //makes the player dash
     void Dashing(/*HEJ JAG HETER  ANTON*/)
     {
-        if (DashKeyPressed() && dashCooldown == 0)
+        if (keyActions["dash"] && dashCooldown == 0)
         {
             dashSpeed = Math.Abs(dashSpeed);
-            if (LeftKeyPressed()) dashSpeed = -dashSpeed;
+            if (keyActions["left"]) dashSpeed = -dashSpeed;
             dashDuration = setDashDuration;
         }
         if (dashDuration > 0)
@@ -164,12 +163,12 @@ bullet gravity           {bulletGravity}");
     //makes the player shoot
     void Shooting(/*HEJ JAG HETER  ANTON*/)
     {
-        if (ShootKeyPressed() && shootCooldown <= 0 && !UpKeyPressed())
+        if (keyActions["shoot"] && shootCooldown <= 0 && !keyActions["up"])
         {
             shootCooldown = setShootCooldown;
             new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletSpeed, 0, bulletGravity, bulletDamage);
         }
-        else if (ShootKeyPressed() && shootCooldown <= 0 && UpKeyPressed())
+        else if (keyActions["shoot"] && shootCooldown <= 0 && keyActions["up"])
         {
             shootCooldown = setShootCooldown;
             new PlayerBullet(x, y, bulletWidth, bulletHeight, 0, bulletSpeed, bulletGravity, bulletDamage);
@@ -181,6 +180,22 @@ bullet gravity           {bulletGravity}");
     public override void Update()
     {
         // System.Console.WriteLine(köttig );
+
+        for (int i = 0; i < currentLayout.keybinds.Keys.Count; i++)
+        {
+            string currentAction = keyActions.Keys.ToArray()[i];
+
+            if (Raylib.IsKeyDown(currentLayout.keybinds[currentAction]))
+            {
+                Console.WriteLine(currentAction + " key pressed");
+                keyActions[currentAction] = true;
+            }
+            else
+            {
+                keyActions[currentAction] = false;
+            }
+
+        }
 
         dashCooldown = MathF.Max(dashCooldown - Raylib.GetFrameTime(), 0);
         dashDuration = MathF.Max(dashDuration - Raylib.GetFrameTime(), 0);
@@ -194,7 +209,7 @@ bullet gravity           {bulletGravity}");
 
         MoveObject(gravity);
     }
-    //fixa delegatet actionms för alla skaer spelaraen kan göra
+
     public override void Draw()
     {
         if (dashDuration > 0)
@@ -212,7 +227,7 @@ bullet gravity           {bulletGravity}");
 
     public override void BeginDraw()
     {
-        
+
     }
 
     public override void Despawn()
@@ -221,7 +236,7 @@ bullet gravity           {bulletGravity}");
         GibbManager.currentlyGibbing = false;
     }
 
-    public Player()
+    public Player(ControlLayout controlLayout)
     {
         objectIdentifier = "player";
         x = 400;
@@ -231,5 +246,7 @@ bullet gravity           {bulletGravity}");
         gameList.Add(this);
         maxHP = 20;
         hp = maxHP;
+        currentLayout = controlLayout;
+
     }
 }

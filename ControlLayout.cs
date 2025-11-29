@@ -1,6 +1,3 @@
-using System.Data;
-using System.Net.WebSockets;
-
 class ControlLayout
 {
     public static List<ControlLayout> controlLayouts = new List<ControlLayout>();
@@ -47,19 +44,17 @@ class ControlLayout
         return new KeyValuePair<string, KeyboardKey>(desiredKey, checkKey);
     }
 
-
     Dictionary<string, KeyboardKey> CreateContolLayout()
     {
         Dictionary<string, KeyboardKey> output = new Dictionary<string, KeyboardKey>();
 
         KeyValuePair<string, KeyboardKey> upBinding = BindKey("up");
         output.Add(upBinding.Key, upBinding.Value);
+        Console.WriteLine("up key was binded to " + upBinding.Value.ToString());
 
         KeyValuePair<string, KeyboardKey> downBinding = BindKey("down");
         output.Add(downBinding.Key, downBinding.Value);
-
-        Console.WriteLine(output["up"]);
-        Console.WriteLine(output["down"]);
+        Console.WriteLine("down key was binded to " + downBinding.Value.ToString());
 
         return output;
     }
@@ -76,5 +71,21 @@ class ControlLayout
         keybinds = premadeKeybinds;
         this.name = name;
         controlLayouts.Add(this);
+    }
+
+    public static void PrintControlLayout(ControlLayout controlLayout)
+    {
+        if (controlLayout != null)
+        {
+            Console.WriteLine(controlLayout.name);
+            foreach (KeyValuePair<string, KeyboardKey> entry in controlLayout.keybinds)
+            {
+                Console.WriteLine($"action: {entry.Key}, keybind: {entry.Value}");
+            }
+        }
+        else
+        {
+            Console.WriteLine("empty keybinds");
+        }
     }
 }
