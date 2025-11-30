@@ -52,7 +52,7 @@ class Karim : Boss
         curvedLaser();
         // straightLaser();
 
-        ContactDamage(1, "player");
+        ContactDamage(contactDamage, "player");
 
         moveCycle(x, Raylib.GetScreenWidth() * 0.7f, Raylib.GetScreenWidth() - width);
         MoveObject(gravity);
@@ -94,6 +94,7 @@ class Karim : Boss
         maxHP = 600;
         hp = maxHP;
         objectIdentifier = "enemy";
+        contactDamage = 5;
     }
 
 

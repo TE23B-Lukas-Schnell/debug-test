@@ -8,9 +8,10 @@ static class GibbManager
     static string scoreFilePath = "./scores.txt";
     public static int amountOfItemsToChooseFrom = 2;
     static Dictionary<string, int> highscores = new Dictionary<string, int>();
-    
+
     public static bool playerDead = false;
 
+    //control layouts
     public static ControlLayout defaultKeybindsWASD = new ControlLayout(new Dictionary<string, KeyboardKey>()
     {
         {"up", KeyboardKey.W},{"down",KeyboardKey.S},{"left", KeyboardKey.A},{"right",KeyboardKey.D},
@@ -25,19 +26,25 @@ static class GibbManager
     }
     , "arrow keys");
 
-
-    public static ControlLayout currentControlLayout = defaultKeybindsWASD;
-    static Player playerReference = new Player(currentControlLayout);
-
-    // glöm inte att implementera det här någon dag
-    static Dictionary<string, Action> menuActions = new Dictionary<string, Action>()
+    //action menu
+    static Dictionary<string, Action> mainMenuActions = new Dictionary<string, Action>()
     {
-        {"Start playing", StartGame},
-        {"Show your score", () =>   Console.WriteLine($"Your score is: {Player.score}")},
+        {"Start playing", GameLoop},
         {"Show high scores", () =>  WriteDictionary(highscores)},
+        {"select controll layout", () => {System.Console.WriteLine("köttig"); } },
+        {"quit game", () => {System.Console.WriteLine("quitting game"); } },
+    };
+
+    static Dictionary<string, Action> gameMenuActions = new Dictionary<string, Action>()
+    {
+        {"Next boss", StartGame},
+        {"Show your score", () =>   Console.WriteLine($"Your score is: {Player.score}")},
         {"Show player stats", () =>  playerReference.PrintPlayerStats()},
         {"Apply item stats (temporary)", () =>  playerReference.ApplyBuffsFromItem()}
     };
+
+    public static ControlLayout currentControlLayout = defaultKeybindsWASD;
+    static Player playerReference = new Player(currentControlLayout);
 
     static List<Boss> PeakBossPeakBoss = new List<Boss>()
     {
@@ -72,6 +79,33 @@ static class GibbManager
             }
         })
     };
+
+    public static int GetIntFromConsole()
+    {
+        int output;
+        while (!int.TryParse(Console.ReadLine(), out output))
+        {
+            Console.WriteLine("input is not a integer");
+        }
+        return output;
+    }
+
+    public static int GetIntFromConsole(int minValue, int maxValue)
+    {
+        int båt = GetIntFromConsole();
+
+        if (båt > maxValue)
+        {
+            Console.WriteLine("input is too big");
+            GetIntFromConsole(minValue, maxValue);
+        }
+        else if (båt < minValue)
+        {
+            Console.WriteLine("input is too small");
+            GetIntFromConsole(minValue, maxValue);
+        }
+        return båt;
+    }
 
     static void GiveItem(int amount, Player player, Boss nextboss)
     {
@@ -216,7 +250,25 @@ Objective:
     {
         LoadSave();
         Raylib.SetTargetFPS(ChooseFPS());
-        Intructions();
+        // Intructions();
+    }
+
+    static void ExecuteMenu(Dictionary<string, Action> menuActions)
+    {
+        Console.WriteLine("choose an action");
+
+        string[] actions = menuActions.Keys.ToArray();
+        for (int i = 0; i < actions.Length; i++)
+        {
+            Console.WriteLine($"{i + 1}. {actions[i]}");
+        }
+        menuActions[actions[GetIntFromConsole(1, actions.Length + 1) - 1]]();
+    }
+
+    public static void MainMenu()
+    {
+        while (true) ExecuteMenu(mainMenuActions);
+
     }
 
     static void StartGame()
@@ -239,47 +291,10 @@ Objective:
             Console.WriteLine("köttig boss: " + bossesToFightThisRun[i]);
         }
 
-        // detta kan fixas med ett dictiononary med strings och actions, kom ihåg att fixa någon gång
-
-
         while (currentlyGibbing == false)
         {
 
-
-
-            Console.WriteLine(@"Choose an action
-1. Start playing
-2. Show your score
-3. Show high scores
-4. Show player stats
-5. Apply item stats");
-            string answer = Console.ReadLine();
-
-            switch (answer)
-            {
-                case "1":
-
-                    MoveableObject survivor = WindowGame();
-                    Console.WriteLine(survivor + " died a deathly death");
-                    bossesBeaten++;
-                    // GiveItem(2, playerReference, bossesToFightThisRun[bossesBeaten]);
-                    break;
-                case "2":
-                    Console.WriteLine($"Your score is: {Player.score}");
-                    break;
-                case "3":
-                    WriteDictionary(highscores);
-                    break;
-                case "4":
-                    playerReference.PrintPlayerStats();
-                    break;
-                case "5":
-                    playerReference.ApplyBuffsFromItem();
-                    break;
-                default:
-                    Console.WriteLine("invalid input");
-                    break;
-            }
+            ExecuteMenu(gameMenuActions);
         }
     }
 

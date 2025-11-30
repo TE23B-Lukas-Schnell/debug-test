@@ -3,7 +3,8 @@ global using System;
 
 GibbManager.Setup();
 
-// fixa spelarens invincibilitiy time
+// fixa main menu
+GibbManager.MainMenu();
 
 //main loop
 GibbManager.GameLoop();

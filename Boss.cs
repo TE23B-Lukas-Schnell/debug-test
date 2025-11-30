@@ -3,6 +3,8 @@ abstract class Boss : FightableObject
     public int screenSizeX;
     public int screenSizeY;
 
+    protected float contactDamage;
+
     public Texture2D sprite;
 
     public Texture2D ChangeSpriteSize(Texture2D texture, int width, int height)

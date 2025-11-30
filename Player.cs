@@ -36,7 +36,7 @@ class Player : FightableObject
     public float setDashCooldown = 0.43f;
     public float fastFallSpeed = 1400f;
     public float dashSpeed = 2000f;
-    public float invincibilityTime = 0.5f;
+    public float invincibilityTime = 1f;
     public Color color = new Color(0, 0f, 235f, 254f);
 
     //bullet stats
@@ -52,7 +52,6 @@ class Player : FightableObject
     float dashDuration = 0;
     float dashCooldown = 0;
     float shootCooldown = 0;
-
 
     public void PrintPlayerStats()
     {
@@ -79,7 +78,6 @@ bullet gravity           {bulletGravity}");
             Console.WriteLine(items.name);
         }
     }
-
     //makes all the delegates work 
     void InitializeDelegates()
     {
@@ -109,7 +107,6 @@ bullet gravity           {bulletGravity}");
         takenDamage += () => invincibilityDuration = invincibilityTime;
 
     }
-
     //moves the player
     void MoveCheck(/*HEJ JAG HETER  ANTON*/)
     {
@@ -215,14 +212,26 @@ bullet gravity           {bulletGravity}");
 
     public override void Draw()
     {
-        if (dashDuration > 0)
+        if (invincibilityDuration > 0)
         {
-            AddTrailEffects(new Color(22, 15, 55, 255), 100, 100, 0, -1);
+            float t = Math.Clamp(1f - (invincibilityDuration / invincibilityTime), 0f, 1f);
+            color.A = (byte)(t * 255);
+
+            ClearLastPositions();
         }
         else
         {
-            AddTrailEffects(new Color(0, 88, 255, 0), 100, 100, 0, 130);
+            color.A = 255;
+            if (dashDuration > 0)
+            {
+                AddTrailEffects(new Color(22, 15, 55, 255), 100, 100, 0, -1);
+            }
+            else
+            {
+                AddTrailEffects(new Color(0, 88, 255, 0), 100, 100, 0, 130);
+            }
         }
+        
         DisplayHealthBar(50, 145, 10);
         Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, color);
         ShowHitboxes();
@@ -247,10 +256,12 @@ bullet gravity           {bulletGravity}");
     public Player(ControlLayout controlLayout)
     {
         objectIdentifier = "player";
-        x = 400;
-        y = 450;
-        width = 85;
-        height = 80;
+        {
+            x = 400;
+            y = 450;
+            width = 85;
+            height = 80;
+        }
         gameList.Add(this);
         maxHP = 20;
         hp = maxHP;

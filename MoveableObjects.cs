@@ -45,6 +45,11 @@ abstract class MoveableObject()
 
     Queue<(float x, float y)> lastPositions = new Queue<(float x, float y)>();
 
+    protected void ClearLastPositions()
+    {
+        lastPositions.Clear();
+    }
+
     //denna funktion gjordes av chatgpt
     protected void AddTrailEffects(Color trailColorSet, float rMultiplier, float gMultiplier, float bMultiplier, float aMultiplier)
     {
