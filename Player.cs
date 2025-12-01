@@ -2,6 +2,7 @@ class Player : FightableObject
 {
     //statiska variabler
     public static int score = 0;
+
     public Dictionary<string, bool> keyPressed = new Dictionary<string, bool>()
     {
         {"up", false },
@@ -79,7 +80,7 @@ bullet gravity           {bulletGravity}");
         }
     }
     //makes all the delegates work 
-    void InitializeDelegates()
+    void InitializeDelegates(/*HEJ JAG HETER  ANTON*/)
     {
         moveLeft += () => xSpeed = -moveSpeed;
         moveRight += () => xSpeed = moveSpeed;
@@ -169,7 +170,7 @@ bullet gravity           {bulletGravity}");
         }
     }
     //check the players inputs every frame
-    void Checkinputs(/*HEJ JAG HETER  ANTON*/)
+    void Checkinputs(/*HEJ JAG HETER  ANTON*/) 
     {
         // inputigt värre här
         for (int i = 0; i < currentLayout.keybinds.Keys.Count; i++)

@@ -8,31 +8,33 @@ static class GibbManager
     static string scoreFilePath = "./scores.txt";
     public static int amountOfItemsToChooseFrom = 2;
     static Dictionary<string, int> highscores = new Dictionary<string, int>();
-
     public static bool playerDead = false;
-
     //control layouts
     public static ControlLayout defaultKeybindsWASD = new ControlLayout(new Dictionary<string, KeyboardKey>()
     {
         {"up", KeyboardKey.W},{"down",KeyboardKey.S},{"left", KeyboardKey.A},{"right",KeyboardKey.D},
         {"jump", KeyboardKey.Space },{"dash", KeyboardKey.LeftShift}, {"shoot",KeyboardKey.L}
-    }
-    , "wasd");
+    }, "wasd");
 
     public static ControlLayout defaultKeybindsArrowKeys = new ControlLayout(new Dictionary<string, KeyboardKey>()
     {
         {"up", KeyboardKey.Up},{"down",KeyboardKey.Down},{"left", KeyboardKey.Left},{"right",KeyboardKey.Right},
         {"jump", KeyboardKey.Z}, {"dash", KeyboardKey.C}, {"shoot", KeyboardKey.X}
-    }
-    , "arrow keys");
-
+    }, "arrow keys");
     //action menu
     static Dictionary<string, Action> mainMenuActions = new Dictionary<string, Action>()
     {
         {"Start playing", GameLoop},
         {"Show high scores", () =>  WriteDictionary(highscores)},
-        {"select controll layout", () => {System.Console.WriteLine("köttig"); } },
-        {"quit game", () => {System.Console.WriteLine("quitting game"); } },
+        {"select controll layout", ControlMenu},
+        {"quit game", () => {Console.WriteLine("quitting game");}},
+    };
+
+    static Dictionary<string, Action> controlMenuActions = new Dictionary<string, Action>()
+    {
+        {"select control layout", SelectControlLayout},
+        {"create control layout", () => new ControlLayout(playerReference.keyPressed.Keys.ToArray())},
+        {"go back to main menu", () => {}},
     };
 
     static Dictionary<string, Action> gameMenuActions = new Dictionary<string, Action>()
@@ -44,7 +46,8 @@ static class GibbManager
     };
 
     public static ControlLayout currentControlLayout = defaultKeybindsWASD;
-    static Player playerReference = new Player(currentControlLayout);
+
+    public static Player playerReference = new Player(currentControlLayout);
 
     static List<Boss> PeakBossPeakBoss = new List<Boss>()
     {
@@ -253,6 +256,20 @@ Objective:
         // Intructions();
     }
 
+    static void ExecuteMenu(string menuName, Dictionary<string, Action> menuActions)
+    {
+        Console.WriteLine("--------------------" + menuName + "--------------------------------------------");
+
+        Console.WriteLine("choose an action");
+
+        string[] actions = menuActions.Keys.ToArray();
+        for (int i = 0; i < actions.Length; i++)
+        {
+            Console.WriteLine($"{i + 1}. {actions[i]}");
+        }
+        menuActions[actions[GetIntFromConsole(1, actions.Length + 1)-1]]();
+    }
+
     static void ExecuteMenu(Dictionary<string, Action> menuActions)
     {
         Console.WriteLine("choose an action");
@@ -267,7 +284,27 @@ Objective:
 
     public static void MainMenu()
     {
-        while (true) ExecuteMenu(mainMenuActions);
+        while (true) ExecuteMenu(" Main menu ", mainMenuActions);
+
+    }
+
+    static void ControlMenu()
+    {
+        while (true)
+        {
+            ExecuteMenu(" Controls ", controlMenuActions);
+        }
+    }
+
+    static void SelectControlLayout()
+    {
+        for (int i = 0; i < ControlLayout.controlLayouts.Count; i++)
+        {
+            Console.Write(i + ": ");
+            ControlLayout.controlLayouts[i].PrintControlLayout();
+        }
+
+        currentControlLayout = ControlLayout.controlLayouts[GetIntFromConsole()]; // dålig kod kan vara utanför list index båt
 
     }
 
@@ -293,8 +330,7 @@ Objective:
 
         while (currentlyGibbing == false)
         {
-
-            ExecuteMenu(gameMenuActions);
+            ExecuteMenu(" Game ", gameMenuActions);
         }
     }
 

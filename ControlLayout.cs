@@ -2,9 +2,21 @@ class ControlLayout
 {
     public static List<ControlLayout> controlLayouts = new List<ControlLayout>();
 
+
+
     public Dictionary<string, KeyboardKey> keybinds = new Dictionary<string, KeyboardKey>();
 
     public string name;
+
+    public void PrintControlLayout()
+    {
+        Console.WriteLine(name);
+        foreach (KeyValuePair<string, KeyboardKey> entry in keybinds)
+        {
+            Console.WriteLine($"action: {entry.Key}, keybind: {entry.Value}");
+        }
+    }
+
 
     string nameControlLayout()
     {
@@ -44,25 +56,28 @@ class ControlLayout
         return new KeyValuePair<string, KeyboardKey>(desiredKey, checkKey);
     }
 
-    Dictionary<string, KeyboardKey> CreateContolLayout()
+    void CreateKeyBind(string action, Dictionary<string, KeyboardKey> båtig)
+    {
+        KeyValuePair<string, KeyboardKey> actionBinding = BindKey(action);
+        båtig.Add(actionBinding.Key, actionBinding.Value);
+        Console.WriteLine(action + " key was binded to " + actionBinding.Value.ToString());
+    }
+
+    Dictionary<string, KeyboardKey> CreateContolLayout(string[] actionsToBind)
     {
         Dictionary<string, KeyboardKey> output = new Dictionary<string, KeyboardKey>();
 
-        KeyValuePair<string, KeyboardKey> upBinding = BindKey("up");
-        output.Add(upBinding.Key, upBinding.Value);
-        Console.WriteLine("up key was binded to " + upBinding.Value.ToString());
-
-        KeyValuePair<string, KeyboardKey> downBinding = BindKey("down");
-        output.Add(downBinding.Key, downBinding.Value);
-        Console.WriteLine("down key was binded to " + downBinding.Value.ToString());
-
+        for (int i = 0; i < actionsToBind.Length; i++)
+        {
+            CreateKeyBind(actionsToBind[i], output);
+        }
         return output;
     }
 
-    public ControlLayout()
+    public ControlLayout(string[] actionsToBind)
     {
         name = nameControlLayout();
-        keybinds = CreateContolLayout();
+        keybinds = CreateContolLayout(actionsToBind);
         controlLayouts.Add(this);
     }
 
@@ -71,21 +86,5 @@ class ControlLayout
         keybinds = premadeKeybinds;
         this.name = name;
         controlLayouts.Add(this);
-    }
-
-    public static void PrintControlLayout(ControlLayout controlLayout)
-    {
-        if (controlLayout != null)
-        {
-            Console.WriteLine(controlLayout.name);
-            foreach (KeyValuePair<string, KeyboardKey> entry in controlLayout.keybinds)
-            {
-                Console.WriteLine($"action: {entry.Key}, keybind: {entry.Value}");
-            }
-        }
-        else
-        {
-            Console.WriteLine("empty keybinds");
-        }
     }
 }
