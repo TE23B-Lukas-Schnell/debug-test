@@ -21,7 +21,11 @@ static class GibbManager
         {"up", KeyboardKey.Up},{"down",KeyboardKey.Down},{"left", KeyboardKey.Left},{"right",KeyboardKey.Right},
         {"jump", KeyboardKey.Z}, {"dash", KeyboardKey.C}, {"shoot", KeyboardKey.X}
     }, "arrow keys");
-    //action menu
+
+    public static ControlLayout currentControlLayout = defaultKeybindsWASD;
+
+    public static Player playerReference = new Player(currentControlLayout);
+    //action menus
     static Dictionary<string, Action> mainMenuActions = new Dictionary<string, Action>()
     {
         {"Start playing", GameLoop},
@@ -44,10 +48,6 @@ static class GibbManager
         {"Show player stats", () =>  playerReference.PrintPlayerStats()},
         {"Apply item stats (temporary)", () =>  playerReference.ApplyBuffsFromItem()}
     };
-
-    public static ControlLayout currentControlLayout = defaultKeybindsWASD;
-
-    public static Player playerReference = new Player(currentControlLayout);
 
     static List<Boss> PeakBossPeakBoss = new List<Boss>()
     {
@@ -96,6 +96,8 @@ static class GibbManager
     public static int GetIntFromConsole(int minValue, int maxValue)
     {
         int båt = GetIntFromConsole();
+
+        // Console.WriteLine(maxValue);
 
         if (båt > maxValue)
         {
@@ -267,7 +269,7 @@ Objective:
         {
             Console.WriteLine($"{i + 1}. {actions[i]}");
         }
-        menuActions[actions[GetIntFromConsole(1, actions.Length + 1)-1]]();
+        menuActions[actions[GetIntFromConsole(0, actions.Length) - 1]]();
     }
 
     static void ExecuteMenu(Dictionary<string, Action> menuActions)
@@ -279,7 +281,7 @@ Objective:
         {
             Console.WriteLine($"{i + 1}. {actions[i]}");
         }
-        menuActions[actions[GetIntFromConsole(1, actions.Length + 1) - 1]]();
+        menuActions[actions[GetIntFromConsole(0, actions.Length) - 1]]();
     }
 
     public static void MainMenu()
@@ -391,3 +393,13 @@ Objective:
         return loser;
     }
 }
+
+
+
+
+
+
+
+
+
+//  Enn Te Ie

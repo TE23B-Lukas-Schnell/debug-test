@@ -2,8 +2,6 @@ class ControlLayout
 {
     public static List<ControlLayout> controlLayouts = new List<ControlLayout>();
 
-
-
     public Dictionary<string, KeyboardKey> keybinds = new Dictionary<string, KeyboardKey>();
 
     public string name;
@@ -16,7 +14,6 @@ class ControlLayout
             Console.WriteLine($"action: {entry.Key}, keybind: {entry.Value}");
         }
     }
-
 
     string nameControlLayout()
     {

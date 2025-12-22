@@ -1,3 +1,5 @@
+using System.Security.Cryptography.X509Certificates;
+
 class Player : FightableObject
 {
     //statiska variabler
@@ -108,7 +110,7 @@ bullet gravity           {bulletGravity}");
         takenDamage += () => invincibilityDuration = invincibilityTime;
 
     }
-    //moves the player
+    //checks if the player is pressing the move keys
     void MoveCheck(/*HEJ JAG HETER  ANTON*/)
     {
         if (keyPressed["left"])
@@ -122,6 +124,7 @@ bullet gravity           {bulletGravity}");
         else notmoving();
     }
     //makes the player fastfall
+    // checks if the player is fastfalling
     void FastFallCheck(/*HEJ JAG HETER  ANTON*/)
     {
         if (keyPressed["down"] && !Grounded())
@@ -130,6 +133,7 @@ bullet gravity           {bulletGravity}");
         }
     }
     //makes the player jump
+    // checks if hte player is jumping 
     void JumpCheck(/*HEJ JAG HETER  ANTON*/)
     {
         if (keyPressed["jump"] && Grounded())
@@ -137,7 +141,7 @@ bullet gravity           {bulletGravity}");
             jump();
         }
     }
-    //makes the player dash
+    //checks if the player is pressing the dash key
     void DashCheck(/*HEJ JAG HETER  ANTON*/)
     {
         if (keyPressed["dash"] && dashCooldown == 0)
@@ -157,7 +161,7 @@ bullet gravity           {bulletGravity}");
             duringDash();
         }
     }
-    //makes the player shoot
+    //checks if the shoot key is pressed 
     void ShootCheck(/*HEJ JAG HETER  ANTON*/)
     {
         if (keyPressed["shoot"] && shootCooldown <= 0 && !keyPressed["up"])
@@ -170,7 +174,7 @@ bullet gravity           {bulletGravity}");
         }
     }
     //check the players inputs every frame
-    void Checkinputs(/*HEJ JAG HETER  ANTON*/) 
+    void Checkinputs(/*HEJ JAG HETER  ANTON*/)
     {
         // inputigt värre här
         for (int i = 0; i < currentLayout.keybinds.Keys.Count; i++)
@@ -190,6 +194,8 @@ bullet gravity           {bulletGravity}");
         }
 
     }
+    //
+
 
     public override void Update()
     {
@@ -232,7 +238,7 @@ bullet gravity           {bulletGravity}");
                 AddTrailEffects(new Color(0, 88, 255, 0), 100, 100, 0, 130);
             }
         }
-        
+
         DisplayHealthBar(50, 145, 10);
         Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, color);
         ShowHitboxes();
@@ -262,10 +268,36 @@ bullet gravity           {bulletGravity}");
             y = 450;
             width = 85;
             height = 80;
+            int båt = 3;
         }
-        gameList.Add(this);
+
+        {
+
+            { { } gameList.Add(this); { } }
+
+        }
         maxHP = 20;
+        {
+            {
+                {
+                    {
+                        {
+                            {
+                                {
+                                    {
+                                        {;;;;;;{;{;{;{;}}}}
+                                            //hej jag heter anton
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         hp = maxHP;
+        { }
         currentLayout = controlLayout;
 
         InitializeDelegates();
