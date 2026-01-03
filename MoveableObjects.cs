@@ -45,15 +45,16 @@ abstract class MoveableObject()
 
     Queue<(float x, float y)> lastPositions = new Queue<(float x, float y)>();
 
+    protected int maxTrailSize = (int)MathF.Round(Raylib.GetFPS() * 0.16666666667f);
+
     protected void ClearLastPositions()
     {
         lastPositions.Clear();
     }
 
     //denna funktion gjordes av chatgpt
-    protected void AddTrailEffects(Color trailColorSet, float rMultiplier, float gMultiplier, float bMultiplier, float aMultiplier)
+    protected void AddTrailEffects(int maxTrailSize, Color trailColorSet, float rMultiplier, float gMultiplier, float bMultiplier, float aMultiplier)
     {
-        int maxTrailSize = (int)MathF.Round(Raylib.GetFPS() * 0.16666666667f);
         // System.Console.WriteLine("mattigt bärre:" + (int)(GibbManager.targetFrameRate * 0.1666666666667f));
         // System.Console.WriteLine("köttig lastpositions array length:" + lastPositions.Count);
 
@@ -68,6 +69,13 @@ abstract class MoveableObject()
         {
             float trailTime = (float)(count - i) / count;
             Color trailColor = new Color(trailColorSet.R + (int)(rMultiplier * trailTime), trailColorSet.G + (int)(gMultiplier * trailTime), trailColorSet.B + (int)(bMultiplier * trailTime), trailColorSet.A + (int)(aMultiplier * trailTime));
+            //clamps color values
+            {
+                trailColorSet.R = Math.Clamp(trailColorSet.R, (byte)0, (byte)255);
+                trailColorSet.G = Math.Clamp(trailColorSet.G, (byte)0, (byte)255);
+                trailColorSet.B = Math.Clamp(trailColorSet.B, (byte)0, (byte)255);
+                trailColorSet.A = Math.Clamp(trailColorSet.A, (byte)0, (byte)255);
+            }
             Raylib.DrawRectangle((int)pos.x, (int)pos.y, (int)width, (int)width, trailColor);
             i++;
         }
@@ -81,7 +89,6 @@ abstract class MoveableObject()
         x = Math.Clamp(x, 0, Raylib.GetScreenWidth() - width);
         y = Math.Clamp(y, height, Raylib.GetScreenHeight() - height);
     }
-
 
     //tar bort objekt om de är offscreen
     protected void HandleOffscreen()
@@ -124,11 +131,12 @@ abstract class MoveableObject()
         HandleOffscreen();
     }
 
+    //körs varje frame
     abstract public void Update();
-
+    //körs varje frame, används för att rita saker till skärmen
     abstract public void Draw();
-
+    //körs när objektet tas bort
     abstract public void Despawn();
-
+    //körs innan spelet börjar
     abstract public void BeginDraw();
 }

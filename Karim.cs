@@ -14,7 +14,7 @@ class Karim : Boss
     public float bulletHeight = 40;
     public float bulletDamage = 2;
 
-    void moveCycle(float value, float minValue, float maxValue)
+    void MoveCycle(float value, float minValue, float maxValue)
     {
         if (value >= maxValue)
         {
@@ -26,43 +26,58 @@ class Karim : Boss
         }
     }
 
-    void straightLaser()
+    void StraightLaser()
     {
-        if (shootCooldown <= 0)
-        {
-            shootCooldown = setShootCooldown;
-            new EnemyBullet(x, y, bulletWidth, bulletHeight, -1000f, 0f, 0f, bulletDamage);
-        }
-
+        shootCooldown = setShootCooldown;
+        new EnemyBullet(x, y, bulletWidth, bulletHeight, -1000f, 0f, 0f, bulletDamage);
     }
 
-    void curvedLaser()
+    void CurvedLaser()
     {
-        if (shootCooldown <= 0)
+        shootCooldown = setShootCooldown;
+        new EnemyBullet(x, y, bulletWidth, bulletHeight, -1000f, 500f, 1000f, bulletDamage);
+    }
+
+    CancellationTokenSource laserCts;
+
+    async Task HandleLasers(CancellationToken token)
+    {
+        while (!token.IsCancellationRequested)
         {
-            shootCooldown = setShootCooldown;
-            new EnemyBullet(x, y, bulletWidth, bulletHeight, -1000f, 500f, 1000f, bulletDamage);
+            CurvedLaser();
+            System.Console.WriteLine("curved bullet spawned");
+            await Task.Delay(1000, token);
+
+            StraightLaser();
+            System.Console.WriteLine("straight bullet spawned");
+            await Task.Delay(1000, token);
         }
     }
 
     public override void Update()
     {
-        shootCooldown = MathF.Max(shootCooldown - Raylib.GetFrameTime(), 0);
-
-        curvedLaser();
-        // straightLaser();
+        if (laserCts == null)
+        {
+            laserCts = new CancellationTokenSource();
+            _ = HandleLasers(laserCts.Token);
+        }
 
         ContactDamage(contactDamage, "player");
-
-        moveCycle(x, Raylib.GetScreenWidth() * 0.7f, Raylib.GetScreenWidth() - width);
         MoveObject(gravity);
     }
+
+    public override void Despawn()
+    {
+        GibbManager.currentlyGibbing = false;
+        laserCts?.Cancel();
+    }
+
     public override void Draw()
     {
         // Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, color);
         DrawTexture(sprite, color);
         ShowHitboxes();
-        Raylib.DrawRectangle(50, 50, (int)hp, 50, Color.Green);
+        Raylib.DrawRectangle(50, 50, (int)hp, 50, Color.White);
         DisplayHealthBar(50, 50, 1);
     }
 
@@ -72,13 +87,12 @@ class Karim : Boss
         sprite = ChangeSpriteSize(sprite, (int)width, (int)height);
     }
 
+
+
+
     public override void TakenDamage()
     {
 
-    }
-    public override void Despawn()
-    {
-        GibbManager.currentlyGibbing = false;
     }
 
     public Karim()

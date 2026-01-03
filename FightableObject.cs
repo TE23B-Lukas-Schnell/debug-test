@@ -63,7 +63,7 @@ abstract class FightableObject : MoveableObject
         }
     }
 
-    //since there is no invin frames after you take damage, make sure the damage is very small 😂😂😂 𝼀𰻝Ꮸ𐃵
+    //😂😂😂 𝼀𰻝Ꮸ𐃵
     public void ContactDamage(float damage, string objectIdentifier)
     {
         FightableObject? target;
@@ -95,5 +95,3 @@ abstract class FightableObject : MoveableObject
 
     public abstract void TakenDamage();
 }
-
-

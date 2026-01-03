@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <!-- byt target framework till 8.0 på skoldatorn och 9.0 hemma -->
-     <TargetFramework>net8.0</TargetFramework>
+     <TargetFramework>net9.0</TargetFramework>
     <!-- <TargetFramework>net9.0</TargetFramework> -->
     <RootNamespace>debug_test</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -25,6 +25,10 @@
     <Content Include="./Sprites/christiankilliner-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
     <Content Include="./Sprites/alexanderhudberg-scaled-600x402.jpg" CopyToOutputDirectory="PreserveNewest"/>
     <Content Include="./Sprites/nathaliezack-scaled-600x469.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/johankateby-scaled-600x443.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/tonywerner-scaled-600x415.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/annalundh-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/jessicalindh-scaled-600x401.jpg" CopyToOutputDirectory="PreserveNewest"/>
 
   </ItemGroup>
 

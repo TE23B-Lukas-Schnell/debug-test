@@ -1,5 +1,3 @@
-using System.Security.Cryptography.X509Certificates;
-
 class Player : FightableObject
 {
     //statiska variabler
@@ -123,7 +121,6 @@ bullet gravity           {bulletGravity}");
         }
         else notmoving();
     }
-    //makes the player fastfall
     // checks if the player is fastfalling
     void FastFallCheck(/*HEJ JAG HETER  ANTON*/)
     {
@@ -132,7 +129,6 @@ bullet gravity           {bulletGravity}");
             fastFall();
         }
     }
-    //makes the player jump
     // checks if hte player is jumping 
     void JumpCheck(/*HEJ JAG HETER  ANTON*/)
     {
@@ -194,8 +190,6 @@ bullet gravity           {bulletGravity}");
         }
 
     }
-    //
-
 
     public override void Update()
     {
@@ -219,6 +213,8 @@ bullet gravity           {bulletGravity}");
 
     public override void Draw()
     {
+        maxTrailSize = (int)MathF.Round(Raylib.GetFPS() * 0.16666666667f);
+
         if (invincibilityDuration > 0)
         {
             float t = Math.Clamp(1f - (invincibilityDuration / invincibilityTime), 0f, 1f);
@@ -231,11 +227,11 @@ bullet gravity           {bulletGravity}");
             color.A = 255;
             if (dashDuration > 0)
             {
-                AddTrailEffects(new Color(22, 15, 55, 255), 100, 100, 0, -1);
+                AddTrailEffects(maxTrailSize, new Color(22, 15, 55, 255), 100, 100, 0, -1);
             }
             else
             {
-                AddTrailEffects(new Color(0, 88, 255, 0), 100, 100, 0, 130);
+                AddTrailEffects(maxTrailSize, new Color(0, 88, 255, 0), 100, 100, 0, 130);
             }
         }
 
@@ -285,7 +281,9 @@ bullet gravity           {bulletGravity}");
                             {
                                 {
                                     {
-                                        {;;;;;;{;{;{;{;}}}}
+                                        {
+                                            ; ; ; ; ; ;
+                                            {; {; {; {; } } } }
                                             //hej jag heter anton
                                         }
                                     }

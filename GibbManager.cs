@@ -23,7 +23,7 @@ static class GibbManager
     }, "arrow keys");
 
     public static ControlLayout currentControlLayout = defaultKeybindsWASD;
-
+    //för att kontrollerna ska funka så måste spelaren skapas när ett runs startas inte när programmet startas, consider att göra run klassen inom snar framtid
     public static Player playerReference = new Player(currentControlLayout);
     //action menus
     static Dictionary<string, Action> mainMenuActions = new Dictionary<string, Action>()
@@ -95,21 +95,24 @@ static class GibbManager
 
     public static int GetIntFromConsole(int minValue, int maxValue)
     {
-        int båt = GetIntFromConsole();
-
-        // Console.WriteLine(maxValue);
-
-        if (båt > maxValue)
+        int output;
+        while (1 == 1)
         {
-            Console.WriteLine("input is too big");
-            GetIntFromConsole(minValue, maxValue);
+            if (!int.TryParse(Console.ReadLine(), out output)) Console.WriteLine("input is not a integer");
+            else
+            {
+                if (output > maxValue)
+                {
+                    Console.WriteLine("input is too big");
+                }
+                else if (output < minValue)
+                {
+                    Console.WriteLine("input is too small");
+                }
+                else return output;
+            }
+
         }
-        else if (båt < minValue)
-        {
-            Console.WriteLine("input is too small");
-            GetIntFromConsole(minValue, maxValue);
-        }
-        return båt;
     }
 
     static void GiveItem(int amount, Player player, Boss nextboss)
@@ -253,6 +256,7 @@ Objective:
 
     public static void Setup()
     {
+        Raylib.SetTraceLogLevel(TraceLogLevel.Error); // gör så att raylib inte skriver till konsolen
         LoadSave();
         Raylib.SetTargetFPS(ChooseFPS());
         // Intructions();
@@ -269,7 +273,7 @@ Objective:
         {
             Console.WriteLine($"{i + 1}. {actions[i]}");
         }
-        menuActions[actions[GetIntFromConsole(0, actions.Length) - 1]]();
+        menuActions[actions[GetIntFromConsole(1, actions.Length) - 1]]();
     }
 
     static void ExecuteMenu(Dictionary<string, Action> menuActions)
@@ -281,13 +285,12 @@ Objective:
         {
             Console.WriteLine($"{i + 1}. {actions[i]}");
         }
-        menuActions[actions[GetIntFromConsole(0, actions.Length) - 1]]();
+        menuActions[actions[GetIntFromConsole(1, actions.Length) - 1]]();
     }
 
     public static void MainMenu()
     {
         while (true) ExecuteMenu(" Main menu ", mainMenuActions);
-
     }
 
     static void ControlMenu()
@@ -302,12 +305,15 @@ Objective:
     {
         for (int i = 0; i < ControlLayout.controlLayouts.Count; i++)
         {
-            Console.Write(i + ": ");
-            ControlLayout.controlLayouts[i].PrintControlLayout();
+            Console.Write(i + 1 + ": ");
+
+            //måste bestämma om keybinds ska visas när man väljer control layout
+            Console.WriteLine(ControlLayout.controlLayouts[i].name);
+            // ControlLayout.controlLayouts[i].PrintControlLayout();
         }
 
-        currentControlLayout = ControlLayout.controlLayouts[GetIntFromConsole()]; // dålig kod kan vara utanför list index båt
-
+        currentControlLayout = ControlLayout.controlLayouts[GetIntFromConsole(1, ControlLayout.controlLayouts.Count) - 1];
+        Console.WriteLine("Your new control layout is " + currentControlLayout.name);
     }
 
     static void StartGame()
@@ -335,12 +341,11 @@ Objective:
             ExecuteMenu(" Game ", gameMenuActions);
         }
     }
-
     // this is the actual game!!!11 veri important
     static MoveableObject WindowGame(/*Boss bossToFight*/)
     {
         currentlyGibbing = true;
-        Raylib.InitWindow(GibbManager.windowWidth, GibbManager.windowHeight, "Game");
+        Raylib.InitWindow(windowWidth, windowHeight, "Game");
 
         Boss enemy = new Karim();
 
@@ -349,35 +354,45 @@ Objective:
             MoveableObject.gameList[i].BeginDraw();
         }
 
-
         FightableObject loser = playerReference;
-
+        bool pause = false;
         while (!Raylib.WindowShouldClose() && currentlyGibbing)
         {
-            // Console.Clear();
-            Raylib.BeginDrawing();
-            Raylib.ClearBackground(Color.White);
-            for (int i = 0; i < MoveableObject.gameList.Count; i++)
-            {
-                MoveableObject.gameList[i].Update(); //först uppdatera alla värden
-                MoveableObject.gameList[i].Draw(); // sen ritar man ut allt till skärmen
 
-                /*if (MoveableObject.gameList[i].remove == true)
-                {
-                    MoveableObject.gameList[i].Despawn();
-                }*/
+            Raylib.SetExitKey(KeyboardKey.Null);
+
+            if (Raylib.IsKeyPressed(KeyboardKey.Escape))
+            {
+                pause = !pause;
             }
 
-            //denna rad skrevs av mikael 
-            MoveableObject.gameList.RemoveAll(obj => obj.remove == true);
+            Raylib.BeginDrawing();
 
-            // gör det enklare att debugga
-            /*for (int i = 0; i < MoveableObject.gameList.Count; i++)
+            if (!pause)
             {
-                Console.WriteLine(MoveableObject.gameList[i]); 
-            }*/
+                Raylib.ClearBackground(Color.White);
+                for (int i = 0; i < MoveableObject.gameList.Count; i++)
+                {
+                    MoveableObject.gameList[i].Update(); //först uppdatera alla värden
+                    MoveableObject.gameList[i].Draw(); // sen ritar man ut allt till skärmen
+                }
+                //denna rad skrevs av mikael 
+                MoveableObject.gameList.RemoveAll(obj => obj.remove == true);
 
-            Raylib.DrawText(Raylib.GetFPS().ToString(), 0, 0, 30, Color.Black);
+                // gör det enklare att debugga
+                /*for (int i = 0; i < MoveableObject.gameList.Count; i++)
+                {
+                    Console.WriteLine(MoveableObject.gameList[i]); 
+                }*/
+
+                Raylib.DrawText(Raylib.GetFPS().ToString(), 0, 0, 30, Color.Black);
+            }
+            else // pause logic here
+            {
+                Raylib.DrawText("Game Paused", windowWidth / 2 - 250, windowHeight / 2 - 45, 70, Color.Black);
+                Raylib.DrawText("The pause function is horribly broken but im too lazy", windowWidth / 2 - 700, windowHeight / 2 + 60, 50, Color.Black);
+                Raylib.DrawText("to fix it, use at own risk", windowWidth / 2 - 690, windowHeight / 2 + 110, 50, Color.Black);
+            }
 
             Raylib.EndDrawing();
         }
@@ -393,13 +408,3 @@ Objective:
         return loser;
     }
 }
-
-
-
-
-
-
-
-
-
-//  Enn Te Ie
