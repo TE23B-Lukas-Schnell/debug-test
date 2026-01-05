@@ -1,8 +1,8 @@
 static class GibbManager
 {
     public static int targetFrameRate;
-    public static int windowWidth = 1600;
-    public static int windowHeight = 900;
+    // public static int windowWidth = 1600;
+    // public static int Raylib.GetScreenHeight() = 900;
     public static bool currentlyGibbing = false;
     public static bool fullscreen = false;
     static string scoreFilePath = "./scores.txt";
@@ -22,6 +22,8 @@ static class GibbManager
         {"jump", KeyboardKey.Z}, {"dash", KeyboardKey.C}, {"shoot", KeyboardKey.X}
     }, "arrow keys");
 
+
+    // public static ControlLayout currentControlLayout = defaultKeybindsWASD;
     public static ControlLayout currentControlLayout = defaultKeybindsWASD;
     //för att kontrollerna ska funka så måste spelaren skapas när ett runs startas inte när programmet startas, consider att göra run klassen inom snar framtid
     public static Player playerReference = new Player(currentControlLayout);
@@ -345,9 +347,9 @@ Objective:
     static MoveableObject WindowGame(/*Boss bossToFight*/)
     {
         currentlyGibbing = true;
-        Raylib.InitWindow(windowWidth, windowHeight, "Game");
 
         Boss enemy = new Karim();
+        Raylib.InitWindow(enemy.screenSizeX, enemy.screenSizeY, "Game");
 
         // Commit any objects that were enqueued before the game starts (safe to call always)
         MoveableObject.AddPendingObjects();
@@ -396,9 +398,9 @@ Objective:
             }
             else // pause logic here
             {
-                Raylib.DrawText("Game Paused", windowWidth / 2 - 250, windowHeight / 2 - 45, 70, Color.Black);
-                Raylib.DrawText("The pause function is horribly broken but im too lazy", windowWidth / 2 - 700, windowHeight / 2 + 60, 50, Color.Black);
-                Raylib.DrawText("to fix it, use at own risk", windowWidth / 2 - 690, windowHeight / 2 + 110, 50, Color.Black);
+                Raylib.DrawText("Game Paused", Raylib.GetScreenWidth() / 2 - 250, Raylib.GetScreenHeight() / 2 - 45, 70, Color.Black);
+                Raylib.DrawText("The pause function is horribly broken but im too lazy", Raylib.GetScreenWidth() / 2 - 700, Raylib.GetScreenHeight() / 2 + 60, 50, Color.Black);
+                Raylib.DrawText("to fix it, use at own risk", Raylib.GetScreenWidth() / 2 - 690, Raylib.GetScreenHeight() / 2 + 110, 50, Color.Black);
             }
 
             Raylib.EndDrawing();

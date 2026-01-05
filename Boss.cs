@@ -2,6 +2,11 @@ abstract class Boss : FightableObject
 {
     public int screenSizeX;
     public int screenSizeY;
+
+    protected bool notAttacking;
+
+    //this is used for a boss that is instantiated but not the current boss you fighting
+    //not implemented yet
     protected bool isActiveBoss = false;
 
     public bool Active
@@ -33,9 +38,13 @@ abstract class Boss : FightableObject
             catch (OperationCanceledException) { break; }
             catch (Exception) { }
             */
-            
+
+            notAttacking = false;
             await bossAttacks[r](5, token);
-            await Task.Delay(250, token); // small cooldown between attacks
+
+            notAttacking = true;
+            // make the boss move a little before the next attack
+            await Task.Delay(2150, token);
         }
     }
 
@@ -61,4 +70,6 @@ abstract class Boss : FightableObject
     {
         Raylib.DrawTexture(texture, (int)x, (int)y, color);
     }
+
+    abstract public void MoveCycle();
 }

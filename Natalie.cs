@@ -12,18 +12,6 @@ class Nathalie : Boss
     public float bulletHeight = 40;
     public float bulletDamage = 2;
 
-    void MoveCycle(float value, float minValue, float maxValue)
-    {
-        if (value >= maxValue)
-        {
-            xSpeed = -Math.Abs(moveSpeed);
-        }
-        else if (value <= minValue)
-        {
-            xSpeed = Math.Abs(moveSpeed);
-        }
-    }
-
     void StraightLaser()
     {
         new EnemyBullet(x, y, bulletWidth, bulletHeight, -1000f, 0f, 0f, bulletDamage);
@@ -97,6 +85,11 @@ class Nathalie : Boss
     public override void TakenDamage()
     {
 
+    }
+
+    public override void MoveCycle()
+    {
+       
     }
 
     public Nathalie()

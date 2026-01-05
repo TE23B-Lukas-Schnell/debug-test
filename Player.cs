@@ -44,7 +44,7 @@ class Player : FightableObject
     public float setShootCooldown = 0.5f;
     public float bulletWidth = 40f;
     public float bulletHeight = 20f;
-    public float bulletDamage = 50f;
+    public float bulletDamage = 5f;
     public float bulletxSpeed = 1800f;
     public float bulletySpeed = 0f;
     public float bulletGravity = 0f;

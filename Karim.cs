@@ -12,8 +12,10 @@ class Karim : Boss
     public float bulletHeight = 40;
     public float bulletDamage = 2;
 
-    void MoveCycle(float value, float minValue, float maxValue)
+    void Moving(float value, float minValue, float maxValue)
     {
+        if (xSpeed == 0) xSpeed = moveSpeed;
+
         if (value >= maxValue)
         {
             xSpeed = -Math.Abs(moveSpeed);
@@ -26,12 +28,12 @@ class Karim : Boss
 
     async Task JumpingAttack(float damage, CancellationToken ct)
     {
-        await Task.Delay(400, ct);
         Color temp = color;
         color = new Color(200, 35, 35);
+        await Task.Delay(700, ct);
 
-        await Task.Delay(1000, ct);
-
+        xSpeed = 0;
+        ySpeed = 0;
         xSpeed -= 800;
         ySpeed += 1200;
 
@@ -60,6 +62,9 @@ class Karim : Boss
 
     async Task SpiralAttack(float damage, CancellationToken ct)
     {
+        xSpeed = 0;
+        ySpeed = 0;
+
         Color temp = color;
         await Task.Delay(400, ct);
         color = new Color(255, 200, 0);
@@ -82,6 +87,11 @@ class Karim : Boss
     public override void Update()
     {
         ChooseAttack();
+
+        if (notAttacking)
+        {
+            MoveCycle();
+        }
 
         ContactDamage(contactDamage, "player");
         MoveObject(gravity);
@@ -113,14 +123,19 @@ class Karim : Boss
 
     }
 
+    public override void MoveCycle()
+    {
+        Moving(x, 900, screenSizeX - width);
+    }
+
     public Karim()
     {
-        x = 1400;
-        y = (int)(Raylib.GetScreenHeight() * 0.5f);
-        screenSizeX = 1600;
-        screenSizeY = 900;
+        screenSizeX = 1800;
+        screenSizeY = 1000;
         width = 250;
         height = 250;
+        x = screenSizeX;
+        y = screenSizeY / 2;
         moveSpeed = 500f;
         maxHP = 600;
         hp = maxHP;
