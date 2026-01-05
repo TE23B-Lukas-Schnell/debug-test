@@ -1,10 +1,10 @@
-class Karim : Boss
+class Nathalie : Boss
 {
     // konstanter
     public float moveSpeed;
     public float gravity = 2300f;
 
-    Color color = new Color(255, 255, 255, 255);
+    Color color = new Color(60, 255, 125, 255);
 
     // bullet konstanter
     public float setShootCooldown = 1f;
@@ -24,47 +24,33 @@ class Karim : Boss
         }
     }
 
-    async Task JumpingAttack(float damage, CancellationToken ct)
+    void StraightLaser()
     {
-        await Task.Delay(400, ct);
-        Color temp = color;
-        color = new Color(200, 35, 35);
+        new EnemyBullet(x, y, bulletWidth, bulletHeight, -1000f, 0f, 0f, bulletDamage);
+    }
 
+    void CurvedLaser()
+    {
+
+        new EnemyBullet(x, y, bulletWidth, bulletHeight, -1000f, 500f, 1000f, bulletDamage);
+    }
+
+    async Task LaserAttack(float damage, CancellationToken ct)
+    {
         await Task.Delay(1000, ct);
+        StraightLaser();
 
-        xSpeed -= 800;
-        ySpeed += 1200;
-
-        await Task.Delay(20, ct);
-        while (x != 0)
-        {
-
-        }
-
+        // eftersom bullets skapas medans gameobject listan iteraras så kraschar programmet ibland
         await Task.Delay(1000, ct);
-        xSpeed = 0;
-
-        xSpeed += 900;
-        ySpeed += 1700;
-
-        await Task.Delay(20, ct);
-        while (x != screenSizeX - width)
-        {
-
-        }
-        xSpeed = 0;
-        ySpeed = 0;
-        color = temp;
-        await Task.Delay(400, ct);
+        CurvedLaser();
     }
 
     async Task SpiralAttack(float damage, CancellationToken ct)
     {
         Color temp = color;
-        await Task.Delay(400, ct);
         color = new Color(255, 200, 0);
         await Task.Delay(800, ct);
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 16; i++)
         {
             new EnemyBullet(x, y, 20, 20, -800f, (float)Math.Cos(i) * 300f, 0f, damage);
             await Task.Delay(100, ct);
@@ -73,9 +59,9 @@ class Karim : Boss
         await Task.Delay(400, ct);
     }
 
-    void InitializeDelegates()
+    void initializeDelegates()
     {
-        bossAttacks.Add(JumpingAttack);
+        bossAttacks.Add(LaserAttack);
         bossAttacks.Add(SpiralAttack);
     }
 
@@ -104,7 +90,7 @@ class Karim : Boss
 
     public override void BeginDraw()
     {
-        sprite = Raylib.LoadTexture(@"./Sprites/karimryde-scaled-600x600.jpg");
+        sprite = Raylib.LoadTexture(@"./Sprites/nathaliezack-scaled-600x469.jpg");
         sprite = ChangeSpriteSize(sprite, (int)width, (int)height);
     }
 
@@ -113,21 +99,21 @@ class Karim : Boss
 
     }
 
-    public Karim()
+    public Nathalie()
     {
         x = 1400;
         y = (int)(Raylib.GetScreenHeight() * 0.5f);
         screenSizeX = 1600;
         screenSizeY = 900;
-        width = 250;
-        height = 250;
+        width = 600 / 2;
+        height = 469 / 2;
         moveSpeed = 500f;
         maxHP = 600;
         hp = maxHP;
         objectIdentifier = "enemy";
         contactDamage = 5;
 
-        InitializeDelegates();
+        initializeDelegates();
 
         AddToGameList(this);
     }

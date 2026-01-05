@@ -2,6 +2,35 @@ abstract class MoveableObject()
 {
     //lista för alla objekt som ska hanteras, det är lista för att den kan öka och minska under runtime
     public static List<MoveableObject> gameList = new List<MoveableObject>();
+
+    // Pending adds to avoid modifying gameList while it's iterated from other threads/tasks
+    private static readonly List<MoveableObject> pendingAdds = new List<MoveableObject>();
+
+
+    private static readonly object gameListLock = new object();
+
+    // kan användas säkert i alla threads
+    public static void AddToGameList(MoveableObject obj)
+    {
+        lock (gameListLock)
+        {
+            pendingAdds.Add(obj);
+        }
+    }
+
+    //lägger till alla objekt som väntar
+    public static void AddPendingObjects()
+    {
+        lock (gameListLock)
+        {
+            if (pendingAdds.Count > 0)
+            {
+                gameList.AddRange(pendingAdds);
+                pendingAdds.Clear();
+            }
+        }
+    }
+
     public static float globalGravityMultiplier = 1;
 
     public string objectIdentifier = "";
@@ -87,7 +116,7 @@ abstract class MoveableObject()
     protected void LimitMovement()
     {
         x = Math.Clamp(x, 0, Raylib.GetScreenWidth() - width);
-        y = Math.Clamp(y, height, Raylib.GetScreenHeight() - height);
+        y = Math.Clamp(y, 0, Raylib.GetScreenHeight() - height);
     }
 
     //tar bort objekt om de är offscreen

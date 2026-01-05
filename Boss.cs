@@ -13,13 +13,40 @@ abstract class Boss : FightableObject
 
     protected float contactDamage;
 
-    protected delegate void BossAttack(float damage, float exitTime);
+    protected delegate Task BossAttack(float damage, CancellationToken ct);
+    protected List<BossAttack> bossAttacks = new List<BossAttack>();
 
-    
+    protected CancellationTokenSource cancellationToken;
 
-    protected List<BossAttack> bossAttacks = [];
+    protected async Task AttackLoop(CancellationToken token)
+    {
+        while (!token.IsCancellationRequested)
+        {
+            if (bossAttacks.Count == 0) { await Task.Delay(100, token); continue; }
 
+            int r = Random.Shared.Next(bossAttacks.Count);
 
+            /*try
+            {
+                await bossAttacks[r](5, token);
+            }
+            catch (OperationCanceledException) { break; }
+            catch (Exception) { }
+            */
+            
+            await bossAttacks[r](5, token);
+            await Task.Delay(250, token); // small cooldown between attacks
+        }
+    }
+
+    protected void ChooseAttack()
+    {
+        if (cancellationToken == null)
+        {
+            cancellationToken = new CancellationTokenSource();
+            _ = AttackLoop(cancellationToken.Token);
+        }
+    }
 
     public Texture2D sprite;
 

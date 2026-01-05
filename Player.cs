@@ -269,7 +269,7 @@ bullet gravity           {bulletGravity}");
 
         {
 
-            { { } gameList.Add(this); { } }
+           AddToGameList(this);
 
         }
         maxHP = 20;

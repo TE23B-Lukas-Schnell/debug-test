@@ -349,6 +349,8 @@ Objective:
 
         Boss enemy = new Karim();
 
+        // Commit any objects that were enqueued before the game starts (safe to call always)
+        MoveableObject.AddPendingObjects();
         for (int i = 0; i < MoveableObject.gameList.Count; i++)
         {
             MoveableObject.gameList[i].BeginDraw();
@@ -371,9 +373,14 @@ Objective:
             if (!pause)
             {
                 Raylib.ClearBackground(Color.White);
+
+                // Commit pending adds here so we never modify the main list while iterating it
+                MoveableObject.AddPendingObjects();
+
                 for (int i = 0; i < MoveableObject.gameList.Count; i++)
                 {
-                    MoveableObject.gameList[i].Update(); //först uppdatera alla värden
+                    //först uppdatera alla värden
+                    MoveableObject.gameList[i].Update();
                     MoveableObject.gameList[i].Draw(); // sen ritar man ut allt till skärmen
                 }
                 //denna rad skrevs av mikael 

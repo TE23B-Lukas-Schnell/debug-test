@@ -20,7 +20,7 @@ class PlayerBullet : Projectile
     }
     public override void BeginDraw()
     {
-        
+
     }
 
     public PlayerBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage)
@@ -29,7 +29,7 @@ class PlayerBullet : Projectile
         this.y = y;
         objectIdentifier = "båt";
 
-        gameList.Add(this);
+
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
         canGoOffscreen = true;
@@ -46,5 +46,7 @@ class PlayerBullet : Projectile
             this.height = height;
         }
         this.gravity = gravity;
+
+        AddToGameList(this);
     }
 }
