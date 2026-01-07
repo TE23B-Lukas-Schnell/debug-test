@@ -1,17 +1,5 @@
 class Karim : Boss
 {
-    // konstanter
-    public float moveSpeed;
-    public float gravity = 2300f;
-
-    Color color = new Color(255, 255, 255, 255);
-
-    // bullet konstanter
-    public float setShootCooldown = 1f;
-    public float bulletWidth = 80;
-    public float bulletHeight = 40;
-    public float bulletDamage = 2;
-
     void Moving(float value, float minValue, float maxValue)
     {
         if (xSpeed == 0) xSpeed = moveSpeed;
@@ -26,62 +14,152 @@ class Karim : Boss
         }
     }
 
-    async Task JumpingAttack(float damage, CancellationToken ct)
+    async Task JumpingAttack(CancellationToken ct)
     {
         Color temp = color;
+        float contactDamageTemp = contactDamage;
+        contactDamage = 6;
         color = new Color(200, 35, 35);
-        await Task.Delay(700, ct);
+        xSpeed = 0;
+        ySpeed = 0;
+        await Wait(700, ct);
 
         xSpeed = 0;
         ySpeed = 0;
-        xSpeed -= 800;
-        ySpeed += 1200;
+        xSpeed -= moveSpeed * 1.5f;
+        ySpeed += jumpHeight;
 
-        await Task.Delay(20, ct);
+
         while (x != 0)
         {
 
         }
-
-        await Task.Delay(1000, ct);
         xSpeed = 0;
+        await Wait(300, ct);
 
-        xSpeed += 900;
-        ySpeed += 1700;
 
-        await Task.Delay(20, ct);
+        xSpeed += moveSpeed * 1.5f;
+        ySpeed += jumpHeight * 1.5f;
+
+
         while (x != screenSizeX - width)
         {
+            if (hp < maxHP / 2)
+            {
 
+            }
         }
         xSpeed = 0;
         ySpeed = 0;
+        color = temp;
+        contactDamage = contactDamageTemp;
+        await Wait(300, ct, true);
+    }
+
+    async Task SpiralAttack(CancellationToken ct)
+    {
+        xSpeed = 0;
+        ySpeed = 0;
+        Color temp = color;
+        color = new Color(255, 200, 0);
+
+
+        int amountOfBullets = 8;
+        if (hp < maxHP / 2)
+        {
+            amountOfBullets = 16;
+        }
+
+        await Wait(1000, ct);
+        for (int i = 0; i < amountOfBullets; i++)
+        {
+            new EnemyBullet(x, y, bulletWidth, bulletWidth, -800f, (float)Math.Cos(i) * 300f, 0f, bulletDamage);
+            await Wait(100, ct, false);
+        }
         color = temp;
         await Task.Delay(400, ct);
     }
 
-    async Task SpiralAttack(float damage, CancellationToken ct)
+    async Task BåtAttack(CancellationToken ct)
     {
         xSpeed = 0;
         ySpeed = 0;
-
         Color temp = color;
-        await Task.Delay(400, ct);
-        color = new Color(255, 200, 0);
-        await Task.Delay(800, ct);
-        for (int i = 0; i < 8; i++)
+        color = new Color(0, 128, 128);
+        await Wait(400, ct);
+
+        int amountOfBullets = 8;
+
+        xSpeed = 0;
+        ySpeed = 0;
+        xSpeed -= moveSpeed * 1.3f;
+        ySpeed += jumpHeight * 1.5f;
+
+        while (x >= screenSizeX / 2 - 200)
         {
-            new EnemyBullet(x, y, 20, 20, -800f, (float)Math.Cos(i) * 300f, 0f, damage);
-            await Task.Delay(100, ct);
+
         }
+        ySpeed = 0;
+        xSpeed = 0;
+        float tempGravity = gravity;
+        gravity = 0;
+        await Wait(800, ct);
+
+        for (int i = 0; i < amountOfBullets; i++)
+        {
+            new EnemyBullet(x + width / 2, y + height / 2, bulletWidth, bulletHeight, (float)Math.Cos(i) * 400, 0, 1700f, bulletDamage * 2);
+            await Wait(300, ct, false);
+        }
+        new EnemyBullet(x + width / 2, y + height / 2, bulletWidth, bulletHeight, 0 , 0, 1700f, bulletDamage * 2, true);
+        await Wait(300, ct, false);
+
         color = temp;
-        await Task.Delay(400, ct);
+        gravity = tempGravity;
+        await Wait(400, ct);
+    }
+
+    async Task TeknikarDuschen(CancellationToken ct)
+    {
+        xSpeed = 0;
+        ySpeed = 0;
+        Color temp = color;
+        color = new Color(0, 234, 14);
+        await Wait(600, ct);
+
+        int amountOfBullets = 15;
+
+        xSpeed = 0;
+        ySpeed = 0;
+        xSpeed -= moveSpeed * 1.5f;
+        ySpeed += jumpHeight * 1.5f;
+
+        while (x >= screenSizeX / 2)
+        {
+
+        }
+        await Task.Delay(367, ct);
+        ySpeed = 0;
+
+        float tempGravity = gravity;
+        gravity = 0;
+
+        for (int i = 0; i < amountOfBullets; i++)
+        {
+            new EnemyBullet(x, y, bulletWidth, bulletHeight, (float)Math.Cos(i) * 100, 0, 1700f, bulletDamage * 2, true);
+            await Wait(50, ct, false);
+        }
+
+        color = temp;
+        gravity = tempGravity;
+        await Wait(400, ct);
     }
 
     void InitializeDelegates()
     {
         bossAttacks.Add(JumpingAttack);
         bossAttacks.Add(SpiralAttack);
+        bossAttacks.Add(BåtAttack);
+        bossAttacks.Add(TeknikarDuschen);
     }
 
     public override void Update()
@@ -125,7 +203,7 @@ class Karim : Boss
 
     public override void MoveCycle()
     {
-        Moving(x, 900, screenSizeX - width);
+        Moving(x, 1200, screenSizeX - width);
     }
 
     public Karim()
@@ -136,13 +214,23 @@ class Karim : Boss
         height = 250;
         x = screenSizeX;
         y = screenSizeY / 2;
-        moveSpeed = 500f;
         maxHP = 600;
         hp = maxHP;
         objectIdentifier = "enemy";
-        contactDamage = 5;
+        contactDamage = 3;
+        moveSpeed = 600;
+        gravity = 2300;
+        jumpHeight = 1200;
 
         InitializeDelegates();
+
+        bulletWidth = 23;
+        bulletHeight = 60;
+        bulletDamage = 3;
+        waitMultiplier = 1;
+
+        attackDelay = 1750;
+
 
         AddToGameList(this);
     }

@@ -14,7 +14,7 @@ class EnemyBullet : Projectile
     {
         Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, color);
         ShowHitboxes();
-    
+
     }
 
     public override void BeginDraw()
@@ -36,7 +36,22 @@ class EnemyBullet : Projectile
         this.ySpeed = ySpeed;
         this.gravity = gravity;
         this.damage = damage;
-        canGoOffscreen = true;
+        this.canGoOffscreen = true;
+        objectIdentifier = "båt";
+        AddToGameList(this);
+    }
+    public EnemyBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage, bool ignoreGround)
+    {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.xSpeed = xSpeed;
+        this.ySpeed = ySpeed;
+        this.gravity = gravity;
+        this.damage = damage;
+        this.canGoOffscreen = true;
+        this.ignoreGround = ignoreGround;
         objectIdentifier = "båt";
         AddToGameList(this);
     }

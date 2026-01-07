@@ -14,7 +14,7 @@ class Player : FightableObject
         {"shoot", false },
     };
 
-    ControlLayout currentLayout;
+    public ControlLayout currentLayout;
 
     //player actions
     public Action moveLeft;

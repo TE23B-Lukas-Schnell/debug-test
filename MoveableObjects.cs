@@ -41,6 +41,7 @@ abstract class MoveableObject()
     protected float xSpeed, ySpeed;
     protected float width, height;
     protected bool canGoOffscreen = false;
+    protected bool ignoreGround = false;
 
     protected bool Grounded() => y >= Raylib.GetScreenHeight() - height;
 
@@ -146,7 +147,7 @@ abstract class MoveableObject()
         }
         else
         {
-            ySpeed = 0;
+            if (!ignoreGround) ySpeed = 0;
         }
     }
 

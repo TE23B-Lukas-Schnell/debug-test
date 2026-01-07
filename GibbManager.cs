@@ -9,6 +9,7 @@ static class GibbManager
     public static int amountOfItemsToChooseFrom = 2;
     static Dictionary<string, int> highscores = new Dictionary<string, int>();
     public static bool playerDead = false;
+
     //control layouts
     public static ControlLayout defaultKeybindsWASD = new ControlLayout(new Dictionary<string, KeyboardKey>()
     {
@@ -22,11 +23,10 @@ static class GibbManager
         {"jump", KeyboardKey.Z}, {"dash", KeyboardKey.C}, {"shoot", KeyboardKey.X}
     }, "arrow keys");
 
-
     // public static ControlLayout currentControlLayout = defaultKeybindsWASD;
-    public static ControlLayout currentControlLayout = defaultKeybindsWASD;
+
     //för att kontrollerna ska funka så måste spelaren skapas när ett runs startas inte när programmet startas, consider att göra run klassen inom snar framtid
-    public static Player playerReference = new Player(currentControlLayout);
+    public static Player playerReference = new Player(defaultKeybindsWASD);
     //action menus
     static Dictionary<string, Action> mainMenuActions = new Dictionary<string, Action>()
     {
@@ -40,7 +40,7 @@ static class GibbManager
     {
         {"select control layout", SelectControlLayout},
         {"create control layout", () => new ControlLayout(playerReference.keyPressed.Keys.ToArray())},
-        {"go back to main menu", () => {}},
+        {"go back to main menu", () => {MainMenu();}},
     };
 
     static Dictionary<string, Action> gameMenuActions = new Dictionary<string, Action>()
@@ -48,12 +48,18 @@ static class GibbManager
         {"Next boss", StartGame},
         {"Show your score", () =>   Console.WriteLine($"Your score is: {Player.score}")},
         {"Show player stats", () =>  playerReference.PrintPlayerStats()},
-        {"Apply item stats (temporary)", () =>  playerReference.ApplyBuffsFromItem()}
+        {"Apply item stats (temporary)", () =>  playerReference.ApplyBuffsFromItem()},
+        {"retry boss (temporary)", () => {
+        ControlLayout temp =  playerReference.currentLayout;
+        playerReference = new Player(temp);
+        MoveableObject.gameList.Clear();
+
+         }},
     };
 
     static List<Boss> PeakBossPeakBoss = new List<Boss>()
     {
-
+        // new Karim(), new Nathalie(),
     };
 
     public static List<Items> AvailableItems = new List<Items>()
@@ -164,7 +170,7 @@ static class GibbManager
         {
             int index = random.Next(0, items.Count);
             output.Append(items[index]);
-            items.Remove(items[index]);
+            // items.Remove(items[index]);
         }
 
         return output;
@@ -314,13 +320,13 @@ Objective:
             // ControlLayout.controlLayouts[i].PrintControlLayout();
         }
 
-        currentControlLayout = ControlLayout.controlLayouts[GetIntFromConsole(1, ControlLayout.controlLayouts.Count) - 1];
-        Console.WriteLine("Your new control layout is " + currentControlLayout.name);
+        playerReference.currentLayout = ControlLayout.controlLayouts[GetIntFromConsole(1, ControlLayout.controlLayouts.Count) - 1];
+        Console.WriteLine("Your new control layout is " + playerReference.currentLayout.name);
     }
 
     static void StartGame()
     {
-        MoveableObject survivor = WindowGame();
+        MoveableObject survivor = WindowGame(new Karim());
         Console.WriteLine(survivor + " died a deathly death");
         // bossesBeaten++;
         // GiveItem(2, playerReference, bossesToFightThisRun[bossesBeaten]);
@@ -344,11 +350,11 @@ Objective:
         }
     }
     // this is the actual game!!!11 veri important
-    static MoveableObject WindowGame(/*Boss bossToFight*/)
+    static MoveableObject WindowGame(Boss enemy)
     {
         currentlyGibbing = true;
 
-        Boss enemy = new Karim();
+        // Boss enemy = new Nathalie();
         Raylib.InitWindow(enemy.screenSizeX, enemy.screenSizeY, "Game");
 
         // Commit any objects that were enqueued before the game starts (safe to call always)

@@ -2,6 +2,19 @@ abstract class Boss : FightableObject
 {
     public int screenSizeX;
     public int screenSizeY;
+    public Texture2D sprite;
+
+    //stats that could potentially change with items 
+    public Color color = new Color(255, 255, 255, 255);
+    public float moveSpeed;
+    public float jumpHeight;
+    public float gravity;
+    public float bulletWidth;
+    public float bulletHeight;
+    public float bulletDamage;
+    public float waitMultiplier = 1;
+    public float attackDelay = 2000;
+
 
     protected bool notAttacking;
 
@@ -18,33 +31,42 @@ abstract class Boss : FightableObject
 
     protected float contactDamage;
 
-    protected delegate Task BossAttack(float damage, CancellationToken ct);
+    protected delegate Task BossAttack(CancellationToken ct);
     protected List<BossAttack> bossAttacks = new List<BossAttack>();
 
     protected CancellationTokenSource cancellationToken;
+
+    //this function makes the wait amount multiplied by the wait multiplier
+    protected async Task Wait(float time, CancellationToken ct) => await Task.Delay((int)MathF.Round(time * waitMultiplier), ct);
+
+    protected async Task Wait(float time, CancellationToken ct, bool UseMultiplier)
+    {
+        if (UseMultiplier) await Task.Delay((int)MathF.Round(time * waitMultiplier), ct);
+        else await Task.Delay((int)MathF.Round(time), ct);
+    }
 
     protected async Task AttackLoop(CancellationToken token)
     {
         while (!token.IsCancellationRequested)
         {
-            if (bossAttacks.Count == 0) { await Task.Delay(100, token); continue; }
+            if (bossAttacks.Count == 0) { continue; }
 
             int r = Random.Shared.Next(bossAttacks.Count);
 
             /*try
             {
-                await bossAttacks[r](5, token);
+                await bossAttacks[r]( token);
             }
             catch (OperationCanceledException) { break; }
             catch (Exception) { }
             */
 
             notAttacking = false;
-            await bossAttacks[r](5, token);
+            await bossAttacks[r](token);
 
             notAttacking = true;
             // make the boss move a little before the next attack
-            await Task.Delay(2150, token);
+            await Wait(attackDelay, token, true);
         }
     }
 
@@ -56,8 +78,6 @@ abstract class Boss : FightableObject
             _ = AttackLoop(cancellationToken.Token);
         }
     }
-
-    public Texture2D sprite;
 
     public Texture2D ChangeSpriteSize(Texture2D texture, int width, int height)
     {
