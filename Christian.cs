@@ -1,4 +1,4 @@
-class Karim : Boss
+class Christian : Boss
 {
     void Moving(float value, float minValue, float maxValue)
     {
@@ -77,52 +77,7 @@ class Karim : Boss
             await Wait(100, ct, false);
         }
         color = temp;
-        await Wait(400, ct);
-    }
-
-    async Task BåtAttack(CancellationToken ct)
-    {
-        xSpeed = 0;
-        ySpeed = 0;
-        Color temp = color;
-        color = new Color(0, 128, 128);
-        await Wait(400, ct);
-
-        int amountOfBullets = 8;
-
-        xSpeed = 0;
-        ySpeed = 0;
-        xSpeed -= moveSpeed * 1.3f;
-        ySpeed += jumpHeight * 1.5f;
-
-        while (x >= screenSizeX / 2 - 200)
-        {
-
-        }
-        ySpeed = 0;
-        xSpeed = 0;
-        float tempGravity = gravity;
-        gravity = 0;
-        await Wait(800, ct);
-
-        for (int i = 0; i < amountOfBullets; i++)
-        {
-            new EnemyBullet(x + width / 2, y + height / 2, bulletWidth, bulletHeight, (float)Math.Cos(i) * -400, -100, 1700f, bulletDamage);
-            await Wait(300, ct, false);
-        }
-        new EnemyBullet(x + width / 2, y + height / 2, bulletWidth, bulletHeight, 0, -100, 1700f, bulletDamage * 2, true);
-        await Wait(300, ct, false);
-
-        gravity = tempGravity;
-        while (!Grounded())
-        {
-
-        }
-
-
-        color = temp;
-        gravity = tempGravity;
-        await Wait(400, ct);
+        await Task.Delay(400, ct);
     }
 
     async Task TeknikarDuschen(CancellationToken ct)
@@ -133,31 +88,8 @@ class Karim : Boss
         color = new Color(0, 234, 14);
         await Wait(600, ct);
 
-        int amountOfBullets = 15;
-
-        xSpeed = 0;
-        ySpeed = 0;
-        xSpeed -= moveSpeed * 1.5f;
-        ySpeed += jumpHeight * 1.5f;
-
-        while (x >= screenSizeX / 2)
-        {
-
-        }
-        await Wait(367, ct, false);
-        ySpeed = 0;
-
-        float tempGravity = gravity;
-        gravity = 0;
-
-        for (int i = 0; i < amountOfBullets; i++)
-        {
-            new EnemyBullet(x, y, bulletWidth, bulletHeight, (float)Math.Cos(i) * 100, 0, 1700f, bulletDamage * 2, true);
-            await Wait(50, ct, false);
-        }
 
         color = temp;
-        gravity = tempGravity;
         await Wait(400, ct);
     }
 
@@ -165,7 +97,6 @@ class Karim : Boss
     {
         bossAttacks.Add(JumpingAttack);
         bossAttacks.Add(SpiralAttack);
-        bossAttacks.Add(BåtAttack);
         bossAttacks.Add(TeknikarDuschen);
     }
 
@@ -199,7 +130,7 @@ class Karim : Boss
 
     public override void BeginDraw()
     {
-        sprite = Raylib.LoadTexture(@"./Sprites/karimryde-scaled-600x600.jpg");
+        sprite = Raylib.LoadTexture(@"./Sprites/christiankilliner-scaled-600x600.jpg");
         sprite = ChangeSpriteSize(sprite, (int)width, (int)height);
     }
 
@@ -213,10 +144,10 @@ class Karim : Boss
         Moving(x, 1200, screenSizeX - width);
     }
 
-    public Karim()
+    public Christian()
     {
-        screenSizeX = 1800;
-        screenSizeY = 1000;
+        screenSizeX = 1400;
+        screenSizeY = 1080;
         width = 250;
         height = 250;
         x = screenSizeX;
@@ -233,7 +164,7 @@ class Karim : Boss
 
         bulletWidth = 23;
         bulletHeight = 60;
-        bulletDamage = 4;
+        bulletDamage = 3;
         waitMultiplier = 1;
 
         attackDelay = 1750;

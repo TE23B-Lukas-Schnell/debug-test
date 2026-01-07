@@ -53,7 +53,7 @@ static class GibbManager
         ControlLayout temp =  playerReference.currentLayout;
         playerReference = new Player(temp);
         MoveableObject.gameList.Clear();
-
+        StartGame();
          }},
     };
 
@@ -88,7 +88,7 @@ static class GibbManager
             {
                 Boss b = objectToBuff as Boss;
             }
-        })
+        }),
     };
 
     public static int GetIntFromConsole()
@@ -127,7 +127,9 @@ static class GibbManager
     {
         string correctGrammar;
         if (amountOfItemsToChooseFrom < 2) correctGrammar = "items"; else correctGrammar = "item";
+
         Console.WriteLine($"Choose an item, the {correctGrammar} you don't will be used the next boss!");
+        
         Items[] choosableItems = GetRandomItems(amountOfItemsToChooseFrom, AvailableItems);
         for (int i = 0; i < choosableItems.Length; i++)
         {
@@ -354,11 +356,8 @@ Objective:
     {
         currentlyGibbing = true;
 
-        // Boss enemy = new Nathalie();
         Raylib.InitWindow(enemy.screenSizeX, enemy.screenSizeY, "Game");
 
-        // Commit any objects that were enqueued before the game starts (safe to call always)
-        MoveableObject.AddPendingObjects();
         for (int i = 0; i < MoveableObject.gameList.Count; i++)
         {
             MoveableObject.gameList[i].BeginDraw();
@@ -368,7 +367,6 @@ Objective:
         bool pause = false;
         while (!Raylib.WindowShouldClose() && currentlyGibbing)
         {
-
             Raylib.SetExitKey(KeyboardKey.Null);
 
             if (Raylib.IsKeyPressed(KeyboardKey.Escape))
@@ -382,7 +380,7 @@ Objective:
             {
                 Raylib.ClearBackground(Color.White);
 
-                // Commit pending adds here so we never modify the main list while iterating it
+                //lägg till alla objekt som behöver läggas till utan att ändra gamelist medans den itereras
                 MoveableObject.AddPendingObjects();
 
                 for (int i = 0; i < MoveableObject.gameList.Count; i++)

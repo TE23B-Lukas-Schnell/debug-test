@@ -34,9 +34,9 @@ class Player : FightableObject
     public float moveSpeed = 900f;
     public float jumpForce = 1300f;
     public float setDashDuration = 0.2f;
-    public float setDashCooldown = 0.43f;
+    public float setDashCooldown = 0.47f;
     public float fastFallSpeed = 1400f;
-    public float dashSpeed = 2000f;
+    public float dashSpeed = 1900f;
     public float invincibilityTime = 1f;
     public Color color = new Color(0, 0f, 235f, 254f);
 
@@ -146,7 +146,7 @@ bullet gravity           {bulletGravity}");
             {
                 leftDash();
             }
-            else
+            else if (keyPressed["right"])
             {
                 rightDash();
             }
@@ -255,7 +255,7 @@ bullet gravity           {bulletGravity}");
         Console.WriteLine("spelaren har despawnat");
         GibbManager.currentlyGibbing = false;
     }
-
+    // KOLLA ALDRIG I SPELARENS CONSRUCTOR 
     public Player(ControlLayout controlLayout)
     {
         objectIdentifier = "player";
@@ -266,10 +266,10 @@ bullet gravity           {bulletGravity}");
             height = 80;
             int båt = 3;
         }
-
+        // båt++;
         {
 
-           AddToGameList(this);
+            AddToGameList(this);
 
         }
         maxHP = 20;

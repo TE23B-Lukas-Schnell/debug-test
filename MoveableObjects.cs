@@ -25,6 +25,10 @@ abstract class MoveableObject()
         {
             if (pendingAdds.Count > 0)
             {
+                for (int i = 0; i < pendingAdds.Count; i++)
+                {
+                   pendingAdds[i].BeginDraw(); //kör alla begin draw funktion så att spriterna funkar
+                }
                 gameList.AddRange(pendingAdds);
                 pendingAdds.Clear();
             }

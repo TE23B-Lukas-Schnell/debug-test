@@ -51,18 +51,8 @@ abstract class Boss : FightableObject
         {
             if (bossAttacks.Count == 0) { continue; }
 
-            int r = Random.Shared.Next(bossAttacks.Count);
-
-            /*try
-            {
-                await bossAttacks[r]( token);
-            }
-            catch (OperationCanceledException) { break; }
-            catch (Exception) { }
-            */
-
             notAttacking = false;
-            await bossAttacks[r](token);
+            await bossAttacks[Random.Shared.Next(bossAttacks.Count)](token);
 
             notAttacking = true;
             // make the boss move a little before the next attack
