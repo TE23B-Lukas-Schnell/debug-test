@@ -9,6 +9,7 @@ static class GibbManager
     public static int amountOfItemsToChooseFrom = 2;
     static Dictionary<string, int> highscores = new Dictionary<string, int>();
     public static bool playerDead = false;
+    public static  Dictionary<string, Action> currentMenu;
 
     //control layouts
     public static ControlLayout defaultKeybindsWASD = new ControlLayout(new Dictionary<string, KeyboardKey>()
@@ -22,17 +23,14 @@ static class GibbManager
         {"up", KeyboardKey.Up},{"down",KeyboardKey.Down},{"left", KeyboardKey.Left},{"right",KeyboardKey.Right},
         {"jump", KeyboardKey.Z}, {"dash", KeyboardKey.C}, {"shoot", KeyboardKey.X}
     }, "arrow keys");
-
-    // public static ControlLayout currentControlLayout = defaultKeybindsWASD;
-
     //för att kontrollerna ska funka så måste spelaren skapas när ett runs startas inte när programmet startas, consider att göra run klassen inom snar framtid
     public static Player playerReference = new Player(defaultKeybindsWASD);
     //action menus
     static Dictionary<string, Action> mainMenuActions = new Dictionary<string, Action>()
     {
-        {"Start playing", GameLoop},
+        {"Start playing", () => currentMenu = gameMenuActions},
         {"Show high scores", () =>  WriteDictionary(highscores)},
-        {"select controll layout", ControlMenu},
+        {"select controll layout", () => currentMenu = controlMenuActions},
         {"quit game", () => {Console.WriteLine("quitting game");}},
     };
 
@@ -40,7 +38,7 @@ static class GibbManager
     {
         {"select control layout", SelectControlLayout},
         {"create control layout", () => new ControlLayout(playerReference.keyPressed.Keys.ToArray())},
-        {"go back to main menu", () => {MainMenu();}},
+        {"go back to main menu", () => currentMenu = mainMenuActions},
     };
 
     static Dictionary<string, Action> gameMenuActions = new Dictionary<string, Action>()
@@ -270,6 +268,13 @@ Objective:
         LoadSave();
         Raylib.SetTargetFPS(ChooseFPS());
         // Intructions();
+
+        currentMenu = mainMenuActions;
+    }
+
+    public static void HandleMenu(Dictionary<string, Action> currentMenu)
+    {
+        ExecuteMenu(currentMenu);
     }
 
     static void ExecuteMenu(string menuName, Dictionary<string, Action> menuActions)
@@ -298,19 +303,6 @@ Objective:
         menuActions[actions[GetIntFromConsole(1, actions.Length) - 1]]();
     }
 
-    public static void MainMenu()
-    {
-        while (true) ExecuteMenu(" Main menu ", mainMenuActions);
-    }
-
-    static void ControlMenu()
-    {
-        while (true)
-        {
-            ExecuteMenu(" Controls ", controlMenuActions);
-        }
-    }
-
     static void SelectControlLayout()
     {
         for (int i = 0; i < ControlLayout.controlLayouts.Count; i++)
@@ -334,23 +326,7 @@ Objective:
         // GiveItem(2, playerReference, bossesToFightThisRun[bossesBeaten]);
     }
 
-    public static void GameLoop()
-    {
 
-        List<Boss> bossesToFightThisRun = GenerateBossList(PeakBossPeakBoss, 2);
-
-        int bossesBeaten = 0;
-
-        for (int i = 0; i < bossesToFightThisRun.Count; i++)
-        {
-            Console.WriteLine("köttig boss: " + bossesToFightThisRun[i]);
-        }
-
-        while (currentlyGibbing == false)
-        {
-            ExecuteMenu(" Game ", gameMenuActions);
-        }
-    }
     // this is the actual game!!!11 veri important
     static MoveableObject WindowGame(Boss enemy)
     {

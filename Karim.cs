@@ -92,10 +92,10 @@ class Karim : Boss
 
         xSpeed = 0;
         ySpeed = 0;
-        xSpeed -= moveSpeed * 1.3f;
+        // xSpeed -= moveSpeed * 1.3f;
         ySpeed += jumpHeight * 1.5f;
 
-        while (x >= screenSizeX / 2 - 200)
+        while (y >= screenSizeY / 2 - 200)
         {
 
         }
@@ -107,7 +107,7 @@ class Karim : Boss
 
         for (int i = 0; i < amountOfBullets; i++)
         {
-            new EnemyBullet(x + width / 2, y + height / 2, bulletWidth, bulletHeight, (float)Math.Cos(i) * -400, -100, 1700f, bulletDamage);
+            new EnemyBullet(x + width / 2, y + height / 2, bulletWidth, bulletHeight, -600, -(i * 30), 0, bulletDamage);
             await Wait(300, ct, false);
         }
         new EnemyBullet(x + width / 2, y + height / 2, bulletWidth, bulletHeight, 0, -100, 1700f, bulletDamage * 2, true);
@@ -216,7 +216,7 @@ class Karim : Boss
     public Karim()
     {
         screenSizeX = 1800;
-        screenSizeY = 1000;
+        screenSizeY = 930;
         width = 250;
         height = 250;
         x = screenSizeX;

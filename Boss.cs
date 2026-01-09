@@ -49,14 +49,11 @@ abstract class Boss : FightableObject
     {
         while (!token.IsCancellationRequested)
         {
-            if (bossAttacks.Count == 0) { continue; }
+            notAttacking = true;
+            await Wait(attackDelay, token, true);
 
             notAttacking = false;
             await bossAttacks[Random.Shared.Next(bossAttacks.Count)](token);
-
-            notAttacking = true;
-            // make the boss move a little before the next attack
-            await Wait(attackDelay, token, true);
         }
     }
 
