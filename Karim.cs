@@ -86,39 +86,37 @@ class Karim : Boss
         ySpeed = 0;
         Color temp = color;
         color = new Color(0, 128, 128);
-        await Wait(400, ct);
+        await Wait(600, ct);
 
-        int amountOfBullets = 8;
+        int amountOfBullets = 12;
 
         xSpeed = 0;
-        ySpeed = 0;
-        // xSpeed -= moveSpeed * 1.3f;
-        ySpeed += jumpHeight * 1.5f;
 
-        while (y >= screenSizeY / 2 - 200)
+        // xSpeed -= moveSpeed * 1.3f;
+        ySpeed += jumpHeight * 1.3f;
+
+        while (y >= screenSizeY / 2 - height)
         {
 
         }
-        ySpeed = 0;
+
         xSpeed = 0;
         float tempGravity = gravity;
         gravity = 0;
-        await Wait(800, ct);
+        ySpeed = 0;
+        await Wait(400, ct);
 
         for (int i = 0; i < amountOfBullets; i++)
         {
-            new EnemyBullet(x + width / 2, y + height / 2, bulletWidth, bulletHeight, -600, -(i * 30), 0, bulletDamage);
-            await Wait(300, ct, false);
+            new EnemyBullet(x + width / 2, y + height / 2, bulletHeight, bulletWidth, -(i * 200), -1000, 0, bulletDamage, true);
+            await Wait(140, ct, false);
         }
-        new EnemyBullet(x + width / 2, y + height / 2, bulletWidth, bulletHeight, 0, -100, 1700f, bulletDamage * 2, true);
-        await Wait(300, ct, false);
 
         gravity = tempGravity;
         while (!Grounded())
         {
 
         }
-
 
         color = temp;
         gravity = tempGravity;

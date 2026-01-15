@@ -1,15 +1,13 @@
 static class GibbManager
 {
     public static int targetFrameRate;
-    // public static int windowWidth = 1600;
-    // public static int Raylib.GetScreenHeight() = 900;
     public static bool currentlyGibbing = false;
     public static bool fullscreen = false;
     static string scoreFilePath = "./scores.txt";
     public static int amountOfItemsToChooseFrom = 2;
     static Dictionary<string, int> highscores = new Dictionary<string, int>();
     public static bool playerDead = false;
-    public static  Dictionary<string, Action> currentMenu;
+    public static Menu currentMenu;
 
     //control layouts
     public static ControlLayout defaultKeybindsWASD = new ControlLayout(new Dictionary<string, KeyboardKey>()
@@ -26,34 +24,39 @@ static class GibbManager
     //för att kontrollerna ska funka så måste spelaren skapas när ett runs startas inte när programmet startas, consider att göra run klassen inom snar framtid
     public static Player playerReference = new Player(defaultKeybindsWASD);
     //action menus
-    static Dictionary<string, Action> mainMenuActions = new Dictionary<string, Action>()
-    {
-        {"Start playing", () => currentMenu = gameMenuActions},
-        {"Show high scores", () =>  WriteDictionary(highscores)},
-        {"select controll layout", () => currentMenu = controlMenuActions},
-        {"quit game", () => {Console.WriteLine("quitting game");}},
-    };
 
-    static Dictionary<string, Action> controlMenuActions = new Dictionary<string, Action>()
+
+
+    static Menu mainMenu = new Menu("main", new Dictionary<string, Action>()
+    {
+        {"Start playing", () => currentMenu = gameMenu},
+        {"Show high scores", () =>  WriteDictionary(highscores)},
+        {"select controll layout", () => currentMenu = controlMenu},
+        {"quit game", () => {Console.WriteLine("quitting game");}},
+    });
+
+    static Menu controlMenu = new("controls", new Dictionary<string, Action>()
     {
         {"select control layout", SelectControlLayout},
         {"create control layout", () => new ControlLayout(playerReference.keyPressed.Keys.ToArray())},
-        {"go back to main menu", () => currentMenu = mainMenuActions},
-    };
+        {"go back to main menu", () => currentMenu = mainMenu},
+    });
 
-    static Dictionary<string, Action> gameMenuActions = new Dictionary<string, Action>()
+    static Menu gameMenu = new("game", new Dictionary<string, Action>()
     {
         {"Next boss", StartGame},
         {"Show your score", () =>   Console.WriteLine($"Your score is: {Player.score}")},
         {"Show player stats", () =>  playerReference.PrintPlayerStats()},
         {"Apply item stats (temporary)", () =>  playerReference.ApplyBuffsFromItem()},
         {"retry boss (temporary)", () => {
-        ControlLayout temp =  playerReference.currentLayout;
-        playerReference = new Player(temp);
-        MoveableObject.gameList.Clear();
-        StartGame();
-         }},
-    };
+            ControlLayout temp =  playerReference.currentLayout;
+            playerReference = new Player(temp);
+            MoveableObject.gameList.Clear();
+            StartGame();
+                }
+            }
+        });
+
 
     static List<Boss> PeakBossPeakBoss = new List<Boss>()
     {
@@ -127,7 +130,7 @@ static class GibbManager
         if (amountOfItemsToChooseFrom < 2) correctGrammar = "items"; else correctGrammar = "item";
 
         Console.WriteLine($"Choose an item, the {correctGrammar} you don't will be used the next boss!");
-        
+
         Items[] choosableItems = GetRandomItems(amountOfItemsToChooseFrom, AvailableItems);
         for (int i = 0; i < choosableItems.Length; i++)
         {
@@ -229,7 +232,7 @@ Objective:
             string[] dividedContent = content.Split(",", StringSplitOptions.RemoveEmptyEntries);
             return dividedContent;
         }
-        return ["köttig micke", "10000"];
+        return ["köttigaste mikael", "10000", "anton", "5", "JackJackPegasusErgoLibraOndJävelSomVillFörstöraVärldenPegasusIgenAstroNovaMetiore", "-5"];
     }
 
     static Dictionary<string, int> ReadSaveData(string[] saveData)
@@ -269,38 +272,21 @@ Objective:
         Raylib.SetTargetFPS(ChooseFPS());
         // Intructions();
 
-        currentMenu = mainMenuActions;
+        currentMenu = mainMenu;
     }
 
-    public static void HandleMenu(Dictionary<string, Action> currentMenu)
+    public static void ExecuteMenu(Menu menu)
     {
-        ExecuteMenu(currentMenu);
-    }
-
-    static void ExecuteMenu(string menuName, Dictionary<string, Action> menuActions)
-    {
-        Console.WriteLine("--------------------" + menuName + "--------------------------------------------");
+        Console.WriteLine("--------------------" + menu.name + "--------------------------------------------");
 
         Console.WriteLine("choose an action");
 
-        string[] actions = menuActions.Keys.ToArray();
+        string[] actions = menu.menuActions.Keys.ToArray();
         for (int i = 0; i < actions.Length; i++)
         {
             Console.WriteLine($"{i + 1}. {actions[i]}");
         }
-        menuActions[actions[GetIntFromConsole(1, actions.Length) - 1]]();
-    }
-
-    static void ExecuteMenu(Dictionary<string, Action> menuActions)
-    {
-        Console.WriteLine("choose an action");
-
-        string[] actions = menuActions.Keys.ToArray();
-        for (int i = 0; i < actions.Length; i++)
-        {
-            Console.WriteLine($"{i + 1}. {actions[i]}");
-        }
-        menuActions[actions[GetIntFromConsole(1, actions.Length) - 1]]();
+        menu.menuActions[actions[GetIntFromConsole(1, actions.Length) - 1]]();
     }
 
     static void SelectControlLayout()

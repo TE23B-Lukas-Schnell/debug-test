@@ -7,7 +7,7 @@ GibbManager.Setup();
 
 while (true)
 {
-    GibbManager.HandleMenu(GibbManager.currentMenu);
+    GibbManager.ExecuteMenu(GibbManager.currentMenu);
 }
 
 
