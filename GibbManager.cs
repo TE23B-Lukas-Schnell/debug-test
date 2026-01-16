@@ -25,8 +25,6 @@ static class GibbManager
     public static Player playerReference = new Player(defaultKeybindsWASD);
     //action menus
 
-
-
     static Menu mainMenu = new Menu("main", new Dictionary<string, Action>()
     {
         {"Start playing", () => currentMenu = gameMenu},
