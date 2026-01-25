@@ -13,7 +13,14 @@ abstract class FightableObject : MoveableObject
         Raylib.DrawRectangle((int)xpos + 5, (int)ypos + 5, (int)(hp * sizeMultiplier), 50, Color.Green);
     }
 
-    bool changeHp(FightableObject target, float changeAmount, float changeMultiplier, float limit, bool isDamage)
+    protected void DisplayHealthBar(float xpos, float ypos, float sizeMultiplier, string text, float textSize)
+    {
+        Raylib.DrawRectangle((int)xpos, (int)ypos, (int)(maxHP * sizeMultiplier) + 10, 60, Color.Gray);
+        Raylib.DrawRectangle((int)xpos + 5, (int)ypos + 5, (int)(hp * sizeMultiplier), 50, Color.Green);
+        Raylib.DrawText(text, (int)xpos + 10, (int)(ypos - textSize), (int)textSize,Color.Black);
+    }
+
+    bool ChangeHp(FightableObject target, float changeAmount, float changeMultiplier, float limit, bool isDamage)
     {
         bool limitReached;
 
@@ -45,8 +52,8 @@ abstract class FightableObject : MoveableObject
     {
         if (target.invincibilityDuration <= 0)
         {
-           
-            if (changeHp(target, damage, damageMultiplier, 0, true))
+
+            if (ChangeHp(target, damage, damageMultiplier, 0, true))
             {
                 target.remove = true;
                 Despawn();
@@ -55,9 +62,9 @@ abstract class FightableObject : MoveableObject
         }
     }
 
-    public void healDamage(float healAmount, FightableObject target)
+    public void HealDamage(float healAmount, FightableObject target)
     {
-        if (changeHp(target, healAmount, healMultiplier, maxHP, false))
+        if (ChangeHp(target, healAmount, healMultiplier, maxHP, false))
         {
             target.healthy = true;
         }

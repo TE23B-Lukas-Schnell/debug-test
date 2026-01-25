@@ -4,7 +4,6 @@ static class GibbManager
     public static bool currentlyGibbing = false;
     public static bool fullscreen = false;
     static string scoreFilePath = "./scores.txt";
-    public static int amountOfItemsToChooseFrom = 2;
     static Dictionary<string, int> highscores = new Dictionary<string, int>();
     public static bool playerDead = false;
     public static Menu currentMenu;
@@ -27,7 +26,7 @@ static class GibbManager
 
     static Menu mainMenu = new Menu("main", new Dictionary<string, Action>()
     {
-        {"Start playing", () => currentMenu = gameMenu},
+        {"Start playing", () => currentMenu = configureRunMenu},
         {"Show high scores", () =>  WriteDictionary(highscores)},
         {"select controll layout", () => currentMenu = controlMenu},
         {"quit game", () => {Console.WriteLine("quitting game");}},
@@ -54,6 +53,14 @@ static class GibbManager
                 }
             }
         });
+
+    static Menu configureRunMenu = new Menu("configure", new Dictionary<string, Action>()
+    {
+        {"Start run", () => currentMenu = gameMenu},
+        {"Change seed", () =>  WriteDictionary(highscores)},
+        {"Change available items (not implemented)", () => WriteDictionary(highscores)},
+        {"Change available bosses (not implemented)", () => WriteDictionary(highscores)},
+    });
 
 
     static List<Boss> PeakBossPeakBoss = new List<Boss>()
@@ -120,61 +127,6 @@ static class GibbManager
             }
 
         }
-    }
-
-    static void GiveItem(int amount, Player player, Boss nextboss)
-    {
-        string correctGrammar;
-        if (amountOfItemsToChooseFrom < 2) correctGrammar = "items"; else correctGrammar = "item";
-
-        Console.WriteLine($"Choose an item, the {correctGrammar} you don't will be used the next boss!");
-
-        Items[] choosableItems = GetRandomItems(amountOfItemsToChooseFrom, AvailableItems);
-        for (int i = 0; i < choosableItems.Length; i++)
-        {
-            Console.WriteLine($"{i}: {choosableItems[i].name} \n {choosableItems[i].description}");
-        }
-        int itemToChoose;
-        while (!int.TryParse(Console.ReadLine(), out itemToChoose))
-        {
-            Console.WriteLine("Invalid input, try again");
-        }
-        player.Inventory.Add(choosableItems[itemToChoose]);
-        nextboss.Inventory.AddRange(choosableItems);
-        /// kommer detta att funka??? 🧐🧐🧐
-
-
-    }
-
-    static List<Boss> GenerateBossList(List<Boss> availableBosses, int amountOfBosses)
-    {
-        amountOfBosses = Math.Clamp(amountOfBosses, 0, availableBosses.Count);
-        Random random = Random.Shared;
-        List<Boss> output = new List<Boss>();
-
-        for (int i = 0; i < amountOfBosses; i++)
-        {
-            int index = random.Next(0, availableBosses.Count);
-            output.Add(availableBosses[index]);
-            availableBosses.Remove(availableBosses[index]);
-        }
-        return output;
-    }
-
-    static Items[] GetRandomItems(int amount, List<Items> items)
-    {
-        amount = Math.Clamp(amount, 0, items.Count);
-        Items[] output = new Items[amount];
-        Random random = Random.Shared;
-
-        for (int i = 0; i < amount; i++)
-        {
-            int index = random.Next(0, items.Count);
-            output.Append(items[index]);
-            // items.Remove(items[index]);
-        }
-
-        return output;
     }
 
     public static void WriteDictionary(Dictionary<string, int> dictionary)
@@ -309,7 +261,6 @@ Objective:
         // bossesBeaten++;
         // GiveItem(2, playerReference, bossesToFightThisRun[bossesBeaten]);
     }
-
 
     // this is the actual game!!!11 veri important
     static MoveableObject WindowGame(Boss enemy)

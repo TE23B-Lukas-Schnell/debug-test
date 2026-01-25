@@ -92,20 +92,16 @@ class Karim : Boss
 
         xSpeed = 0;
 
-        // xSpeed -= moveSpeed * 1.3f;
-    
         await Wait(400, ct);
 
         for (int i = 0; i < amountOfBullets; i++)
         {
-            new EnemyBullet(x + width / 2, y + height / 2, bulletHeight, bulletWidth, -(1100 - (i * 30)), 1000, 1700, bulletDamage, true);
+            new EnemyBullet(x + width / 2, y + height / 2, bulletHeight, bulletWidth, -(1100 - (i * 50)), 1000, 1700, bulletDamage, true);
             await Wait(190, ct, false);
         }
 
-
-
         color = temp;
- 
+
         await Wait(400, ct);
     }
 
@@ -178,7 +174,7 @@ class Karim : Boss
         DrawTexture(sprite, color);
         ShowHitboxes();
         Raylib.DrawRectangle(50, 50, (int)hp, 50, Color.White);
-        DisplayHealthBar(50, 50, 1);
+        DisplayHealthBar(50, 50, 1, "Karim the Ryder", 30);
     }
 
     public override void BeginDraw()
@@ -221,7 +217,9 @@ class Karim : Boss
         waitMultiplier = 1;
 
         attackDelay = 1750;
-
         AddToGameList(this);
+
+
+
     }
 }

@@ -255,7 +255,8 @@ bullet gravity           {bulletGravity}");
         Console.WriteLine("spelaren har despawnat");
         GibbManager.currentlyGibbing = false;
     }
-    // KOLLA ALDRIG I SPELARENS CONSRUCTOR 
+   
+    // KOLLA ALDRIG I SPELARENS CONStRUCTOR 
     public Player(ControlLayout controlLayout)
     {
         objectIdentifier = "player";
