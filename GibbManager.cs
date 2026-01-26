@@ -23,7 +23,6 @@ static class GibbManager
     //för att kontrollerna ska funka så måste spelaren skapas när ett runs startas inte när programmet startas, consider att göra run klassen inom snar framtid
     public static Player playerReference = new Player(defaultKeybindsWASD);
     //action menus
-
     static Menu mainMenu = new Menu("main", new Dictionary<string, Action>()
     {
         {"Start playing", () => currentMenu = configureRunMenu},
@@ -39,9 +38,17 @@ static class GibbManager
         {"go back to main menu", () => currentMenu = mainMenu},
     });
 
+    static Menu configureRunMenu = new Menu("configure", new Dictionary<string, Action>()
+    {
+        {"Start run", () => StartRun()},
+        {"Change seed", () =>  WriteDictionary(highscores)},
+        {"Change available items (not implemented)", () => WriteDictionary(highscores)},
+        {"Change available bosses (not implemented)", () => WriteDictionary(highscores)},
+    });
+
     static Menu gameMenu = new("game", new Dictionary<string, Action>()
     {
-        {"Next boss", StartGame},
+        {"Next boss", GibbigtVärre},
         {"Show your score", () =>   Console.WriteLine($"Your score is: {Player.score}")},
         {"Show player stats", () =>  playerReference.PrintPlayerStats()},
         {"Apply item stats (temporary)", () =>  playerReference.ApplyBuffsFromItem()},
@@ -49,19 +56,10 @@ static class GibbManager
             ControlLayout temp =  playerReference.currentLayout;
             playerReference = new Player(temp);
             MoveableObject.gameList.Clear();
-            StartGame();
+            GibbigtVärre();
                 }
             }
         });
-
-    static Menu configureRunMenu = new Menu("configure", new Dictionary<string, Action>()
-    {
-        {"Start run", () => currentMenu = gameMenu},
-        {"Change seed", () =>  WriteDictionary(highscores)},
-        {"Change available items (not implemented)", () => WriteDictionary(highscores)},
-        {"Change available bosses (not implemented)", () => WriteDictionary(highscores)},
-    });
-
 
     static List<Boss> PeakBossPeakBoss = new List<Boss>()
     {
@@ -254,7 +252,12 @@ Objective:
         Console.WriteLine("Your new control layout is " + playerReference.currentLayout.name);
     }
 
-    static void StartGame()
+    static void StartRun()
+    {
+        currentMenu = gameMenu;
+    }
+
+    static void GibbigtVärre()
     {
         MoveableObject survivor = WindowGame(new Karim());
         Console.WriteLine(survivor + " died a deathly death");
@@ -330,5 +333,93 @@ Objective:
         Raylib.CloseWindow();
 
         return loser;
+    }
+
+    //void köttigaste klassen
+
+    class Run()
+    {
+        //bestämmer rng för runnet
+        int seed;
+
+        //lista eller kö på kanske 5 random bossar, ordingen är viktig
+        Queue<Boss> bossesToFight;
+
+        //möjliga items att få på ett run, oftast en kopia listan med alla items, när ett item plockas från listan så borde försvinna ur den
+        List<Items> availableItems;
+
+        // innehåller items som alla bossar ska ha
+        List<Items> bossItems;
+
+        public static int amountOfItemsToChooseFrom = 2;
+
+        Items[] GetRandomItems(int amount, List<Items> items)
+        {
+            amount = Math.Clamp(amount, 0, items.Count);
+            Items[] output = new Items[amount];
+            Random random = Random.Shared;
+
+            for (int i = 0; i < amount; i++)
+            {
+                int index = random.Next(0, items.Count);
+                output.Append(items[index]);
+                // items.Remove(items[index]);
+            }
+
+            return output;
+        }
+
+        void GiveItem(int amount, Player player, Boss nextboss)
+        {
+            string correctGrammar;
+            if (amountOfItemsToChooseFrom < 2) correctGrammar = "items"; else correctGrammar = "item";
+
+            Console.WriteLine($"Choose an item, the {correctGrammar} you don't will be used the next boss!");
+
+            Items[] choosableItems = GetRandomItems(amountOfItemsToChooseFrom, availableItems);
+            for (int i = 0; i < choosableItems.Length; i++)
+            {
+                Console.WriteLine($"{i}: {choosableItems[i].name} \n {choosableItems[i].description}");
+            }
+            int itemToChoose;
+            while (!int.TryParse(Console.ReadLine(), out itemToChoose))
+            {
+                Console.WriteLine("Invalid input, try again");
+            }
+            player.Inventory.Add(choosableItems[itemToChoose]);
+            nextboss.Inventory.AddRange(choosableItems);
+            /// kommer detta att funka??? 🧐🧐🧐
+        }
+
+        List<Boss> GenerateBossList(List<Boss> availableBosses, int amountOfBosses)
+        {
+            amountOfBosses = Math.Clamp(amountOfBosses, 0, availableBosses.Count);
+            Random random = Random.Shared;
+            List<Boss> output = new List<Boss>();
+
+            for (int i = 0; i < amountOfBosses; i++)
+            {
+                int index = random.Next(0, availableBosses.Count);
+                output.Add(availableBosses[index]);
+                availableBosses.Remove(availableBosses[index]);
+            }
+            return output;
+        }
+
+        // public Run()
+        // {
+
+        // }
+
+        public static Run ConfigureRun()
+        {
+
+            Run run = new Run()
+            {
+
+            };
+
+            return run;
+        }
     }
 }
