@@ -3,6 +3,8 @@ abstract class Boss : FightableObject
     public int screenSizeX;
     public int screenSizeY;
     public Texture2D sprite;
+    public string name;
+    protected bool notAttacking;
 
     //stats that could potentially change with items 
     public Color color = new Color(255, 255, 255, 255);
@@ -15,19 +17,17 @@ abstract class Boss : FightableObject
     public float waitMultiplier = 1;
     public float attackDelay = 2000;
 
-
-    protected bool notAttacking;
-
-    //this is used for a boss that is instantiated but not the current boss you fighting
-    //not implemented yet
-    protected bool isActiveBoss = false;
-
     public bool Active
     {
         get => isActiveBoss;
 
         set => isActiveBoss = value;
     }
+
+    //this is used for a boss that is instantiated but not the current boss you fighting
+    //not implemented yet
+    protected bool isActiveBoss = false;
+
 
     protected float contactDamage;
 
@@ -76,6 +76,12 @@ abstract class Boss : FightableObject
     public void DrawTexture(Texture2D texture, Color color)
     {
         Raylib.DrawTexture(texture, (int)x, (int)y, color);
+    }
+
+    public void InitializePlayableBoss()
+    {
+        AddToGameList(this);
+        Active = true;
     }
 
     abstract public void MoveCycle();

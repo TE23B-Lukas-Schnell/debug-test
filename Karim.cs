@@ -174,7 +174,7 @@ class Karim : Boss
         DrawTexture(sprite, color);
         ShowHitboxes();
         Raylib.DrawRectangle(50, 50, (int)hp, 50, Color.White);
-        DisplayHealthBar(50, 50, 1, "Karim the Ryder", 30);
+        DisplayHealthBar(50, 50, 1, name, 30);
     }
 
     public override void BeginDraw()
@@ -215,11 +215,7 @@ class Karim : Boss
         bulletHeight = 60;
         bulletDamage = 4;
         waitMultiplier = 1;
-
+        name = "Karim the Ryder";
         attackDelay = 1750;
-        AddToGameList(this);
-
-
-
     }
 }

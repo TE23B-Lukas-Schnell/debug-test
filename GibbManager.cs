@@ -1,12 +1,13 @@
 static class GibbManager
 {
+    public static Color backgroundColor = Color.White;
     public static int targetFrameRate;
     public static bool currentlyGibbing = false;
     public static bool fullscreen = false;
     static string scoreFilePath = "./scores.txt";
     static Dictionary<string, int> highscores = new Dictionary<string, int>();
-    public static bool playerDead = false;
     public static Menu currentMenu;
+    public static Run? currentRun = null;
 
     //control layouts
     public static ControlLayout defaultKeybindsWASD = new ControlLayout(new Dictionary<string, KeyboardKey>()
@@ -40,7 +41,13 @@ static class GibbManager
 
     static Menu configureRunMenu = new Menu("configure", new Dictionary<string, Action>()
     {
-        {"Start run", () => StartRun()},
+        {"Start run", () => StartRun(new Run
+        {
+            //byt ut mot constructor nät den funkar
+            availableItems = AvailableItems,
+            bossesToFight = Run.GenerateBossList(PeakBossPeakBoss,2)
+
+        })},
         {"Change seed", () =>  WriteDictionary(highscores)},
         {"Change available items (not implemented)", () => WriteDictionary(highscores)},
         {"Change available bosses (not implemented)", () => WriteDictionary(highscores)},
@@ -51,6 +58,7 @@ static class GibbManager
         {"Next boss", GibbigtVärre},
         {"Show your score", () =>   Console.WriteLine($"Your score is: {Player.score}")},
         {"Show player stats", () =>  playerReference.PrintPlayerStats()},
+        {"Show bosses", () => currentRun.WriteBossList()},
         {"Apply item stats (temporary)", () =>  playerReference.ApplyBuffsFromItem()},
         {"retry boss (temporary)", () => {
             ControlLayout temp =  playerReference.currentLayout;
@@ -63,7 +71,7 @@ static class GibbManager
 
     static List<Boss> PeakBossPeakBoss = new List<Boss>()
     {
-        // new Karim(), new Nathalie(),
+        new Karim()
     };
 
     public static List<Items> AvailableItems = new List<Items>()
@@ -252,14 +260,18 @@ Objective:
         Console.WriteLine("Your new control layout is " + playerReference.currentLayout.name);
     }
 
-    static void StartRun()
+    static void StartRun(Run run)
     {
+        currentRun = run;
+        Console.WriteLine("run started");
+        Console.WriteLine(run);
+
         currentMenu = gameMenu;
     }
 
     static void GibbigtVärre()
     {
-        MoveableObject survivor = WindowGame(new Karim());
+        MoveableObject survivor = WindowGame(currentRun.NextBoss());
         Console.WriteLine(survivor + " died a deathly death");
         // bossesBeaten++;
         // GiveItem(2, playerReference, bossesToFightThisRun[bossesBeaten]);
@@ -268,6 +280,8 @@ Objective:
     // this is the actual game!!!11 veri important
     static MoveableObject WindowGame(Boss enemy)
     {
+        
+        enemy.InitializePlayableBoss();
         currentlyGibbing = true;
 
         Raylib.InitWindow(enemy.screenSizeX, enemy.screenSizeY, "Game");
@@ -279,6 +293,7 @@ Objective:
 
         FightableObject loser = playerReference;
         bool pause = false;
+
         while (!Raylib.WindowShouldClose() && currentlyGibbing)
         {
             Raylib.SetExitKey(KeyboardKey.Null);
@@ -292,7 +307,7 @@ Objective:
 
             if (!pause)
             {
-                Raylib.ClearBackground(Color.White);
+                Raylib.ClearBackground(backgroundColor);
 
                 //lägg till alla objekt som behöver läggas till utan att ändra gamelist medans den itereras
                 MoveableObject.AddPendingObjects();
@@ -336,90 +351,4 @@ Objective:
     }
 
     //void köttigaste klassen
-
-    class Run()
-    {
-        //bestämmer rng för runnet
-        int seed;
-
-        //lista eller kö på kanske 5 random bossar, ordingen är viktig
-        Queue<Boss> bossesToFight;
-
-        //möjliga items att få på ett run, oftast en kopia listan med alla items, när ett item plockas från listan så borde försvinna ur den
-        List<Items> availableItems;
-
-        // innehåller items som alla bossar ska ha
-        List<Items> bossItems;
-
-        public static int amountOfItemsToChooseFrom = 2;
-
-        Items[] GetRandomItems(int amount, List<Items> items)
-        {
-            amount = Math.Clamp(amount, 0, items.Count);
-            Items[] output = new Items[amount];
-            Random random = Random.Shared;
-
-            for (int i = 0; i < amount; i++)
-            {
-                int index = random.Next(0, items.Count);
-                output.Append(items[index]);
-                // items.Remove(items[index]);
-            }
-
-            return output;
-        }
-
-        void GiveItem(int amount, Player player, Boss nextboss)
-        {
-            string correctGrammar;
-            if (amountOfItemsToChooseFrom < 2) correctGrammar = "items"; else correctGrammar = "item";
-
-            Console.WriteLine($"Choose an item, the {correctGrammar} you don't will be used the next boss!");
-
-            Items[] choosableItems = GetRandomItems(amountOfItemsToChooseFrom, availableItems);
-            for (int i = 0; i < choosableItems.Length; i++)
-            {
-                Console.WriteLine($"{i}: {choosableItems[i].name} \n {choosableItems[i].description}");
-            }
-            int itemToChoose;
-            while (!int.TryParse(Console.ReadLine(), out itemToChoose))
-            {
-                Console.WriteLine("Invalid input, try again");
-            }
-            player.Inventory.Add(choosableItems[itemToChoose]);
-            nextboss.Inventory.AddRange(choosableItems);
-            /// kommer detta att funka??? 🧐🧐🧐
-        }
-
-        List<Boss> GenerateBossList(List<Boss> availableBosses, int amountOfBosses)
-        {
-            amountOfBosses = Math.Clamp(amountOfBosses, 0, availableBosses.Count);
-            Random random = Random.Shared;
-            List<Boss> output = new List<Boss>();
-
-            for (int i = 0; i < amountOfBosses; i++)
-            {
-                int index = random.Next(0, availableBosses.Count);
-                output.Add(availableBosses[index]);
-                availableBosses.Remove(availableBosses[index]);
-            }
-            return output;
-        }
-
-        // public Run()
-        // {
-
-        // }
-
-        public static Run ConfigureRun()
-        {
-
-            Run run = new Run()
-            {
-
-            };
-
-            return run;
-        }
-    }
 }
