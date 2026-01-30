@@ -4,10 +4,11 @@ static class GibbManager
     public static int targetFrameRate;
     public static bool currentlyGibbing = false;
     public static bool fullscreen = false;
+    public static Menu currentMenu = mainMenu;
+    public static Run? currentRun = null;
+
     static string scoreFilePath = "./scores.txt";
     static Dictionary<string, int> highscores = new Dictionary<string, int>();
-    public static Menu currentMenu;
-    public static Run? currentRun = null;
 
     //control layouts
     public static ControlLayout defaultKeybindsWASD = new ControlLayout(new Dictionary<string, KeyboardKey>()
@@ -21,60 +22,15 @@ static class GibbManager
         {"up", KeyboardKey.Up},{"down",KeyboardKey.Down},{"left", KeyboardKey.Left},{"right",KeyboardKey.Right},
         {"jump", KeyboardKey.Z}, {"dash", KeyboardKey.C}, {"shoot", KeyboardKey.X}
     }, "arrow keys");
-    //för att kontrollerna ska funka så måste spelaren skapas när ett runs startas inte när programmet startas, consider att göra run klassen inom snar framtid
-    public static Player playerReference = new Player(defaultKeybindsWASD);
-    //action menus
-    static Menu mainMenu = new Menu("main", new Dictionary<string, Action>()
-    {
-        {"Start playing", () => currentMenu = configureRunMenu},
-        {"Show high scores", () =>  WriteDictionary(highscores)},
-        {"select controll layout", () => currentMenu = controlMenu},
-        {"quit game", () => {Console.WriteLine("quitting game");}},
-    });
 
-    static Menu controlMenu = new("controls", new Dictionary<string, Action>()
-    {
-        {"select control layout", SelectControlLayout},
-        {"create control layout", () => new ControlLayout(playerReference.keyPressed.Keys.ToArray())},
-        {"go back to main menu", () => currentMenu = mainMenu},
-    });
+    public static ControlLayout currentLayout = defaultKeybindsWASD;
 
-    static Menu configureRunMenu = new Menu("configure", new Dictionary<string, Action>()
-    {
-        {"Start run", () => StartRun(new Run
-        {
-            //byt ut mot constructor nät den funkar
-            availableItems = AvailableItems,
-            bossesToFight = Run.GenerateBossList(PeakBossPeakBoss,2)
-
-        })},
-        {"Change seed", () =>  WriteDictionary(highscores)},
-        {"Change available items (not implemented)", () => WriteDictionary(highscores)},
-        {"Change available bosses (not implemented)", () => WriteDictionary(highscores)},
-    });
-
-    static Menu gameMenu = new("game", new Dictionary<string, Action>()
-    {
-        {"Next boss", GibbigtVärre},
-        {"Show your score", () =>   Console.WriteLine($"Your score is: {Player.score}")},
-        {"Show player stats", () =>  playerReference.PrintPlayerStats()},
-        {"Show bosses", () => currentRun.WriteBossList()},
-        {"Apply item stats (temporary)", () =>  playerReference.ApplyBuffsFromItem()},
-        {"retry boss (temporary)", () => {
-            ControlLayout temp =  playerReference.currentLayout;
-            playerReference = new Player(temp);
-            MoveableObject.gameList.Clear();
-            GibbigtVärre();
-                }
-            }
-        });
-
-    static List<Boss> PeakBossPeakBoss = new List<Boss>()
+    public static List<Boss> PeakBossPeakBoss = new List<Boss>()
     {
         new Karim()
     };
 
-    public static List<Items> AvailableItems = new List<Items>()
+    public static List<Items> availableItems = new List<Items>()
     {
         new Items("delegate test", "båtig item", applier: (FightableObject objectToBuff) =>
         {
@@ -102,6 +58,55 @@ static class GibbManager
             }
         }),
     };
+
+    //local menu variables
+    static int SetSeed;
+    static List<Boss> bossList = PeakBossPeakBoss;
+    static List<Items> itemList = availableItems;
+
+    //action menus
+    static Menu mainMenu = new Menu("main", new Dictionary<string, Action>()
+    {
+        {"Start playing", () => currentMenu = configureRunMenu},
+        {"Show high scores", () =>  WriteDictionary(highscores)},
+        {"select controll layout", () => currentMenu = controlMenu},
+        {"quit game", () => {Console.WriteLine("quitting game");}},
+    });
+
+    static Menu controlMenu = new("controls", new Dictionary<string, Action>()
+    {
+        {"select control layout", SelectControlLayout},
+        {"create control layout", () => new ControlLayout(Player.keyPressed.Keys.ToArray())},
+        {"go back to main menu", () => currentMenu = mainMenu},
+    });
+
+    static Menu configureRunMenu = new Menu("configure", new Dictionary<string, Action>()
+    {
+        {"Start run", () => StartRun(new Run(SetSeed,bossList,itemList))},
+        {"Change seed", () =>
+        {
+            Console.WriteLine("Enter your seed");
+            SetSeed = GetIntFromConsole();
+        }
+        },
+        {"Change available items (not implemented)", () => WriteDictionary(highscores)},
+        {"Change available bosses (not implemented)", () => WriteDictionary(highscores)},
+    });
+
+    static Menu gameMenu = new("game", new Dictionary<string, Action>()
+    {
+        {"Next boss", () => currentRun.GibbigtVärre()},
+        {"Show your score", () =>   Console.WriteLine($"Your score is: {Player.score}")},
+        {"Show player stats", () =>  currentRun.playerReference.PrintPlayerStats()},
+        {"Show bosses", () => currentRun.WriteBossList()},
+        {"Apply item stats (temporary)", () =>  currentRun.playerReference.ApplyBuffsFromItem()},
+        {"retry boss (temporary)", () => {
+            currentRun.playerReference = new Player(currentLayout);
+            MoveableObject.gameList.Clear();
+            currentRun.GibbigtVärre();
+                }
+            }
+        });
 
     public static int GetIntFromConsole()
     {
@@ -173,10 +178,12 @@ Objective:
     {
         Console.WriteLine("How much FPS do you want? (0 for uncapped)\nrecommended: 120 to 600");
 
-        while (!int.TryParse(Console.ReadLine(), out targetFrameRate) /*|| targetFrameRate < 1*/)
-        {
-            Console.WriteLine("Invalid input, try again");
-        }
+        // while (!int.TryParse(Console.ReadLine(), out targetFrameRate) /*|| targetFrameRate < 1*/)
+        // {
+        //     Console.WriteLine("Invalid input, try again");
+        // }
+
+        targetFrameRate = GetIntFromConsole(0, int.MaxValue);
         return targetFrameRate;
     }
 
@@ -213,7 +220,7 @@ Objective:
 
     static void LoadSave()
     {
-        highscores = ReadSaveData(ReadSaveFile(scoreFilePath));
+        // highscores = ReadSaveData(ReadSaveFile(scoreFilePath));
     }
 
     static void SaveGame()
@@ -256,8 +263,8 @@ Objective:
             // ControlLayout.controlLayouts[i].PrintControlLayout();
         }
 
-        playerReference.currentLayout = ControlLayout.controlLayouts[GetIntFromConsole(1, ControlLayout.controlLayouts.Count) - 1];
-        Console.WriteLine("Your new control layout is " + playerReference.currentLayout.name);
+        currentLayout = ControlLayout.controlLayouts[GetIntFromConsole(1, ControlLayout.controlLayouts.Count) - 1];
+        Console.WriteLine("Your new control layout is " + currentLayout.name);
     }
 
     static void StartRun(Run run)
@@ -268,87 +275,4 @@ Objective:
 
         currentMenu = gameMenu;
     }
-
-    static void GibbigtVärre()
-    {
-        MoveableObject survivor = WindowGame(currentRun.NextBoss());
-        Console.WriteLine(survivor + " died a deathly death");
-        // bossesBeaten++;
-        // GiveItem(2, playerReference, bossesToFightThisRun[bossesBeaten]);
-    }
-
-    // this is the actual game!!!11 veri important
-    static MoveableObject WindowGame(Boss enemy)
-    {
-        
-        enemy.InitializePlayableBoss();
-        currentlyGibbing = true;
-
-        Raylib.InitWindow(enemy.screenSizeX, enemy.screenSizeY, "Game");
-
-        for (int i = 0; i < MoveableObject.gameList.Count; i++)
-        {
-            MoveableObject.gameList[i].BeginDraw();
-        }
-
-        FightableObject loser = playerReference;
-        bool pause = false;
-
-        while (!Raylib.WindowShouldClose() && currentlyGibbing)
-        {
-            Raylib.SetExitKey(KeyboardKey.Null);
-
-            if (Raylib.IsKeyPressed(KeyboardKey.Escape))
-            {
-                pause = !pause;
-            }
-
-            Raylib.BeginDrawing();
-
-            if (!pause)
-            {
-                Raylib.ClearBackground(backgroundColor);
-
-                //lägg till alla objekt som behöver läggas till utan att ändra gamelist medans den itereras
-                MoveableObject.AddPendingObjects();
-
-                for (int i = 0; i < MoveableObject.gameList.Count; i++)
-                {
-                    //först uppdatera alla värden
-                    MoveableObject.gameList[i].Update();
-                    MoveableObject.gameList[i].Draw(); // sen ritar man ut allt till skärmen
-                }
-                //denna rad skrevs av mikael 
-                MoveableObject.gameList.RemoveAll(obj => obj.remove == true);
-
-                // gör det enklare att debugga
-                /*for (int i = 0; i < MoveableObject.gameList.Count; i++)
-                {
-                    Console.WriteLine(MoveableObject.gameList[i]); 
-                }*/
-
-                Raylib.DrawText(Raylib.GetFPS().ToString(), 0, 0, 30, Color.Black);
-            }
-            else // pause logic here
-            {
-                Raylib.DrawText("Game Paused", Raylib.GetScreenWidth() / 2 - 250, Raylib.GetScreenHeight() / 2 - 45, 70, Color.Black);
-                Raylib.DrawText("The pause function is horribly broken but im too lazy", Raylib.GetScreenWidth() / 2 - 700, Raylib.GetScreenHeight() / 2 + 60, 50, Color.Black);
-                Raylib.DrawText("to fix it, use at own risk", Raylib.GetScreenWidth() / 2 - 690, Raylib.GetScreenHeight() / 2 + 110, 50, Color.Black);
-            }
-
-            Raylib.EndDrawing();
-        }
-
-        if (MoveableObject.gameList.Contains(playerReference))
-        {
-            loser = enemy;
-        }
-        else loser = playerReference;
-
-        Raylib.CloseWindow();
-
-        return loser;
-    }
-
-    //void köttigaste klassen
 }

@@ -3,7 +3,7 @@ class Player : FightableObject
     //statiska variabler
     public static int score = 0;
 
-    public Dictionary<string, bool> keyPressed = new Dictionary<string, bool>()
+    public static Dictionary<string, bool> keyPressed = new Dictionary<string, bool>()
     {
         {"up", false },
         {"down", false },

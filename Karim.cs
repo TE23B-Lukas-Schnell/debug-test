@@ -1,4 +1,4 @@
-class Karim : Boss
+class Karim : Boss, ISprite
 {
     void Moving(float value, float minValue, float maxValue)
     {
@@ -61,8 +61,14 @@ class Karim : Boss
         xSpeed = 0;
         ySpeed = 0;
         Color temp = color;
-        color = new Color(255, 200, 0);
-
+        if (hp < maxHP / 2)
+        {
+            color = new Color(230, 170, 0);
+        }
+        else
+        {
+            color = new Color(255, 200, 0);
+        }
 
         int amountOfBullets = 8;
         if (hp < maxHP / 2)
@@ -171,16 +177,20 @@ class Karim : Boss
     public override void Draw()
     {
         // Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, color);
-        DrawTexture(sprite, color);
+        ((ISprite)this).DrawTexture(sprite, color, x - 35, y - 70);
         ShowHitboxes();
-        Raylib.DrawRectangle(50, 50, (int)hp, 50, Color.White);
+        // Raylib.DrawRectangle(50, 50, (int)hp, 50, Color.White);
         DisplayHealthBar(50, 50, 1, name, 30);
     }
 
     public override void BeginDraw()
+
     {
+        spriteWidth = width * 1.3888888888f;
+        spriteHeight = height * 1.3888888888f;
+
         sprite = Raylib.LoadTexture(@"./Sprites/karimryde-scaled-600x600.jpg");
-        sprite = ChangeSpriteSize(sprite, (int)width, (int)height);
+        sprite = ((ISprite)this).ChangeSpriteSize(sprite, (int)spriteWidth, (int)spriteHeight);
     }
 
     public override void TakenDamage()
@@ -197,8 +207,8 @@ class Karim : Boss
     {
         screenSizeX = 1800;
         screenSizeY = 930;
-        width = 250;
-        height = 250;
+        width = 180;
+        height = 180;
         x = screenSizeX;
         y = screenSizeY / 2;
         maxHP = 600;

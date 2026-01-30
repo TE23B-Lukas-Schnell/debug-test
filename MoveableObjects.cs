@@ -3,11 +3,9 @@ abstract class MoveableObject()
     //lista för alla objekt som ska hanteras, det är lista för att den kan öka och minska under runtime
     public static List<MoveableObject> gameList = new List<MoveableObject>();
 
-    // Pending adds to avoid modifying gameList while it's iterated from other threads/tasks
-    private static readonly List<MoveableObject> pendingAdds = new List<MoveableObject>();
-
-
-    private static readonly object gameListLock = new object();
+    //objekt som ska läggas till i main listan efter varje iteration,
+    static readonly List<MoveableObject> pendingAdds = new List<MoveableObject>();
+    static readonly object gameListLock = new object();
 
     // kan användas säkert i alla threads
     public static void AddToGameList(MoveableObject obj)
@@ -27,7 +25,7 @@ abstract class MoveableObject()
             {
                 for (int i = 0; i < pendingAdds.Count; i++)
                 {
-                   pendingAdds[i].BeginDraw(); //kör alla begin draw funktion så att spriterna funkar
+                    pendingAdds[i].BeginDraw(); //kör alla begin draw funktion så att spriterna funkar
                 }
                 gameList.AddRange(pendingAdds);
                 pendingAdds.Clear();
@@ -50,11 +48,16 @@ abstract class MoveableObject()
     protected bool Grounded() => y >= Raylib.GetScreenHeight() - height;
 
     protected Rectangle GetHitbox() => new Rectangle(x, y, width, height);
-    protected bool ShowHitboxesSwitch() => Raylib.IsKeyDown(KeyboardKey.E);
+    protected bool ShowHitboxesSwitch = false;
 
     protected void ShowHitboxes()//enklare att testa programmet och kan hjälpa senare när hitboxes inte matchar spriten
     {
-        if (ShowHitboxesSwitch())
+        if (Raylib.IsKeyReleased(KeyboardKey.E))
+        {
+            ShowHitboxesSwitch = !ShowHitboxesSwitch;
+        }
+
+        if (ShowHitboxesSwitch)
         {
             Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, Color.Red);
         }

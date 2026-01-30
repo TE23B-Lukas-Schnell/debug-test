@@ -122,7 +122,7 @@ class Christian : Boss
     public override void Draw()
     {
         // Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, color);
-        DrawTexture(sprite, color);
+        // DrawTexture(sprite, color);
         ShowHitboxes();
         Raylib.DrawRectangle(50, 50, (int)hp, 50, Color.White);
         DisplayHealthBar(50, 50, 1);
@@ -131,7 +131,7 @@ class Christian : Boss
     public override void BeginDraw()
     {
         sprite = Raylib.LoadTexture(@"./Sprites/christiankilliner-scaled-600x600.jpg");
-        sprite = ChangeSpriteSize(sprite, (int)width, (int)height);
+        // sprite = ChangeSpriteSize(sprite, (int)width, (int)height);
     }
 
     public override void TakenDamage()

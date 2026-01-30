@@ -15,6 +15,7 @@ abstract class Projectile : MoveableObject
             {
                 if (target.objectIdentifier == objectIdentifier)
                 {
+                    //ok båtig
                     target.TakeDamage(damage, target);
                     if (!piercing)
                     {

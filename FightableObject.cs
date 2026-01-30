@@ -4,7 +4,10 @@ abstract class FightableObject : MoveableObject
     protected float hp;
     public bool healthy = true;
     protected float invincibilityDuration = 0;
-    public static Color healthBarColor = new Color(100,100,100);
+    public static Color healthBarColor = new Color(100, 100, 100);
+
+    protected float spriteWidth;
+    protected float spriteHeight;
 
     public List<Items> Inventory = new List<Items>();
 
@@ -18,7 +21,7 @@ abstract class FightableObject : MoveableObject
     {
         Raylib.DrawRectangle((int)xpos, (int)ypos, (int)(maxHP * sizeMultiplier) + 10, 60, Color.Gray);
         Raylib.DrawRectangle((int)xpos + 5, (int)ypos + 5, (int)(hp * sizeMultiplier), 50, Color.Green);
-        Raylib.DrawText(text, (int)xpos + 10, (int)(ypos - textSize), (int)textSize,Color.Black);
+        Raylib.DrawText(text, (int)xpos + 10, (int)(ypos - textSize), (int)textSize, Color.Black);
     }
 
     bool ChangeHp(FightableObject target, float changeAmount, float changeMultiplier, float limit, bool isDamage)

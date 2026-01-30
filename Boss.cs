@@ -28,7 +28,6 @@ abstract class Boss : FightableObject
     //not implemented yet
     protected bool isActiveBoss = false;
 
-
     protected float contactDamage;
 
     protected delegate Task BossAttack(CancellationToken ct);
@@ -64,18 +63,6 @@ abstract class Boss : FightableObject
             cancellationToken = new CancellationTokenSource();
             _ = AttackLoop(cancellationToken.Token);
         }
-    }
-
-    public Texture2D ChangeSpriteSize(Texture2D texture, int width, int height)
-    {
-        Image image = Raylib.LoadImageFromTexture(texture);
-        Raylib.ImageResize(ref image, width, height);
-        return Raylib.LoadTextureFromImage(image);
-    }
-
-    public void DrawTexture(Texture2D texture, Color color)
-    {
-        Raylib.DrawTexture(texture, (int)x, (int)y, color);
     }
 
     public void InitializePlayableBoss()
