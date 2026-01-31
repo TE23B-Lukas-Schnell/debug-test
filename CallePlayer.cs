@@ -20,7 +20,5 @@ class CallePlayer : Player, ISprite
 
         spriteWidth = 85;
         spriteHeight = 80;
-        InitializeHitbox();
-
     }
 }

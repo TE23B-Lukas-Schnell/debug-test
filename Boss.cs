@@ -27,8 +27,6 @@ abstract class Boss : FightableObject
     //not implemented yet
     protected bool isActiveBoss = false;
 
-    protected float contactDamage;
-
     protected delegate Task BossAttack(CancellationToken ct);
     protected List<BossAttack> bossAttacks = new List<BossAttack>();
 
@@ -67,6 +65,11 @@ abstract class Boss : FightableObject
     public void InitializePlayableBoss()
     {
         Active = true;
+    }
+
+    public void InitializeContactDamageHitbox()
+    {
+         contactDamageHitbox = new(new Rectangle(x, y, waitMultiplier - 40, healMultiplier - 40), this);
     }
 
     abstract public void MoveCycle();

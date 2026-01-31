@@ -164,7 +164,8 @@ class Karim : Boss, ISprite
             MoveCycle();
         }
 
-        UppdateHitbox(x, y, width, height);
+        UpdateHitboxPosition(x, y, width, height);
+        UpdateHitboxPositionBåtig(x + 35, y + 70, width - 70, height - 70);
 
         /// gör inte så här, gör en hitbox class som spawnas istället
         // ContactDamage(contactDamage, "player", new Hitbox(new(x - width * 0.2f, y - height * 0.2f, width, height), this));
@@ -226,6 +227,5 @@ class Karim : Boss, ISprite
         waitMultiplier = 1;
         name = "Karim the Ryder";
         attackDelay = 1750;
-        InitializeHitbox();
     }
 }

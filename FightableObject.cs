@@ -10,6 +10,14 @@ abstract class FightableObject : MoveableObject
     protected float spriteHeight;
     protected Texture2D sprite;
 
+    protected float contactDamage;
+    protected Hitbox contactDamageHitbox;
+
+    protected void UpdateHitboxPositionBåtig(float x, float y, float w, float h)
+    {
+        contactDamageHitbox.hitbox = new Rectangle((int)MathF.Round(x), (int)MathF.Round(y), (int)MathF.Round(w), (int)MathF.Round(h));
+    }
+
     public List<Items> Inventory = new List<Items>();
 
     protected void DisplayHealthBar(float x, float y, float sizeMultiplier)
@@ -75,13 +83,16 @@ abstract class FightableObject : MoveableObject
         }
     }
 
+
     //😂😂😂 𝼀𰻝Ꮸ𐃵
     public void ContactDamage(float damage, string objectIdentifier)
     {
         FightableObject? target;
-        if (CheckCollisions() is FightableObject)
+
+        MoveableObject? objectThatGotHit = CheckCollisions();
+        if (objectThatGotHit is FightableObject)
         {
-            target = CheckCollisions() as FightableObject;
+            target = objectThatGotHit as FightableObject;
             if (target.objectIdentifier == objectIdentifier)
             {
                 target.TakeDamage(damage, target);
@@ -90,14 +101,15 @@ abstract class FightableObject : MoveableObject
     }
 
     //detta är för contact damage med en annorlunda hitbox än collision hitboxen 
+
     public void ContactDamage(float damage, string objectIdentifier, Hitbox newHitbox)
     {
         FightableObject? target;
 
-        MoveableObject? köttig = CheckCollisions(newHitbox);
-        if (köttig is FightableObject)
+        MoveableObject? objectToDamage = CheckCollisions(newHitbox);
+        if (objectToDamage is FightableObject)
         {
-            target = köttig as FightableObject;
+            target = objectToDamage as FightableObject;
             if (target.objectIdentifier == objectIdentifier)
             {
                 target.TakeDamage(damage, target);
@@ -128,5 +140,6 @@ abstract class FightableObject : MoveableObject
         //detta sätter hp till null vilket😡 det borde inte funka så tycker jag
         // måste ändå skriva detta i varje konstruktor
         hp = maxHP;
+        contactDamageHitbox = new(new Rectangle(x, y, width, height), this);
     }
 }

@@ -8,9 +8,10 @@ abstract class Projectile : MoveableObject
     {
         FightableObject? target;
 
-        if (CheckCollisions() is FightableObject)
+        MoveableObject? träffatObjekt = CheckCollisions();
+        if (träffatObjekt is FightableObject)
         {
-            target = CheckCollisions() as FightableObject;
+            target = träffatObjekt as FightableObject;
             if (target != null)
             {
                 if (target.objectIdentifier == objectIdentifier)

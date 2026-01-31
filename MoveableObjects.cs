@@ -50,12 +50,7 @@ abstract class MoveableObject
 
     protected Hitbox GetHitbox() => hitbox;
 
-    protected void InitializeHitbox()
-    {
-        hitbox = new(new Rectangle(x, y, width, height), this);
-    }
-
-    protected void UppdateHitbox(float x, float y, float w, float h)
+    protected void UpdateHitboxPosition( float x, float y, float w, float h)
     {
         hitbox.hitbox = new Rectangle((int)MathF.Round(x), (int)MathF.Round(y), (int)MathF.Round(w), (int)MathF.Round(h));
     }
@@ -188,5 +183,6 @@ abstract class MoveableObject
     protected MoveableObject()
     {
         AddToGameList(this);
+        hitbox = new(new Rectangle(x, y, width, height), this);
     }
 }

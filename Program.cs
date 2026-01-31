@@ -17,6 +17,7 @@ while (true)
 Gör så att initializeHitbox funktionen kan köras från moveableobjects constructorn, det är för de körs först och det gör att värdet är null
 samma sak med hp = maxHP för alla fightable objects     ok båt      ig 
 
+gör så att player bullet flyger uppåt baserat på spelarens input
 
 
 

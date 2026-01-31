@@ -214,7 +214,7 @@ bullet gravity:          {bulletGravity}");
         DashCheck();
         ShootCheck();
 
-        UppdateHitbox(x,y,width,height);
+        UpdateHitboxPosition(x,y,width,height);
     
         MoveObject(gravity);
     }

@@ -7,7 +7,7 @@ class PlayerBullet : Projectile
     {
         OnHit(damage, "enemy");
         MoveObject(gravity);
-        UppdateHitbox(x,y,width,height);
+        UpdateHitboxPosition( x,y,width,height);
     }
 
     public override void Draw()
@@ -17,7 +17,6 @@ class PlayerBullet : Projectile
 
     public PlayerBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage)
     {
-        InitializeHitbox();
         this.x = x;
         this.y = y;
 

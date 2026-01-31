@@ -8,7 +8,7 @@ class EnemyBullet : Projectile
     {
         OnHit(damage, "player");
         MoveObject(gravity);
-        UppdateHitbox(x,y,width,height);
+        UpdateHitboxPosition(x,y,width,height);
     }
 
     public override void Draw()
@@ -28,7 +28,6 @@ class EnemyBullet : Projectile
         this.gravity = gravity;
         this.damage = damage;
         this.canGoOffscreen = true;
-        InitializeHitbox();
     }
     public EnemyBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage, bool ignoreGround)
     {
@@ -42,6 +41,5 @@ class EnemyBullet : Projectile
         this.damage = damage;
         this.canGoOffscreen = true;
         this.ignoreGround = ignoreGround;
-        InitializeHitbox();
     }
 }

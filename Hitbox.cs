@@ -41,7 +41,7 @@ class Hitbox
         {
             for (int i = 0; i < hitboxes.Count; i++)
             {
-                Raylib.DrawRectangle((int)MathF.Round(hitboxes[i].hitbox.X), (int)MathF.Round(hitboxes[i].hitbox.Y), (int)MathF.Round(hitboxes[i].hitbox.Width), (int)MathF.Round(hitboxes[i].hitbox.Height), Color.Red);
+                Raylib.DrawRectangle((int)MathF.Round(hitboxes[i].hitbox.X), (int)MathF.Round(hitboxes[i].hitbox.Y), (int)MathF.Round(hitboxes[i].hitbox.Width), (int)MathF.Round(hitboxes[i].hitbox.Height), new Color(255, 0, 0, 180));
             }
         }
     }
