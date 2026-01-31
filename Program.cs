@@ -3,8 +3,6 @@ global using System;
 global using System.Threading;
 global using System.Threading.Tasks;
 
-
-
 GibbManager.Setup();
 
 while (true)
@@ -27,13 +25,7 @@ gör en cirkel som visar hur lång reload spelaren har
 fixa bättre interdace med console specter någon gång
 
 
-
-
-
-
-
-
-
+kanske borde göra animations spelet någon gång 🧐
 
 
 
