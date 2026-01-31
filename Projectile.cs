@@ -19,10 +19,25 @@ abstract class Projectile : MoveableObject
                     target.TakeDamage(damage, target);
                     if (!piercing)
                     {
+                        hitbox.DeleteHitbox();
                         remove = true;
                     }
                 }
             }
         }
+    }
+
+    public override void Despawn()
+    {
+        
+    }
+    public override void BeginDraw()
+    {
+
+    }
+
+    protected Projectile()
+    {
+        objectIdentifier = "projectile";
     }
 }

@@ -7,28 +7,19 @@ class PlayerBullet : Projectile
     {
         OnHit(damage, "enemy");
         MoveObject(gravity);
+        UppdateHitbox(x,y,width,height);
     }
 
     public override void Draw()
     {
         Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, color);
-        ShowHitboxes();
-    }
-    public override void Despawn()
-    {
-
-    }
-    public override void BeginDraw()
-    {
-
     }
 
     public PlayerBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage)
     {
+        InitializeHitbox();
         this.x = x;
         this.y = y;
-        objectIdentifier = "båt";
-
 
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
@@ -46,7 +37,5 @@ class PlayerBullet : Projectile
             this.height = height;
         }
         this.gravity = gravity;
-
-        AddToGameList(this);
     }
 }

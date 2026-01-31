@@ -103,6 +103,7 @@ class Christian : Boss
     public override void Update()
     {
         ChooseAttack();
+        UppdateHitbox(x,y,width,height);
 
         if (notAttacking)
         {
@@ -123,7 +124,6 @@ class Christian : Boss
     {
         // Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, color);
         // DrawTexture(sprite, color);
-        ShowHitboxes();
         Raylib.DrawRectangle(50, 50, (int)hp, 50, Color.White);
         DisplayHealthBar(50, 50, 1);
     }
@@ -168,8 +168,6 @@ class Christian : Boss
         waitMultiplier = 1;
 
         attackDelay = 1750;
-
-
-        AddToGameList(this);
+        InitializeHitbox();
     }
 }

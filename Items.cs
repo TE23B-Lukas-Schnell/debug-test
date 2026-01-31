@@ -1,11 +1,13 @@
 class Items
 {
+    public static Dictionary<string, Items> AllItems = [];
+
     public string name;
     public string description;
     public bool buffActivated = false;
 
     public delegate void ApplyStatChanges(FightableObject objectToBuff);
-    public ApplyStatChanges båt;
+    public ApplyStatChanges ApplyStatChangesFunction;
 
     public void PrintStats()
     {
@@ -14,9 +16,10 @@ class Items
     }
     public Items(string name, string description, ApplyStatChanges applier)
     {
-        båt = applier;
+        ApplyStatChangesFunction = applier;
         this.name = name;
         this.description = description;
+        AllItems.Add(this.name,this);
     }
 
 }

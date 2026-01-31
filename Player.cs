@@ -1,8 +1,10 @@
-class Player : FightableObject
+using System.Data.Common;
+
+abstract class Player : FightableObject, ISprite
 {
     //statiska variabler
-    public static int score = 0;
 
+    //sparar alla olika actions spelaren kan göra och om knappen för den actionen är ned tryckt
     public static Dictionary<string, bool> keyPressed = new Dictionary<string, bool>()
     {
         {"up", false },
@@ -15,6 +17,7 @@ class Player : FightableObject
     };
 
     public ControlLayout currentLayout;
+    public int score = 0;
 
     //player actions
     public Action moveLeft;
@@ -67,11 +70,11 @@ dash duration:           {setDashDuration}
 dash cooldown:           {setDashCooldown}
 fastfall speed:          {fastFallSpeed}
 shoot cooldown:          {setShootCooldown}
-bullet width             {bulletWidth}
-bullet height            {bulletHeight}
-bullet damage            {bulletDamage}
-bullet speed             {bulletxSpeed} {bulletySpeed}
-bullet gravity           {bulletGravity}");
+bullet width:            {bulletWidth}
+bullet height:           {bulletHeight}
+bullet damage:           {bulletDamage}
+bullet speed:            {bulletxSpeed} {bulletySpeed}
+bullet gravity:          {bulletGravity}");
 
         Console.WriteLine("inventory:");
         foreach (Items items in Inventory)
@@ -80,7 +83,7 @@ bullet gravity           {bulletGravity}");
         }
     }
     //makes all the delegates work 
-    void InitializeDelegates(/*HEJ JAG HETER  ANTON*/)
+    protected void InitializeDelegates(/*HEJ JAG HETER  ANTON*/)
     {
         moveLeft += () => xSpeed = -moveSpeed;
         moveRight += () => xSpeed = moveSpeed;
@@ -200,6 +203,9 @@ bullet gravity           {bulletGravity}");
         shootCooldown = MathF.Max(shootCooldown - Raylib.GetFrameTime(), 0);
         invincibilityDuration = MathF.Max(invincibilityDuration - Raylib.GetFrameTime(), 0);
 
+        //debug cheat mode för båtig purpose
+        if (Raylib.IsKeyPressed(KeyboardKey.LeftControl))   invincibilityDuration = 5;
+      
         Checkinputs();
 
         MoveCheck();
@@ -208,6 +214,8 @@ bullet gravity           {bulletGravity}");
         DashCheck();
         ShootCheck();
 
+        UppdateHitbox(x,y,width,height);
+    
         MoveObject(gravity);
     }
 
@@ -236,13 +244,7 @@ bullet gravity           {bulletGravity}");
         }
 
         DisplayHealthBar(50, 145, 10);
-        Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, color);
-        ShowHitboxes();
-    }
-
-    public override void BeginDraw()
-    {
-
+        ((ISprite)this).DrawTexture(sprite, color, x, y);
     }
 
     public override void TakenDamage()
@@ -255,50 +257,13 @@ bullet gravity           {bulletGravity}");
         Console.WriteLine("spelaren har despawnat");
         GibbManager.currentlyGibbing = false;
     }
-   
-    // KOLLA ALDRIG I SPELARENS CONStRUCTOR 
+
     public Player(ControlLayout controlLayout)
     {
         objectIdentifier = "player";
-        {
-            x = 400;
-            y = 450;
-            width = 85;
-            height = 80;
-            int båt = 3;
-        }
-        // båt++;
-        {
-
-            AddToGameList(this);
-
-        }
-        maxHP = 20;
-        {
-            {
-                {
-                    {
-                        {
-                            {
-                                {
-                                    {
-                                        {
-                                            ; ; ; ; ; ;
-                                            {; {; {; {; } } } }
-                                            //hej jag heter anton
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        hp = maxHP;
-        { }
+        x = 400;
+        y = 450;   
         currentLayout = controlLayout;
-
         InitializeDelegates();
     }
 }

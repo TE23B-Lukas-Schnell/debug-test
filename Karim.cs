@@ -164,7 +164,10 @@ class Karim : Boss, ISprite
             MoveCycle();
         }
 
-        ContactDamage(contactDamage, "player");
+        UppdateHitbox(x, y, width, height);
+
+        /// gör inte så här, gör en hitbox class som spawnas istället
+        // ContactDamage(contactDamage, "player", new Hitbox(new(x - width * 0.2f, y - height * 0.2f, width, height), this));
         MoveObject(gravity);
     }
 
@@ -176,18 +179,14 @@ class Karim : Boss, ISprite
 
     public override void Draw()
     {
-        // Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, color);
-        ((ISprite)this).DrawTexture(sprite, color, x - 35, y - 70);
-        ShowHitboxes();
-        // Raylib.DrawRectangle(50, 50, (int)hp, 50, Color.White);
+        ((ISprite)this).DrawTexture(sprite, color, x, y); ;
         DisplayHealthBar(50, 50, 1, name, 30);
     }
 
     public override void BeginDraw()
-
     {
-        spriteWidth = width * 1.3888888888f;
-        spriteHeight = height * 1.3888888888f;
+        spriteWidth = width;
+        spriteHeight = height;
 
         sprite = Raylib.LoadTexture(@"./Sprites/karimryde-scaled-600x600.jpg");
         sprite = ((ISprite)this).ChangeSpriteSize(sprite, (int)spriteWidth, (int)spriteHeight);
@@ -207,8 +206,8 @@ class Karim : Boss, ISprite
     {
         screenSizeX = 1800;
         screenSizeY = 930;
-        width = 180;
-        height = 180;
+        width = 255;
+        height = 255;
         x = screenSizeX;
         y = screenSizeY / 2;
         maxHP = 600;
@@ -227,5 +226,6 @@ class Karim : Boss, ISprite
         waitMultiplier = 1;
         name = "Karim the Ryder";
         attackDelay = 1750;
+        InitializeHitbox();
     }
 }

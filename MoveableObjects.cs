@@ -1,4 +1,4 @@
-abstract class MoveableObject()
+abstract class MoveableObject
 {
     //lista för alla objekt som ska hanteras, det är lista för att den kan öka och minska under runtime
     public static List<MoveableObject> gameList = new List<MoveableObject>();
@@ -39,6 +39,7 @@ abstract class MoveableObject()
     public bool remove = false;
     public float damageMultiplier = 1;
     public float healMultiplier = 1;
+    public Hitbox hitbox;
     protected float x, y;
     protected float xSpeed, ySpeed;
     protected float width, height;
@@ -47,34 +48,41 @@ abstract class MoveableObject()
 
     protected bool Grounded() => y >= Raylib.GetScreenHeight() - height;
 
-    protected Rectangle GetHitbox() => new Rectangle(x, y, width, height);
-    protected bool ShowHitboxesSwitch = false;
+    protected Hitbox GetHitbox() => hitbox;
 
-    protected void ShowHitboxes()//enklare att testa programmet och kan hjälpa senare när hitboxes inte matchar spriten
+    protected void InitializeHitbox()
     {
-        if (Raylib.IsKeyReleased(KeyboardKey.E))
-        {
-            ShowHitboxesSwitch = !ShowHitboxesSwitch;
-        }
+        hitbox = new(new Rectangle(x, y, width, height), this);
+    }
 
-        if (ShowHitboxesSwitch)
-        {
-            Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, Color.Red);
-        }
+    protected void UppdateHitbox(float x, float y, float w, float h)
+    {
+        hitbox.hitbox = new Rectangle((int)MathF.Round(x), (int)MathF.Round(y), (int)MathF.Round(w), (int)MathF.Round(h));
     }
 
     //returnar objektet som kollideras med 
     protected MoveableObject? CheckCollisions()
     {
-        foreach (MoveableObject obj in gameList)
+        foreach (Hitbox obj in Hitbox.hitboxes)
         {
-            if (obj != this)
+            if (Raylib.CheckCollisionRecs(GetHitbox().hitbox, obj.hitbox))
             {
-                if (Raylib.CheckCollisionRecs(GetHitbox(), obj.GetHitbox()))
-                {
-                    return obj;
-                    // Console.WriteLine("${obj} asg nazg durbatuluk asg nazg gimbatul asg nazg thrakatuluk av jack");
-                }
+                // Console.WriteLine("${obj} asg nazg durbatuluk asg nazg gimbatul asg nazg thrakatuluk av jack");
+                return obj.owner;
+            }
+        }
+        return null;
+    }
+
+    //returnar objektet som kollideras med den angivna hitboxen
+    protected MoveableObject? CheckCollisions(Hitbox hitbox)
+    {
+        foreach (Hitbox obj in Hitbox.hitboxes)
+        {
+            if (Raylib.CheckCollisionRecs(hitbox.hitbox, obj.hitbox))
+            {
+                // Console.WriteLine("${obj} asg nazg durbatuluk asg nazg gimbatul asg nazg thrakatuluk av jack");
+                return obj.owner;
             }
         }
         return null;
@@ -176,4 +184,9 @@ abstract class MoveableObject()
     abstract public void Despawn();
     //körs innan spelet börjar
     abstract public void BeginDraw();
+
+    protected MoveableObject()
+    {
+        AddToGameList(this);
+    }
 }

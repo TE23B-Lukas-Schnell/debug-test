@@ -1,6 +1,6 @@
 class Run
 {
-    public Player playerReference = new Player(GibbManager.currentLayout);
+    public Player playerReference = new CallePlayer(GibbManager.currentLayout);
 
     //bestämmer rng för runnet
     public int seed;
@@ -124,8 +124,10 @@ class Run
             {
                 Raylib.ClearBackground(GibbManager.backgroundColor);
 
-                //lägg till alla objekt som behöver läggas till utan att ändra gamelist medans den itereras
+                //lägg till alla objekt som behöver läggas till utan att ändra på listan medans den itereras
                 MoveableObject.AddPendingObjects();
+                Hitbox.AddPendingHitboxes();
+
 
                 for (int i = 0; i < MoveableObject.gameList.Count; i++)
                 {
@@ -133,8 +135,12 @@ class Run
                     MoveableObject.gameList[i].Update();
                     MoveableObject.gameList[i].Draw(); // sen ritar man ut allt till skärmen
                 }
+
+                Hitbox.ShowHitboxes();
+
                 //denna rad skrevs av mikael 
                 MoveableObject.gameList.RemoveAll(obj => obj.remove == true);
+                Hitbox.hitboxes.RemoveAll(obj => obj.remove == true);
 
                 // gör det enklare att debugga
                 /*for (int i = 0; i < MoveableObject.gameList.Count; i++)

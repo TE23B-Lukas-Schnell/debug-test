@@ -2,29 +2,20 @@ class EnemyBullet : Projectile
 {
     public float gravity;
 
-    readonly Color color = new Color(255, 0, 0, 255);
+    readonly Color color = new Color(200, 50, 0, 255);
 
     public override void Update()
     {
         OnHit(damage, "player");
         MoveObject(gravity);
+        UppdateHitbox(x,y,width,height);
     }
 
     public override void Draw()
     {
         Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, color);
-        ShowHitboxes();
-
     }
-
-    public override void BeginDraw()
-    {
-
-    }
-    public override void Despawn()
-    {
-
-    }
+    
 
     public EnemyBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage)
     {
@@ -37,8 +28,7 @@ class EnemyBullet : Projectile
         this.gravity = gravity;
         this.damage = damage;
         this.canGoOffscreen = true;
-        objectIdentifier = "båt";
-        AddToGameList(this);
+        InitializeHitbox();
     }
     public EnemyBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage, bool ignoreGround)
     {
@@ -52,7 +42,6 @@ class EnemyBullet : Projectile
         this.damage = damage;
         this.canGoOffscreen = true;
         this.ignoreGround = ignoreGround;
-        objectIdentifier = "båt";
-        AddToGameList(this);
+        InitializeHitbox();
     }
 }

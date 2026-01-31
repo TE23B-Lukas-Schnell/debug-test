@@ -2,7 +2,6 @@ abstract class Boss : FightableObject
 {
     public int screenSizeX;
     public int screenSizeY;
-    public Texture2D sprite;
     public string name;
     protected bool notAttacking;
 
@@ -67,7 +66,6 @@ abstract class Boss : FightableObject
 
     public void InitializePlayableBoss()
     {
-        AddToGameList(this);
         Active = true;
     }
 

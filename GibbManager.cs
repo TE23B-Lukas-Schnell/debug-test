@@ -96,12 +96,12 @@ static class GibbManager
     static Menu gameMenu = new("game", new Dictionary<string, Action>()
     {
         {"Next boss", () => currentRun.GibbigtVärre()},
-        {"Show your score", () =>   Console.WriteLine($"Your score is: {Player.score}")},
+        {"Show your score", () =>   Console.WriteLine($"Your score is: {currentRun.playerReference.score}")},
         {"Show player stats", () =>  currentRun.playerReference.PrintPlayerStats()},
         {"Show bosses", () => currentRun.WriteBossList()},
         {"Apply item stats (temporary)", () =>  currentRun.playerReference.ApplyBuffsFromItem()},
         {"retry boss (temporary)", () => {
-            currentRun.playerReference = new Player(currentLayout);
+            currentRun.playerReference = new CallePlayer(currentLayout);
             MoveableObject.gameList.Clear();
             currentRun.GibbigtVärre();
                 }
