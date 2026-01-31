@@ -5,6 +5,10 @@ abstract class Boss : FightableObject
     public string name;
     protected bool notAttacking;
 
+    protected float contactDamage;
+    protected Hitbox contactDamageHitbox;
+    protected float contactDamageHitboxSizeRatio;
+
     //stats that could potentially change with items 
     public Color color = new Color(255, 255, 255, 255);
     public float moveSpeed;
@@ -27,18 +31,51 @@ abstract class Boss : FightableObject
     //not implemented yet
     protected bool isActiveBoss = false;
 
+    protected void CallThisInTheUpdateFunction()
+    {
+         ChooseAttack();
+
+        if (notAttacking)
+        {
+            MoveCycle();
+        }
+
+        UpdateHitboxPosition(x, y, width, height);
+        UpdateContactDamageHitbox();
+
+        ContactDamage();
+
+        MoveObject(gravity);
+    }
+
+    protected void ContactDamage()
+    {
+        UpdateContactDamageHitbox();
+        CheckDamagingHitbox(contactDamage, "player", contactDamageHitbox);
+    }
+
+    protected void UpdateContactDamageHitbox()
+    {
+        float w = width * contactDamageHitboxSizeRatio;
+        float h = height * contactDamageHitboxSizeRatio;
+        float xpos = x + (width - w) / 2;
+        float ypos = y + (height - h) / 2;
+
+        contactDamageHitbox.hitbox = new Rectangle(R(xpos), R(ypos), R(w), R(h));
+    }
+
     protected delegate Task BossAttack(CancellationToken ct);
     protected List<BossAttack> bossAttacks = new List<BossAttack>();
 
     protected CancellationTokenSource cancellationToken;
 
     //this function makes the wait amount multiplied by the wait multiplier
-    protected async Task Wait(float time, CancellationToken ct) => await Task.Delay((int)MathF.Round(time * waitMultiplier), ct);
+    protected async Task Wait(float time, CancellationToken ct) => await Task.Delay(R(time * waitMultiplier), ct);
 
     protected async Task Wait(float time, CancellationToken ct, bool UseMultiplier)
     {
-        if (UseMultiplier) await Task.Delay((int)MathF.Round(time * waitMultiplier), ct);
-        else await Task.Delay((int)MathF.Round(time), ct);
+        if (UseMultiplier) await Task.Delay(R(time * waitMultiplier), ct);
+        else await Task.Delay(R(time), ct);
     }
 
     protected async Task AttackLoop(CancellationToken token)
@@ -67,10 +104,15 @@ abstract class Boss : FightableObject
         Active = true;
     }
 
-    public void InitializeContactDamageHitbox()
+    abstract public void MoveCycle();
+
+    public override void Update()
     {
-         contactDamageHitbox = new(new Rectangle(x, y, waitMultiplier - 40, healMultiplier - 40), this);
+         CallThisInTheUpdateFunction();
     }
 
-    abstract public void MoveCycle();
+    protected Boss()
+    {
+        contactDamageHitbox = new(new Rectangle(x, y, width, height), this);
+    }
 }

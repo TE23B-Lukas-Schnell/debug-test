@@ -155,23 +155,6 @@ class Karim : Boss, ISprite
         bossAttacks.Add(TeknikarDuschen);
     }
 
-    public override void Update()
-    {
-        ChooseAttack();
-
-        if (notAttacking)
-        {
-            MoveCycle();
-        }
-
-        UpdateHitboxPosition(x, y, width, height);
-        UpdateHitboxPositionBåtig(x + 35, y + 70, width - 70, height - 70);
-
-        /// gör inte så här, gör en hitbox class som spawnas istället
-        // ContactDamage(contactDamage, "player", new Hitbox(new(x - width * 0.2f, y - height * 0.2f, width, height), this));
-        MoveObject(gravity);
-    }
-
     public override void Despawn()
     {
         GibbManager.currentlyGibbing = false;
@@ -190,7 +173,7 @@ class Karim : Boss, ISprite
         spriteHeight = height;
 
         sprite = Raylib.LoadTexture(@"./Sprites/karimryde-scaled-600x600.jpg");
-        sprite = ((ISprite)this).ChangeSpriteSize(sprite, (int)spriteWidth, (int)spriteHeight);
+        sprite = ((ISprite)this).ChangeSpriteSize(sprite, R(spriteWidth), R(spriteHeight));
     }
 
     public override void TakenDamage()
@@ -215,6 +198,7 @@ class Karim : Boss, ISprite
         hp = maxHP;
         objectIdentifier = "enemy";
         contactDamage = 3;
+        contactDamageHitboxSizeRatio = 0.72f;
         moveSpeed = 600;
         gravity = 2300;
         jumpHeight = 1200;

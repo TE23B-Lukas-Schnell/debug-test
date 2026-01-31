@@ -46,13 +46,16 @@ abstract class MoveableObject
     protected bool canGoOffscreen = false;
     protected bool ignoreGround = false;
 
+    // detta är min avrundnings funktion
+    protected static int R(float input) => (int)MathF.Round(input);
+
     protected bool Grounded() => y >= Raylib.GetScreenHeight() - height;
 
     protected Hitbox GetHitbox() => hitbox;
 
-    protected void UpdateHitboxPosition( float x, float y, float w, float h)
+    protected void UpdateHitboxPosition(float x, float y, float w, float h)
     {
-        hitbox.hitbox = new Rectangle((int)MathF.Round(x), (int)MathF.Round(y), (int)MathF.Round(w), (int)MathF.Round(h));
+        hitbox.hitbox = new Rectangle(R(x), R(y), R(w), R(h));
     }
 
     //returnar objektet som kollideras med 
@@ -74,6 +77,9 @@ abstract class MoveableObject
     {
         foreach (Hitbox obj in Hitbox.hitboxes)
         {
+            // skip hitboxes that belong to the same owner (avoid self-collision)
+            if (obj.owner == hitbox.owner) continue;
+
             if (Raylib.CheckCollisionRecs(hitbox.hitbox, obj.hitbox))
             {
                 // Console.WriteLine("${obj} asg nazg durbatuluk asg nazg gimbatul asg nazg thrakatuluk av jack");
@@ -83,9 +89,11 @@ abstract class MoveableObject
         return null;
     }
 
+
+
     Queue<(float x, float y)> lastPositions = new Queue<(float x, float y)>();
 
-    protected int maxTrailSize = (int)MathF.Round(Raylib.GetFPS() * 0.16666666667f);
+    protected int maxTrailSize = R(Raylib.GetFPS() * 0.16666666667f);
 
     protected void ClearLastPositions()
     {

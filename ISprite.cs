@@ -12,6 +12,6 @@ interface ISprite
     }
     public void DrawTexture(Texture2D texture, Color color, float x, float y)
     {
-        Raylib.DrawTexture(texture, (int)x, (int)y, color);
+        Raylib.DrawTexture(texture, (int)MathF.Round(x), (int)MathF.Round(y), color);
     }
 }

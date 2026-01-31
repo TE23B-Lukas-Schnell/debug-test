@@ -6,6 +6,7 @@ class Hitbox
     static readonly List<Hitbox> pendingRemoves = [];
     static readonly object listLock = new object();
 
+
     //lägger till alla objekt som väntar
     public static void AddPendingHitboxes()
     {
@@ -41,7 +42,7 @@ class Hitbox
         {
             for (int i = 0; i < hitboxes.Count; i++)
             {
-                Raylib.DrawRectangle((int)MathF.Round(hitboxes[i].hitbox.X), (int)MathF.Round(hitboxes[i].hitbox.Y), (int)MathF.Round(hitboxes[i].hitbox.Width), (int)MathF.Round(hitboxes[i].hitbox.Height), new Color(255, 0, 0, 180));
+              Raylib.DrawRectangle((int)MathF.Round(hitboxes[i].hitbox.X), (int)MathF.Round(hitboxes[i].hitbox.Y), (int)MathF.Round(hitboxes[i].hitbox.Width), (int)MathF.Round(hitboxes[i].hitbox.Height), new Color((byte)hitboxes[i].color.R, (byte)hitboxes[i].color.G, (byte)hitboxes[i].color.B, (byte)180));
             }
         }
     }
@@ -49,6 +50,7 @@ class Hitbox
     public bool remove = false;
     public Rectangle hitbox;
     public MoveableObject owner;
+    Color color;
 
     public void DeleteHitbox()
     {
@@ -56,10 +58,24 @@ class Hitbox
         remove = true;
     }
 
+    public void Print()
+    {
+        System.Console.WriteLine(hitbox.X + hitbox.Y + hitbox.Width + hitbox.Height);
+    }
+
     public Hitbox(Rectangle hitbox, MoveableObject owner)
     {
         this.hitbox = hitbox;
         this.owner = owner;
         AddToHitboxList(this);
+        color = Color.Red;
+    }
+
+    public Hitbox(Rectangle hitbox, MoveableObject owner, Color color)
+    {
+        this.hitbox = hitbox;
+        this.owner = owner;
+        AddToHitboxList(this);
+        this.color = color;
     }
 }

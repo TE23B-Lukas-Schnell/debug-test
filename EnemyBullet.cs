@@ -13,7 +13,7 @@ class EnemyBullet : Projectile
 
     public override void Draw()
     {
-        Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, color);
+        Raylib.DrawRectangle(R(x), R(y), R(width), R(height), color);
     }
     
 

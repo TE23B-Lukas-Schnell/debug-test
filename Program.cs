@@ -3,6 +3,8 @@ global using System;
 global using System.Threading;
 global using System.Threading.Tasks;
 
+
+
 GibbManager.Setup();
 
 while (true)
@@ -10,15 +12,19 @@ while (true)
     GibbManager.ExecuteMenu(GibbManager.currentMenu);
 }
 
+
+ 
+
 //saker att fixa:
 
 /*---------------------------------------------------------------------------------------------------------------------------------
 
-Gör så att initializeHitbox funktionen kan köras från moveableobjects constructorn, det är för de körs först och det gör att värdet är null
-samma sak med hp = maxHP för alla fightable objects     ok båt      ig 
-
 gör så att player bullet flyger uppåt baserat på spelarens input
 
+gör den indicator som visar vilket håll spelaren siktar åt 
+gör en cirkel som visar hur lång reload spelaren har
+
+fixa bättre interdace med console specter någon gång
 
 
 

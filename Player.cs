@@ -221,7 +221,7 @@ bullet gravity:          {bulletGravity}");
 
     public override void Draw()
     {
-        maxTrailSize = (int)MathF.Round(Raylib.GetFPS() * 0.16666666667f);
+        maxTrailSize = R(Raylib.GetFPS() * 0.16666666667f);
 
         if (invincibilityDuration > 0)
         {

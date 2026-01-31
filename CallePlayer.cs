@@ -6,7 +6,7 @@ class CallePlayer : Player, ISprite
         spriteHeight = height;
 
         sprite = Raylib.LoadTexture(@"./Sprites/carlengman-scaled-600x600.jpg");
-        sprite = ((ISprite)this).ChangeSpriteSize(sprite, (int)spriteWidth, (int)spriteHeight);
+        sprite = ((ISprite)this).ChangeSpriteSize(sprite, R(spriteWidth), R(spriteHeight));
     }
 
 
