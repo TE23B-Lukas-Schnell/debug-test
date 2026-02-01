@@ -27,6 +27,8 @@ fixa bättre interdace med console specter någon gång
 
 kanske borde göra animations spelet någon gång 🧐
 
+GÖR så att spelaren kan skjuta åt båda håll,
+
 
 
 
