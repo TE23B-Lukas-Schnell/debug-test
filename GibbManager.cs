@@ -27,7 +27,7 @@ static class GibbManager
 
     public static List<Boss> PeakBossPeakBoss = new List<Boss>()
     {
-        new Karim(), new Karim()
+        new Karim(), new Karim(), new Karim()
     };
 
     public static List<Items> availableItems = new List<Items>()
@@ -84,10 +84,10 @@ static class GibbManager
     {
         {"Start run", () => StartRun(new Run(SetSeed,bossList,itemList))},
         {"Change seed", () =>
-        {
-            Console.WriteLine("Enter your seed");
-            SetSeed = GetIntFromConsole();
-        }
+            {
+                Console.WriteLine("Enter your seed");
+                SetSeed = GetIntFromConsole();
+            }
         },
         {"Change available items (not implemented)", () => WriteDictionary(highscores)},
         {"Change available bosses (not implemented)", () => WriteDictionary(highscores)},
@@ -95,18 +95,19 @@ static class GibbManager
 
     static Menu gameMenu = new("game", new Dictionary<string, Action>()
     {
-        {"Next boss", () => currentRun.GibbigtVärre()},
-        {"Show your score", () =>   Console.WriteLine($"Your score is: {currentRun.playerReference.score}")},
+        {"Next boss", () => {
+            currentRun.GibbigtVärre();
+            if(currentRun.deadRun)
+            {
+                currentMenu = mainMenu;
+                currentRun = null;
+            }
+        }},
+        {"Show your score", () =>  Console.WriteLine($"Your score is: {currentRun.playerReference.score}")},
         {"Show player stats", () =>  currentRun.playerReference.PrintPlayerStats()},
         {"Show bosses", () => currentRun.WriteBossList()},
         {"Show seed", () =>   Console.WriteLine(currentRun.seed)},
         {"Apply item stats (temporary)", () =>  currentRun.playerReference.ApplyBuffsFromItem()},
-        {"retry boss (temporary)", () => {
-            currentRun.playerReference = new CallePlayer(currentLayout);
-            MoveableObject.gameList.Clear();
-            currentRun.GibbigtVärre();
-                }
-            }
         });
 
     public static int GetIntFromConsole()
@@ -245,7 +246,6 @@ static class GibbManager
         currentRun = run;
         // Console.WriteLine("run started");
         // Console.WriteLine(run);
-
         currentMenu = gameMenu;
     }
 }

@@ -2,11 +2,15 @@ class Run
 {
     public Player playerReference = new CallePlayer(GibbManager.currentLayout);
 
+    public bool deadRun = false;
+
     //bestämmer rng för runnet
     public int seed;
 
-    //lista eller kö på kanske 5 random bossar, ordingen är viktig
-    public List<Boss> bossesToFight = [];
+    //sparar alla bossar man ska möta, boolen av gör om man har klarat den. falsk i början, sann när man har klarat den
+    public Dictionary<Boss, bool> bossesToFight = new();
+
+    public int currentBoss = 0;
 
     //möjliga items att få på ett run, oftast en kopia listan med alla items, när ett item plockas från listan så borde försvinna ur den
     public List<Items> availableItems = [];
@@ -17,16 +21,11 @@ class Run
     // hur många items man får välja
     public static int amountOfItemsToChooseFrom = 2;
 
-    Boss? NextBoss()
-    {
-        return bossesToFight[0];
-    }
-
     public void WriteBossList()
     {
         for (int i = 0; i < bossesToFight.Count; i++)
         {
-            Console.WriteLine($"{i + 1}: {bossesToFight[i].name}");
+            Console.WriteLine($"boss {i + 1}: {bossesToFight.Keys.ToArray()[i].name} defeated: {bossesToFight.Values.ToArray()[i]}");
         }
     }
 
@@ -82,18 +81,46 @@ class Run
         return output;
     }
 
+    bool CheckBossesBeaten(bool[] values)
+    {
+        return values.All(v => v);
+    }
+
     public void GibbigtVärre()
     {
-        MoveableObject survivor = ActualGibbNoWay(NextBoss());
-        Console.WriteLine(survivor + " died a deathly death");
-        // bossesBeaten++;
-        // GiveItem(2, playerReference, bossesToFightThisRun[bossesBeaten]);
+        Boss bossToFight = bossesToFight.Keys.ToArray()[currentBoss];
+
+        MoveableObject objectThatDied = ActualGibbNoWay(bossToFight);
+        Console.WriteLine(objectThatDied + " died a deathly death");
+
+        bossesToFight[bossToFight] = true;
+
+        if (CheckBossesBeaten(bossesToFight.Values.ToArray()))
+        {
+            Console.WriteLine("köttigt run klarat");
+            EndRun();
+        }
+        else
+        {
+            if (objectThatDied == playerReference)
+            {
+                deadRun = true;
+                Console.WriteLine("YOU DIED!!!111");
+                EndRun();
+            }
+            else
+            {
+                currentBoss++;
+                // GiveItem(2, playerReference, bossesToFightThisRun[bossesBeaten]);
+            }
+        }
+
     }
 
     // this is the actual game!!!11 veri important
     public MoveableObject ActualGibbNoWay(Boss enemy)
     {
-
+        // playerReference.InitializePlayer();
         enemy.InitializePlayableBoss();
         GibbManager.currentlyGibbing = true;
 
@@ -169,10 +196,21 @@ class Run
         return loser;
     }
 
+    void EndRun()
+    {
+
+        Console.WriteLine(@$"Run stats:
+bosses killed            {currentBoss}");
+    }
+
+
     public Run(int seed, List<Boss> bossList, List<Items> items)
     {
         this.seed = seed;
         availableItems = items;
-        bossesToFight = bossList;
+        for (int i = 0; i < bossList.Count; i++)
+        {
+            bossesToFight.Add(bossList[i], false);
+        }
     }
 }

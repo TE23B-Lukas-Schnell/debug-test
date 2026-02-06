@@ -27,17 +27,6 @@ abstract class Boss : FightableObject
     public float waitMultiplier = 1;
     public float attackDelay = 2000;
 
-    public bool Active
-    {
-        get => isActiveBoss;
-
-        set => isActiveBoss = value;
-    }
-
-    //this is used for a boss that is instantiated but not the current boss you fighting
-    //not implemented yet
-    protected bool isActiveBoss = false;
-
     protected void CallThisInTheUpdateFunction()
     {
         ChooseAttack();
@@ -102,7 +91,7 @@ abstract class Boss : FightableObject
 
     public void InitializePlayableBoss()
     {
-        // AddToGameList(this);
+        AddToGameList(this);
     }
 
     public override void Update()
@@ -123,6 +112,8 @@ abstract class Boss : FightableObject
 
     public override void Despawn()
     {
+        contactDamageHitbox.DeleteHitbox();
+        hitbox.DeleteHitbox();
         GibbManager.currentlyGibbing = false;
         cancellationToken?.Cancel();
     }
@@ -136,7 +127,7 @@ abstract class Boss : FightableObject
 
     public override void AddToGameList()
     {
-        GibbManager.PeakBossPeakBoss.Add(this);
+        
     }
 
     protected Boss()

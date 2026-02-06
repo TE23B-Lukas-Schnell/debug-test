@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 abstract class Player : FightableObject
 {
     //statiska variabler
@@ -47,7 +49,7 @@ abstract class Player : FightableObject
     public float setShootCooldown = 0.5f;
     public float bulletWidth = 40f;
     public float bulletHeight = 20f;
-    public float bulletDamage = 50f;
+    public float bulletDamage = 5f;
     public float bulletxSpeed = 1800f;
     public float bulletySpeed = 0f;
     public float bulletGravity = 0f;
@@ -83,7 +85,7 @@ bullet gravity:          {bulletGravity}");
         }
     }
     //makes all the delegates work 
-    protected void InitializeDelegates(/*HEJ JAG HETER  ANTON*/)
+    void InitializeDelegates(/*HEJ JAG HETER  ANTON*/)
     {
         moveLeft += () => xSpeed = -moveSpeed;
         moveRight += () => xSpeed = moveSpeed;
@@ -194,6 +196,11 @@ bullet gravity:          {bulletGravity}");
 
     }
 
+    public void InitializePlayer()
+    {
+        AddToGameList(this);
+    }
+
     public override void Update()
     {
         // System.Console.WriteLine(köttig );
@@ -247,12 +254,10 @@ bullet gravity:          {bulletGravity}");
         spriteDrawer.DrawTexture(color, x, y);
     }
 
-
     public override void BeginDraw()
     {
         spriteDrawer.LoadSprite(Raylib.LoadTexture(spriteFilePath), width, height);
     }
-
 
     public override void TakenDamage()
     {

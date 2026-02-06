@@ -22,7 +22,7 @@ gör så att player bullet flyger uppåt baserat på spelarens input
 gör den indicator som visar vilket håll spelaren siktar åt 
 gör en cirkel som visar hur lång reload spelaren har
 
-fixa bättre interdace med console specter någon gång
+fixa bättre interface med console specter någon gång
 
 
 kanske borde göra animations spelet någon gång 🧐
