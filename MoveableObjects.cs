@@ -8,7 +8,7 @@ abstract class MoveableObject
     static readonly object gameListLock = new object();
 
     // kan användas säkert i alla threads
-    public static void AddToGameList(MoveableObject obj)
+    protected static void AddToGameList(MoveableObject obj)
     {
         lock (gameListLock)
         {
@@ -88,8 +88,6 @@ abstract class MoveableObject
         }
         return null;
     }
-
-
 
     Queue<(float x, float y)> lastPositions = new Queue<(float x, float y)>();
 
@@ -188,9 +186,11 @@ abstract class MoveableObject
     //körs innan spelet börjar
     abstract public void BeginDraw();
 
+    abstract public void AddToGameList();
+
     protected MoveableObject()
     {
-        AddToGameList(this);
+        AddToGameList();
         hitbox = new(new Rectangle(x, y, width, height), this);
     }
 }

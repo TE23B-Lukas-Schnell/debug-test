@@ -28,7 +28,6 @@ class Run
         {
             Console.WriteLine($"{i + 1}: {bossesToFight[i].name}");
         }
-
     }
 
     Items[] GetRandomItems(int amount, List<Items> items)
@@ -43,7 +42,6 @@ class Run
             output.Append(items[index]);
             // items.Remove(items[index]);
         }
-
         return output;
     }
 

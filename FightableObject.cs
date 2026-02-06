@@ -114,6 +114,11 @@ abstract class FightableObject : MoveableObject
 
     public abstract void TakenDamage();
 
+    public override void AddToGameList()
+    {
+         AddToGameList(this);
+    }
+       
     protected FightableObject()
     {
         //detta sätter hp till null vilket😡 det borde inte funka så tycker jag

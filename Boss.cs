@@ -12,6 +12,10 @@ abstract class Boss : FightableObject
     protected Hitbox contactDamageHitbox;
     protected float contactDamageHitboxSizeRatio;
 
+    protected delegate Task BossAttack(CancellationToken ct);
+    protected List<BossAttack> bossAttacks = new List<BossAttack>();
+    protected CancellationTokenSource cancellationToken;
+
     //stats that could potentially change with items 
     public Color color = new Color(255, 255, 255, 255);
     public float moveSpeed;
@@ -36,7 +40,7 @@ abstract class Boss : FightableObject
 
     protected void CallThisInTheUpdateFunction()
     {
-         ChooseAttack();
+        ChooseAttack();
 
         if (notAttacking)
         {
@@ -66,12 +70,6 @@ abstract class Boss : FightableObject
 
         contactDamageHitbox.hitbox = new Rectangle(R(xpos), R(ypos), R(w), R(h));
     }
-
-    protected delegate Task BossAttack(CancellationToken ct);
-    protected List<BossAttack> bossAttacks = new List<BossAttack>();
-
-    protected CancellationTokenSource cancellationToken;
-
     //this function makes the wait amount multiplied by the wait multiplier
     protected async Task Wait(float time, CancellationToken ct) => await Task.Delay(R(time * waitMultiplier), ct);
 
@@ -104,25 +102,41 @@ abstract class Boss : FightableObject
 
     public void InitializePlayableBoss()
     {
-        Active = true;
+        // AddToGameList(this);
     }
-
-    abstract public void MoveCycle();
 
     public override void Update()
     {
-         CallThisInTheUpdateFunction();
+        CallThisInTheUpdateFunction();
     }
 
-     public override void Draw()
+    public override void Draw()
     {
         spriteDrawer.DrawTexture(color, x, y); ;
         DisplayHealthBar(50, 50, 1, name, 30);
     }
 
-  public override void BeginDraw()
+    public override void BeginDraw()
     {
         spriteDrawer.LoadSprite(Raylib.LoadTexture(spriteFilePath), width, height);
+    }
+
+    public override void Despawn()
+    {
+        GibbManager.currentlyGibbing = false;
+        cancellationToken?.Cancel();
+    }
+
+    public override void TakenDamage()
+    {
+
+    }
+
+    abstract public void MoveCycle();
+
+    public override void AddToGameList()
+    {
+        GibbManager.PeakBossPeakBoss.Add(this);
     }
 
     protected Boss()

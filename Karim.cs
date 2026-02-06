@@ -155,19 +155,6 @@ class Karim : Boss
         bossAttacks.Add(TeknikarDuschen);
     }
 
-    public override void Despawn()
-    {
-        GibbManager.currentlyGibbing = false;
-        cancellationToken?.Cancel();
-    }
-
-  
-
-    public override void TakenDamage()
-    {
-
-    }
-
     public override void MoveCycle()
     {
         Moving(x, 1200, screenSizeX - width);

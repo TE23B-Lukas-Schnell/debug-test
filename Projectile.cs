@@ -30,11 +30,17 @@ abstract class Projectile : MoveableObject
 
     public override void Despawn()
     {
-        
+
     }
+
     public override void BeginDraw()
     {
 
+    }
+    
+    public override void AddToGameList()
+    {
+        AddToGameList(this);
     }
 
     protected Projectile()

@@ -27,7 +27,7 @@ static class GibbManager
 
     public static List<Boss> PeakBossPeakBoss = new List<Boss>()
     {
-        new Karim()
+        new Karim(), new Karim()
     };
 
     public static List<Items> availableItems = new List<Items>()
@@ -99,6 +99,7 @@ static class GibbManager
         {"Show your score", () =>   Console.WriteLine($"Your score is: {currentRun.playerReference.score}")},
         {"Show player stats", () =>  currentRun.playerReference.PrintPlayerStats()},
         {"Show bosses", () => currentRun.WriteBossList()},
+        {"Show seed", () =>   Console.WriteLine(currentRun.seed)},
         {"Apply item stats (temporary)", () =>  currentRun.playerReference.ApplyBuffsFromItem()},
         {"retry boss (temporary)", () => {
             currentRun.playerReference = new CallePlayer(currentLayout);
@@ -151,37 +152,9 @@ static class GibbManager
         }
     }
 
-    static void Intructions()
-    {
-        Console.WriteLine("Do you want to see the instructions? [Y/N]");
-        if (Console.ReadLine().ToLower() == "y")
-        {
-            Console.WriteLine(@"Controls:
-
-    Outdated!!!!11111 båt
-
-    WASD or arrow keys to move
-    Space or Z to jump
-    L or X to shoot
-    Left shift or C to dash
-Objective: 
-    kill the green cube!!!11");
-            Console.ReadLine();
-        }
-        else
-        {
-            return;
-        }
-    }
-
     static int ChooseFPS()
     {
         Console.WriteLine("How much FPS do you want? (0 for uncapped)\nrecommended: 120 to 600");
-
-        // while (!int.TryParse(Console.ReadLine(), out targetFrameRate) /*|| targetFrameRate < 1*/)
-        // {
-        //     Console.WriteLine("Invalid input, try again");
-        // }
 
         targetFrameRate = GetIntFromConsole(0, int.MaxValue);
         return targetFrameRate;
@@ -220,7 +193,7 @@ Objective:
 
     static void LoadSave()
     {
-        // highscores = ReadSaveData(ReadSaveFile(scoreFilePath));
+        highscores = ReadSaveData(ReadSaveFile(scoreFilePath));
     }
 
     static void SaveGame()
@@ -270,8 +243,8 @@ Objective:
     static void StartRun(Run run)
     {
         currentRun = run;
-        Console.WriteLine("run started");
-        Console.WriteLine(run);
+        // Console.WriteLine("run started");
+        // Console.WriteLine(run);
 
         currentMenu = gameMenu;
     }
