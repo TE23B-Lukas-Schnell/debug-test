@@ -1,6 +1,4 @@
-using System.Data.Common;
-
-abstract class Player : FightableObject, ISprite
+abstract class Player : FightableObject
 {
     //statiska variabler
 
@@ -18,6 +16,8 @@ abstract class Player : FightableObject, ISprite
 
     public ControlLayout currentLayout;
     public int score = 0;
+    protected SpriteDrawer spriteDrawer = new SpriteDrawer();
+    protected string spriteFilePath;
 
     //player actions
     public Action moveLeft;
@@ -204,8 +204,8 @@ bullet gravity:          {bulletGravity}");
         invincibilityDuration = MathF.Max(invincibilityDuration - Raylib.GetFrameTime(), 0);
 
         //debug cheat mode för båtig purpose
-        if (Raylib.IsKeyPressed(KeyboardKey.LeftControl))   invincibilityDuration = 5;
-      
+        if (Raylib.IsKeyPressed(KeyboardKey.LeftControl)) invincibilityDuration = 5;
+
         Checkinputs();
 
         MoveCheck();
@@ -214,8 +214,8 @@ bullet gravity:          {bulletGravity}");
         DashCheck();
         ShootCheck();
 
-        UpdateHitboxPosition(x,y,width,height);
-    
+        UpdateHitboxPosition(x, y, width, height);
+
         MoveObject(gravity);
     }
 
@@ -244,8 +244,15 @@ bullet gravity:          {bulletGravity}");
         }
 
         DisplayHealthBar(50, 145, 10);
-        ((ISprite)this).DrawTexture(sprite, color, x, y);
+        spriteDrawer.DrawTexture(color, x, y);
     }
+
+
+    public override void BeginDraw()
+    {
+        spriteDrawer.LoadSprite(Raylib.LoadTexture(spriteFilePath), width, height);
+    }
+
 
     public override void TakenDamage()
     {
@@ -262,7 +269,7 @@ bullet gravity:          {bulletGravity}");
     {
         objectIdentifier = "player";
         x = 400;
-        y = 450;   
+        y = 450;
         currentLayout = controlLayout;
         InitializeDelegates();
     }

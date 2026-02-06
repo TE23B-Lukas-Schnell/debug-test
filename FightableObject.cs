@@ -6,9 +6,9 @@ abstract class FightableObject : MoveableObject
     protected float invincibilityDuration = 0;
     public static Color healthBarColor = new Color(100, 100, 100);
 
-    protected float spriteWidth;
-    protected float spriteHeight;
-    protected Texture2D sprite;
+    // protected float spriteWidth;
+    // protected float spriteHeight;
+    // protected Texture2D sprite;
 
     public List<Items> Inventory = new List<Items>();
 

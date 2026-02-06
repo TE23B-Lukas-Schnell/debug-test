@@ -1,4 +1,4 @@
-class Karim : Boss, ISprite
+class Karim : Boss
 {
     void Moving(float value, float minValue, float maxValue)
     {
@@ -161,20 +161,7 @@ class Karim : Boss, ISprite
         cancellationToken?.Cancel();
     }
 
-    public override void Draw()
-    {
-        ((ISprite)this).DrawTexture(sprite, color, x, y); ;
-        DisplayHealthBar(50, 50, 1, name, 30);
-    }
-
-    public override void BeginDraw()
-    {
-        spriteWidth = width;
-        spriteHeight = height;
-
-        sprite = Raylib.LoadTexture(@"./Sprites/karimryde-scaled-600x600.jpg");
-        sprite = ((ISprite)this).ChangeSpriteSize(sprite, R(spriteWidth), R(spriteHeight));
-    }
+  
 
     public override void TakenDamage()
     {
@@ -211,5 +198,7 @@ class Karim : Boss, ISprite
         waitMultiplier = 1;
         name = "Karim the Ryder";
         attackDelay = 1750;
+
+        spriteFilePath = @"./Sprites/karimryde-scaled-600x600.jpg";
     }
 }

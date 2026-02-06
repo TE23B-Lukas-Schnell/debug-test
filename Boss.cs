@@ -5,6 +5,9 @@ abstract class Boss : FightableObject
     public string name;
     protected bool notAttacking;
 
+    protected SpriteDrawer spriteDrawer = new SpriteDrawer();
+    protected string spriteFilePath;
+
     protected float contactDamage;
     protected Hitbox contactDamageHitbox;
     protected float contactDamageHitboxSizeRatio;
@@ -109,6 +112,17 @@ abstract class Boss : FightableObject
     public override void Update()
     {
          CallThisInTheUpdateFunction();
+    }
+
+     public override void Draw()
+    {
+        spriteDrawer.DrawTexture(color, x, y); ;
+        DisplayHealthBar(50, 50, 1, name, 30);
+    }
+
+  public override void BeginDraw()
+    {
+        spriteDrawer.LoadSprite(Raylib.LoadTexture(spriteFilePath), width, height);
     }
 
     protected Boss()
