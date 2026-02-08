@@ -37,10 +37,10 @@ abstract class Projectile : MoveableObject
     {
 
     }
-    
+
     public override void AddToGameList()
     {
-        AddToGameList(this);
+        GibbManager.currentRun.AddToGameList(this);
     }
 
     protected Projectile()

@@ -91,7 +91,9 @@ abstract class Boss : FightableObject
 
     public void InitializePlayableBoss()
     {
-        AddToGameList(this);
+        GibbManager.currentRun.AddToGameList(this);
+        GibbManager.currentRun.AddToHitboxList(hitbox);
+        GibbManager.currentRun.AddToHitboxList(contactDamageHitbox);
     }
 
     public override void Update()
@@ -127,7 +129,7 @@ abstract class Boss : FightableObject
 
     public override void AddToGameList()
     {
-        
+
     }
 
     protected Boss()

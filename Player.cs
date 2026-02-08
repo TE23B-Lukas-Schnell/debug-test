@@ -49,7 +49,7 @@ abstract class Player : FightableObject
     public float setShootCooldown = 0.5f;
     public float bulletWidth = 40f;
     public float bulletHeight = 20f;
-    public float bulletDamage = 5f;
+    public float bulletDamage = 50f;
     public float bulletxSpeed = 1800f;
     public float bulletySpeed = 0f;
     public float bulletGravity = 0f;
@@ -63,8 +63,8 @@ abstract class Player : FightableObject
     {
         Console.WriteLine(@$"Stats:
 pos                      {x} {y}
+velocity                 {xSpeed} {ySpeed}        
 size                     {width} {height}
-velocity                 {xSpeed} {ySpeed}
 gravity:                 {gravity}
 move speed:              {moveSpeed}
 jump force:              {jumpForce}
@@ -198,7 +198,8 @@ bullet gravity:          {bulletGravity}");
 
     public void InitializePlayer()
     {
-        AddToGameList(this);
+        // GibbManager.currentRun.AddToGameList(this);
+        GibbManager.currentRun.AddToHitboxList(hitbox);
     }
 
     public override void Update()
@@ -266,8 +267,10 @@ bullet gravity:          {bulletGravity}");
 
     public override void Despawn()
     {
+        hitbox.DeleteHitbox();
         Console.WriteLine("spelaren har despawnat");
         GibbManager.currentlyGibbing = false;
+
     }
 
     public Player(ControlLayout controlLayout)

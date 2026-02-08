@@ -116,7 +116,7 @@ abstract class FightableObject : MoveableObject
 
     public override void AddToGameList()
     {
-         AddToGameList(this);
+         GibbManager.currentRun.AddToGameList(this);
     }
        
     protected FightableObject()

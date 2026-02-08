@@ -1,37 +1,5 @@
 abstract class MoveableObject
 {
-    //lista för alla objekt som ska hanteras, det är lista för att den kan öka och minska under runtime
-    public static List<MoveableObject> gameList = new List<MoveableObject>();
-
-    //objekt som ska läggas till i main listan efter varje iteration,
-    static readonly List<MoveableObject> pendingAdds = new List<MoveableObject>();
-    static readonly object gameListLock = new object();
-
-    // kan användas säkert i alla threads
-    protected static void AddToGameList(MoveableObject obj)
-    {
-        lock (gameListLock)
-        {
-            pendingAdds.Add(obj);
-        }
-    }
-
-    //lägger till alla objekt som väntar
-    public static void AddPendingObjects()
-    {
-        lock (gameListLock)
-        {
-            if (pendingAdds.Count > 0)
-            {
-                for (int i = 0; i < pendingAdds.Count; i++)
-                {
-                    pendingAdds[i].BeginDraw(); //kör alla begin draw funktion så att spriterna funkar
-                }
-                gameList.AddRange(pendingAdds);
-                pendingAdds.Clear();
-            }
-        }
-    }
 
     public static float globalGravityMultiplier = 1;
 
@@ -61,7 +29,7 @@ abstract class MoveableObject
     //returnar objektet som kollideras med 
     protected MoveableObject? CheckCollisions()
     {
-        foreach (Hitbox obj in Hitbox.hitboxes)
+        foreach (Hitbox obj in GibbManager.currentRun.hitboxes)
         {
             if (Raylib.CheckCollisionRecs(GetHitbox().hitbox, obj.hitbox))
             {
@@ -75,7 +43,7 @@ abstract class MoveableObject
     //returnar objektet som kollideras med den angivna hitboxen
     protected MoveableObject? CheckCollisions(Hitbox hitbox)
     {
-        foreach (Hitbox obj in Hitbox.hitboxes)
+        foreach (Hitbox obj in GibbManager.currentRun.hitboxes)
         {
             // skip hitboxes that belong to the same owner (avoid self-collision)
             if (obj.owner == hitbox.owner) continue;

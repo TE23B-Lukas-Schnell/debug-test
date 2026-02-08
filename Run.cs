@@ -1,6 +1,68 @@
 class Run
 {
-    public Player playerReference = new CallePlayer(GibbManager.currentLayout);
+    //lista för alla objekt som ska hanteras, det är lista för att den kan öka och minska under runtime
+    public List<MoveableObject> gameList = new List<MoveableObject>();
+
+    //objekt som ska läggas till i main listan efter varje iteration,
+    public readonly List<MoveableObject> pendingAdds = new List<MoveableObject>();
+    readonly object gameListLock = new object();
+
+    // kan användas säkert i alla threads
+    public void AddToGameList(MoveableObject obj)
+    {
+        lock (gameListLock)
+        {
+            pendingAdds.Add(obj);
+        }
+    }
+
+    //lägger till alla objekt som väntar
+    public void AddPendingObjects()
+    {
+        lock (gameListLock)
+        {
+            if (pendingAdds.Count > 0)
+            {
+                for (int i = 0; i < pendingAdds.Count; i++)
+                {
+                    pendingAdds[i].BeginDraw(); //kör alla begin draw funktion så att spriterna funkar
+                }
+                gameList.AddRange(pendingAdds);
+                pendingAdds.Clear();
+            }
+        }
+    }
+
+    public List<Hitbox> hitboxes = [];
+
+    public readonly List<Hitbox> hitboxPendingAdds = [];
+    public readonly List<Hitbox> pendingRemoves = [];
+    readonly object listLock = new object();
+
+    //lägger till alla objekt som väntar
+    public void AddPendingHitboxes()
+    {
+        lock (listLock)
+        {
+            if (hitboxPendingAdds.Count > 0)
+            {
+                hitboxes.AddRange(hitboxPendingAdds);
+                hitboxPendingAdds.Clear();
+            }
+        }
+    }
+
+    // kan användas säkert i alla threads
+    public void AddToHitboxList(Hitbox obj)
+    {
+        lock (listLock)
+        {
+            hitboxPendingAdds.Add(obj);
+        }
+    }
+
+
+    public Player playerReference;
 
     public bool deadRun = false;
 
@@ -19,9 +81,21 @@ class Run
     public List<Items> bossItems = [];
 
     // hur många items man får välja
-    public static int amountOfItemsToChooseFrom = 2;
+    public int amountOfItemsToChooseFrom = 2;
 
-    public void WriteBossList()
+    public void PrintRunStats()
+    {
+        Console.WriteLine(@$"
+    current boss    {currentBoss}
+    seed            {seed}
+    amount of items to choose from   {amountOfItemsToChooseFrom}
+    ");
+
+        ShowBosses();
+        Console.WriteLine();
+    }
+
+    public void ShowBosses()
     {
         for (int i = 0; i < bossesToFight.Count; i++)
         {
@@ -66,17 +140,18 @@ class Run
         /// kommer detta att funka??? 🧐🧐🧐
     }
 
-    public static List<Boss> GenerateBossList(List<Boss> availableBosses, int amountOfBosses)
+    public List<Boss> GenerateBossList(List<Boss> availableBosses, int amountOfBosses)
     {
         amountOfBosses = Math.Clamp(amountOfBosses, 0, availableBosses.Count);
         Random random = Random.Shared;
-        List<Boss> output = new List<Boss>();
+        List<Boss> output = [];
+        List<Boss> tempList = new List<Boss>(availableBosses);
 
         for (int i = 0; i < amountOfBosses; i++)
         {
-            int index = random.Next(0, availableBosses.Count);
-            output.Add(availableBosses[index]);
-            availableBosses.Remove(availableBosses[index]);
+            int index = random.Next(0, tempList.Count);
+            output.Add(tempList[index]);
+            tempList.Remove(tempList[index]);
         }
         return output;
     }
@@ -88,6 +163,8 @@ class Run
 
     public void GibbigtVärre()
     {
+        Console.WriteLine(GibbManager.ListToString(gameList));
+
         Boss bossToFight = bossesToFight.Keys.ToArray()[currentBoss];
 
         MoveableObject objectThatDied = ActualGibbNoWay(bossToFight);
@@ -98,13 +175,14 @@ class Run
         if (CheckBossesBeaten(bossesToFight.Values.ToArray()))
         {
             Console.WriteLine("köttigt run klarat");
+            currentBoss++;
             EndRun();
         }
         else
         {
             if (objectThatDied == playerReference)
             {
-                deadRun = true;
+
                 Console.WriteLine("YOU DIED!!!111");
                 EndRun();
             }
@@ -121,14 +199,16 @@ class Run
     public MoveableObject ActualGibbNoWay(Boss enemy)
     {
         // playerReference.InitializePlayer();
+        // ClearGameList();
+
         enemy.InitializePlayableBoss();
         GibbManager.currentlyGibbing = true;
 
         Raylib.InitWindow(enemy.screenSizeX, enemy.screenSizeY, "Game");
 
-        for (int i = 0; i < MoveableObject.gameList.Count; i++)
+        for (int i = 0; i < gameList.Count; i++)
         {
-            MoveableObject.gameList[i].BeginDraw();
+            gameList[i].BeginDraw();
         }
 
         FightableObject loser = playerReference;
@@ -150,22 +230,22 @@ class Run
                 Raylib.ClearBackground(GibbManager.backgroundColor);
 
                 //lägg till alla objekt som behöver läggas till utan att ändra på listan medans den itereras
-                MoveableObject.AddPendingObjects();
-                Hitbox.AddPendingHitboxes();
+                AddPendingObjects();
+                AddPendingHitboxes();
 
 
-                for (int i = 0; i < MoveableObject.gameList.Count; i++)
+                for (int i = 0; i < gameList.Count; i++)
                 {
                     //först uppdatera alla värden
-                    MoveableObject.gameList[i].Update();
-                    MoveableObject.gameList[i].Draw(); // sen ritar man ut allt till skärmen
+                    gameList[i].Update();
+                    gameList[i].Draw(); // sen ritar man ut allt till skärmen
                 }
 
                 Hitbox.ShowHitboxes();
 
                 //denna rad skrevs av mikael 
-                MoveableObject.gameList.RemoveAll(obj => obj.remove == true);
-                Hitbox.hitboxes.RemoveAll(obj => obj.remove == true);
+                gameList.RemoveAll(obj => obj.remove == true);
+                hitboxes.RemoveAll(obj => obj.remove == true);
 
                 // gör det enklare att debugga
                 /*for (int i = 0; i < MoveableObject.gameList.Count; i++)
@@ -180,12 +260,14 @@ class Run
                 Raylib.DrawText("Game Paused", Raylib.GetScreenWidth() / 2 - 250, Raylib.GetScreenHeight() / 2 - 45, 70, Color.Black);
                 Raylib.DrawText("The pause function is horribly broken but im too lazy", Raylib.GetScreenWidth() / 2 - 700, Raylib.GetScreenHeight() / 2 + 60, 50, Color.Black);
                 Raylib.DrawText("to fix it, use at own risk", Raylib.GetScreenWidth() / 2 - 690, Raylib.GetScreenHeight() / 2 + 110, 50, Color.Black);
+
+
             }
 
             Raylib.EndDrawing();
         }
 
-        if (MoveableObject.gameList.Contains(playerReference))
+        if (gameList.Contains(playerReference))
         {
             loser = enemy;
         }
@@ -198,19 +280,41 @@ class Run
 
     void EndRun()
     {
-
+        deadRun = true;
         Console.WriteLine(@$"Run stats:
-bosses killed            {currentBoss}");
+bosses killed            {currentBoss}
+");
+        playerReference.PrintPlayerStats();
     }
 
+    List<Boss> GetBossesFromTypes(List<Type> list)
+    {
+        List<Boss> output = [];
 
-    public Run(int seed, List<Boss> bossList, List<Items> items)
+        for (int i = 0; i < list.Count; i++)
+        {
+            Boss boss = (Boss)Activator.CreateInstance(list[i]);
+            output.Add(boss);
+        }
+
+        return output;
+    }
+
+    public Run(int seed, List<Type> bossList, List<Items> items)
     {
         this.seed = seed;
         availableItems = items;
-        for (int i = 0; i < bossList.Count; i++)
+
+        List<Boss> newBossList = GetBossesFromTypes(bossList);
+
+        // System.Console.WriteLine(GibbManager.ListToString(newBossList));
+
+        newBossList = GenerateBossList(newBossList, newBossList.Count);
+
+        for (int i = 0; i < newBossList.Count; i++)
         {
-            bossesToFight.Add(bossList[i], false);
+            bossesToFight.Add(newBossList[i], false);
         }
+
     }
 }
