@@ -6,10 +6,6 @@ abstract class FightableObject : MoveableObject
     protected float invincibilityDuration = 0;
     public static Color healthBarColor = new Color(100, 100, 100);
 
-    // protected float spriteWidth;
-    // protected float spriteHeight;
-    // protected Texture2D sprite;
-
     public List<Items> Inventory = new List<Items>();
 
     protected void DisplayHealthBar(float x, float y, float sizeMultiplier)
@@ -52,7 +48,7 @@ abstract class FightableObject : MoveableObject
         return limitReached;
     }
 
-    //objektet hp minskar, tas bort om det är < 0
+    //objektets hp minskar, tas bort om det är < 0
     public void TakeDamage(float damage, FightableObject target)
     {
         if (target.invincibilityDuration <= 0)
@@ -74,7 +70,6 @@ abstract class FightableObject : MoveableObject
             target.healthy = true;
         }
     }
-
     //😂😂😂 𝼀𰻝Ꮸ𐃵
     protected void CheckDamagingHitbox(float damage, string objectIdentifier, Hitbox newHitbox)
     {
@@ -94,7 +89,6 @@ abstract class FightableObject : MoveableObject
             }
         }
     }
-
 
     public void ApplyBuffsFromItem()
     {

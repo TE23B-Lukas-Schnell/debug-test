@@ -25,12 +25,12 @@ static class GibbManager
 
     public static ControlLayout currentLayout = defaultKeybindsWASD;
 
-    readonly public static List<Type> PeakBossPeakBoss = new ()
+    readonly public static List<Type> PeakBossPeakBoss = new()
     {
         typeof(Karim), typeof(Karim), typeof(Karim)
     };
 
-    readonly public static List<Items> availableItems = new List<Items>()
+    readonly public static List<Items> allItems = new List<Items>()
     {
         new Items("delegate test", "båtig item, gör bullet snabbare", applier: (FightableObject objectToBuff) =>
         {
@@ -63,7 +63,10 @@ static class GibbManager
             if(objectToBuff is Player)
             {
                 Player p = objectToBuff as Player;
-                p.bulletDamage *= 2;
+                p.bulletDamage++;
+                p.bulletDamage *= 1.34f;
+                p.bulletGravity += 1067;
+                p.bulletxSpeed *= 0.67f;
             }
             else if (objectToBuff is Boss)
             {
@@ -75,7 +78,7 @@ static class GibbManager
     //local menu variables
     static int SetSeed;
     static List<Type> bossList = PeakBossPeakBoss;
-    static List<Items> itemList = availableItems;
+    static List<Items> itemList = allItems;
 
     //action menus
     static Menu mainMenu = new Menu("main", new Dictionary<string, Action>()
@@ -119,6 +122,7 @@ static class GibbManager
         {"Show your score", () =>  Console.WriteLine($"Your score is: {currentRun.playerReference.score}")},
         {"Show player stats", () =>  currentRun.playerReference.PrintPlayerStats()},
         {"Show bosses", () => currentRun.ShowBosses()},
+        {"Show items left", () => currentRun.ShowAvailableitems()},
         {"Show seed", () =>   Console.WriteLine(currentRun.seed)},
         {"Apply item stats (temporary)", () =>  currentRun.playerReference.ApplyBuffsFromItem()},
         });
@@ -290,10 +294,7 @@ static class GibbManager
     static void StartRun(Run run)
     {
         currentRun = run;
-        // Console.WriteLine("run started");
-        // Console.WriteLine(run);
         currentMenu = gameMenu;
-        System.Console.WriteLine(currentRun);
         currentRun.playerReference = new CallePlayer(GibbManager.currentLayout);
         currentRun.playerReference.InitializePlayer();
     }

@@ -61,7 +61,6 @@ class Run
         }
     }
 
-
     public Player playerReference;
 
     public bool deadRun = false;
@@ -103,40 +102,54 @@ class Run
         }
     }
 
-    Items[] GetRandomItems(int amount, List<Items> items)
+    public void ShowAvailableitems()
+    {
+         for (int i = 0; i < availableItems.Count; i++)
+            {
+                Console.WriteLine($"{i +1}: {availableItems[i].name} \n {availableItems[i].description}");
+            }
+    }
+
+    List<Items> GetRandomItems(int amount, List<Items> items)
     {
         amount = Math.Clamp(amount, 0, items.Count);
-        Items[] output = new Items[amount];
+        List<Items> output = new();
         Random random = Random.Shared;
 
         for (int i = 0; i < amount; i++)
         {
             int index = random.Next(0, items.Count);
-            output.Append(items[index]);
-            // items.Remove(items[index]);
+            output.Add(items[index]);
+            items.Remove(items[index]);
         }
         return output;
     }
-
-    void GiveItem(int amount, Player player, Boss nextboss)
+    //denna funktion måste få en lista som redan är lika lång som amount, den gör inte det själv
+    void GiveItem(int amount, List<Items> availableItems, List<Items> playerInventory, List<Items> bossInventory)
     {
-        string correctGrammar;
-        if (amountOfItemsToChooseFrom < 2) correctGrammar = "items"; else correctGrammar = "item";
-
-        Console.WriteLine($"Choose an item, the {correctGrammar} you don't will be used the next boss!");
-
-        Items[] choosableItems = GetRandomItems(amountOfItemsToChooseFrom, availableItems);
-        for (int i = 0; i < choosableItems.Length; i++)
+        if (availableItems.Count != 0)
         {
-            Console.WriteLine($"{i}: {choosableItems[i].name} \n {choosableItems[i].description}");
+            string correctGrammar;
+            if (amount < 3) correctGrammar = "items"; else correctGrammar = "item";
+            Console.WriteLine($"Choose an item, the {correctGrammar} you don't choose will be used by all the following bosses!");
+            
+            for (int i = 0; i < availableItems.Count; i++)
+            {
+                Console.WriteLine($"{i +1}: {availableItems[i].name} \n {availableItems[i].description}");
+            }
+
+            int itemToChoose = GibbManager.GetIntFromConsole(1, availableItems.Count)-1;
+
+            playerInventory.Add(availableItems[itemToChoose]);
+            availableItems.Remove(availableItems[itemToChoose]);
+            bossInventory.AddRange(availableItems);
         }
-        int itemToChoose;
-        while (!int.TryParse(Console.ReadLine(), out itemToChoose))
+        else
         {
-            Console.WriteLine("Invalid input, try again");
+            Console.WriteLine("there are no items left!!1 :(");
         }
-        player.Inventory.Add(choosableItems[itemToChoose]);
-        nextboss.Inventory.AddRange(choosableItems);
+        System.Console.WriteLine("player: " + GibbManager.ListToString(playerInventory));
+        System.Console.WriteLine("boss: " + GibbManager.ListToString(bossInventory));
         /// kommer detta att funka??? 🧐🧐🧐
     }
 
@@ -163,12 +176,10 @@ class Run
 
     public void GibbigtVärre()
     {
-        Console.WriteLine(GibbManager.ListToString(gameList));
-
         Boss bossToFight = bossesToFight.Keys.ToArray()[currentBoss];
 
         MoveableObject objectThatDied = ActualGibbNoWay(bossToFight);
-        Console.WriteLine(objectThatDied + " died a deathly death");
+        // Console.WriteLine(objectThatDied + " died a deathly death");
 
         bossesToFight[bossToFight] = true;
 
@@ -189,7 +200,9 @@ class Run
             else
             {
                 currentBoss++;
-                // GiveItem(2, playerReference, bossesToFightThisRun[bossesBeaten]);
+
+                System.Console.WriteLine(GibbManager.ListToString(availableItems));
+                GiveItem(amountOfItemsToChooseFrom, GetRandomItems(amountOfItemsToChooseFrom, availableItems), playerReference.Inventory, bossItems);
             }
         }
 

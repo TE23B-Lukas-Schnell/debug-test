@@ -1,6 +1,5 @@
 class CallePlayer : Player
 {
-   
     public CallePlayer(ControlLayout controlLayout) : base(controlLayout)
     {
         x = 400;

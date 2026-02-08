@@ -40,8 +40,8 @@ abstract class Player : FightableObject
     public float jumpForce = 1300f;
     public float setDashDuration = 0.2f;
     public float setDashCooldown = 0.47f;
-    public float fastFallSpeed = 1400f;
-    public float dashSpeed = 1900f;
+    public float fastFallSpeed = 1367f;
+    public float dashSpeed = 1895f;
     public float invincibilityTime = 1f;
     public Color color = new Color(0, 0f, 235f, 254f);
 
@@ -49,8 +49,8 @@ abstract class Player : FightableObject
     public float setShootCooldown = 0.5f;
     public float bulletWidth = 40f;
     public float bulletHeight = 20f;
-    public float bulletDamage = 50f;
-    public float bulletxSpeed = 1800f;
+    public float bulletDamage = 50f; //vanligtvis 5, borde vara 50 när man debuggar
+    public float bulletxSpeed = 1630f;
     public float bulletySpeed = 0f;
     public float bulletGravity = 0f;
 
@@ -103,12 +103,12 @@ bullet gravity:          {bulletGravity}");
         shoot += () =>
         {
             shootCooldown = setShootCooldown;
-            new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletxSpeed, bulletySpeed, bulletGravity, bulletDamage);
+            new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletxSpeed, bulletySpeed, bulletGravity, bulletDamage,false);
         };
         upShoot += () =>
         {
             shootCooldown = setShootCooldown;
-            new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletySpeed, bulletxSpeed, bulletGravity, bulletDamage);
+            new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletxSpeed, bulletySpeed, bulletGravity, bulletDamage, true);
         };
         takenDamage += () => invincibilityDuration = invincibilityTime;
 
@@ -268,7 +268,7 @@ bullet gravity:          {bulletGravity}");
     public override void Despawn()
     {
         hitbox.DeleteHitbox();
-        Console.WriteLine("spelaren har despawnat");
+        // Console.WriteLine("spelaren har despawnat");
         GibbManager.currentlyGibbing = false;
 
     }
