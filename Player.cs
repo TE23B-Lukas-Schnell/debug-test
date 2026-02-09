@@ -49,8 +49,8 @@ abstract class Player : FightableObject
     public float setShootCooldown = 0.5f;
     public float bulletWidth = 40f;
     public float bulletHeight = 20f;
-    public float bulletDamage = 50f; //vanligtvis 5, borde vara 50 när man debuggar
-    public float bulletxSpeed = 1630f;
+    public float bulletDamage = 10f; //vanligtvis 5, borde vara 50 när man debuggar
+    public float bulletxSpeed = 1600f;
     public float bulletySpeed = 0f;
     public float bulletGravity = 0f;
 
@@ -72,6 +72,7 @@ dash duration:           {setDashDuration}
 dash cooldown:           {setDashCooldown}
 fastfall speed:          {fastFallSpeed}
 shoot cooldown:          {setShootCooldown}
+damage multiplier:       {damageMultiplier}
 bullet width:            {bulletWidth}
 bullet height:           {bulletHeight}
 bullet damage:           {bulletDamage}

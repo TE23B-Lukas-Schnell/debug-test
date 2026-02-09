@@ -150,6 +150,8 @@ class Run
         }
         System.Console.WriteLine("player: " + GibbManager.ListToString(playerInventory));
         System.Console.WriteLine("boss: " + GibbManager.ListToString(bossInventory));
+    
+        playerReference.ApplyBuffsFromItem();
         /// kommer detta att funka??? 🧐🧐🧐
     }
 
@@ -201,7 +203,7 @@ class Run
             {
                 currentBoss++;
 
-                System.Console.WriteLine(GibbManager.ListToString(availableItems));
+                // System.Console.WriteLine(GibbManager.ListToString(availableItems));
                 GiveItem(amountOfItemsToChooseFrom, GetRandomItems(amountOfItemsToChooseFrom, availableItems), playerReference.Inventory, bossItems);
             }
         }
@@ -316,7 +318,8 @@ bosses killed            {currentBoss}
     public Run(int seed, List<Type> bossList, List<Items> items)
     {
         this.seed = seed;
-        availableItems = items;
+
+        availableItems = new(items);
 
         List<Boss> newBossList = GetBossesFromTypes(bossList);
 

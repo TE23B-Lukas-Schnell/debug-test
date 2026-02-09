@@ -1,16 +1,13 @@
 abstract class MoveableObject
 {
-
     public static float globalGravityMultiplier = 1;
 
     public string objectIdentifier = "";
     public bool remove = false;
-    public float damageMultiplier = 1;
-    public float healMultiplier = 1;
     public Hitbox hitbox;
-    protected float x, y;
-    protected float xSpeed, ySpeed;
-    protected float width, height;
+    public float x, y;
+    public float xSpeed, ySpeed;
+    public float width, height;
     protected bool canGoOffscreen = false;
     protected bool ignoreGround = false;
 
@@ -90,7 +87,7 @@ abstract class MoveableObject
                 trailColorSet.B = Math.Clamp(trailColorSet.B, (byte)0, (byte)255);
                 trailColorSet.A = Math.Clamp(trailColorSet.A, (byte)0, (byte)255);
             }
-            Raylib.DrawRectangle((int)pos.x, (int)pos.y, (int)width, (int)width, trailColor);
+            Raylib.DrawRectangle((int)pos.x, (int)pos.y, (int)width, (int)height, trailColor);
             i++;
         }
     }

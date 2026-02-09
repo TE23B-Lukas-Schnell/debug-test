@@ -27,17 +27,18 @@ static class GibbManager
 
     readonly public static List<Type> PeakBossPeakBoss = new()
     {
-        typeof(Karim), typeof(Karim), typeof(Karim)
+        typeof(Karim), typeof(Karim), typeof(Karim), typeof(Karim), typeof(Karim)
     };
 
     readonly public static List<Items> allItems = new List<Items>()
     {
-        new Items("delegate test", "båtig item, gör bullet snabbare", applier: (FightableObject objectToBuff) =>
+        new Items("Mickes hjälp", "båtig item, gör bullet snabbare", applier: (FightableObject objectToBuff) =>
         {
             if(objectToBuff is Player)
             {
                 Player p = objectToBuff as Player;
                 p.bulletxSpeed *= 1.5f;
+                p.setShootCooldown -= 0.1f;
             }
             else if (objectToBuff is Boss)
             {
@@ -50,7 +51,8 @@ static class GibbManager
             if(objectToBuff is Player)
             {
                 Player p = objectToBuff as Player;
-                p.jumpForce *= 2;
+                p.jumpForce *= 1.5f;
+                p.gravity *= 1.1f;
             }
             else if (objectToBuff is Boss)
             {
@@ -58,21 +60,54 @@ static class GibbManager
             }
         }),
 
-        new Items("test item 2", "ger köttig buff", applier: (FightableObject objectToBuff) =>
+        new Items("Skolmaten", "från alexander: man blir liksom tjock så man får gravity", applier: (FightableObject objectToBuff) =>
         {
             if(objectToBuff is Player)
             {
                 Player p = objectToBuff as Player;
                 p.bulletDamage++;
-                p.bulletDamage *= 1.34f;
+                p.bulletDamage *= 1.5f;
                 p.bulletGravity += 1067;
                 p.bulletxSpeed *= 0.67f;
+                p.bulletySpeed += 367f;
             }
             else if (objectToBuff is Boss)
             {
                 Boss b = objectToBuff as Boss;
             }
         }),
+
+        new Items("Kemibok", "från dante: när man träffar bossen så blir det en acid effekt!!111", applier: (FightableObject objectToBuff) =>
+        {
+            if(objectToBuff is Player)
+            {
+                Player p = objectToBuff as Player;
+                //fixa någon gång efter du har gjort partikel systemet
+            }
+            else if (objectToBuff is Boss)
+            {
+                Boss b = objectToBuff as Boss;
+            }
+        }),
+
+        new Items("Calles krona", "Gör dig större men du tar mindre damage och gör lite mer damage, precis som Calle!", applier: (FightableObject objectToBuff) =>
+        {
+            if(objectToBuff is Player)
+            {
+                Player p = objectToBuff as Player;
+                p.damageMultiplier = 0.8f;
+                p.width += 50;
+                p.height += 10;
+                p.bulletDamage *= 1.1f;
+                p.maxHP += 3;
+            }
+            else if (objectToBuff is Boss)
+            {
+                Boss b = objectToBuff as Boss;
+            }
+        }),
+
+
     };
 
     //local menu variables
@@ -124,7 +159,6 @@ static class GibbManager
         {"Show bosses", () => currentRun.ShowBosses()},
         {"Show items left", () => currentRun.ShowAvailableitems()},
         {"Show seed", () =>   Console.WriteLine(currentRun.seed)},
-        {"Apply item stats (temporary)", () =>  currentRun.playerReference.ApplyBuffsFromItem()},
         });
 
     public static int GetIntFromConsole()

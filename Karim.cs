@@ -138,7 +138,7 @@ class Karim : Boss
 
         for (int i = 0; i < amountOfBullets; i++)
         {
-            new EnemyBullet(x, y, bulletWidth, bulletHeight, (float)Math.Cos(i) * 100, 0, 1700f, bulletDamage * 2, true);
+            new EnemyBullet(x, y, bulletWidth, bulletHeight, (float)Math.Cos(i) * 100, 0, 1700f, bulletDamage * 1.6f, true);
             await Wait(50, ct, false);
         }
 

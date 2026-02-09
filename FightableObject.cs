@@ -1,16 +1,20 @@
 abstract class FightableObject : MoveableObject
 {
-    protected float maxHP;
-    protected float hp;
+    public float maxHP;
+    public Color healthBarColor = new Color(100, 100, 100);
+    public float damageMultiplier = 1;
+    public float healMultiplier = 1;
     public bool healthy = true;
+    
     protected float invincibilityDuration = 0;
-    public static Color healthBarColor = new Color(100, 100, 100);
+    protected float hp;
+
 
     public List<Items> Inventory = new List<Items>();
 
     protected void DisplayHealthBar(float x, float y, float sizeMultiplier)
     {
-        Raylib.DrawRectangle(R(x),R(y), R((maxHP * sizeMultiplier) + 10), 60, Color.Gray);
+        Raylib.DrawRectangle(R(x), R(y), R((maxHP * sizeMultiplier) + 10), 60, Color.Gray);
         Raylib.DrawRectangle(R(x + 5), R(y + 5), R(hp * sizeMultiplier), 50, Color.Green);
     }
 
@@ -110,9 +114,9 @@ abstract class FightableObject : MoveableObject
 
     public override void AddToGameList()
     {
-         GibbManager.currentRun.AddToGameList(this);
+        GibbManager.currentRun.AddToGameList(this);
     }
-       
+
     protected FightableObject()
     {
         //detta sätter hp till null vilket😡 det borde inte funka så tycker jag
