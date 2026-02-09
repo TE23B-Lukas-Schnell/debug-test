@@ -74,10 +74,10 @@ class Run
     public int currentBoss = 0;
 
     //möjliga items att få på ett run, oftast en kopia listan med alla items, när ett item plockas från listan så borde försvinna ur den
-    public List<Items> availableItems = [];
+    public List<Item> availableItems = [];
 
     // innehåller items som alla bossar ska ha
-    public List<Items> bossItems = [];
+    public List<Item> bossItems = [];
 
     // hur många items man får välja
     public int amountOfItemsToChooseFrom = 2;
@@ -110,10 +110,10 @@ class Run
             }
     }
 
-    List<Items> GetRandomItems(int amount, List<Items> items)
+    List<Item> GetRandomItems(int amount, List<Item> items)
     {
         amount = Math.Clamp(amount, 0, items.Count);
-        List<Items> output = new();
+        List<Item> output = new();
         Random random = Random.Shared;
 
         for (int i = 0; i < amount; i++)
@@ -125,7 +125,7 @@ class Run
         return output;
     }
     //denna funktion måste få en lista som redan är lika lång som amount, den gör inte det själv
-    void GiveItem(int amount, List<Items> availableItems, List<Items> playerInventory, List<Items> bossInventory)
+    void GiveItem(int amount, List<Item> availableItems, List<Item> playerInventory, List<Item> bossInventory)
     {
         if (availableItems.Count != 0)
         {
@@ -315,7 +315,7 @@ bosses killed            {currentBoss}
         return output;
     }
 
-    public Run(int seed, List<Type> bossList, List<Items> items)
+    public Run(int seed, List<Type> bossList, List<Item> items)
     {
         this.seed = seed;
 

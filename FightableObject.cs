@@ -10,7 +10,7 @@ abstract class FightableObject : MoveableObject
     protected float hp;
 
 
-    public List<Items> Inventory = new List<Items>();
+    public List<Item> Inventory = new List<Item>();
 
     protected void DisplayHealthBar(float x, float y, float sizeMultiplier)
     {

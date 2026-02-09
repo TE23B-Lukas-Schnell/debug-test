@@ -27,7 +27,7 @@ class Karim : Boss
         xSpeed = 0;
         ySpeed = 0;
         xSpeed -= moveSpeed * 1.5f;
-        ySpeed += jumpHeight;
+        ySpeed += jumpForce;
 
 
         while (x != 0)
@@ -39,7 +39,7 @@ class Karim : Boss
 
 
         xSpeed += moveSpeed * 1.5f;
-        ySpeed += jumpHeight * 1.5f;
+        ySpeed += jumpForce * 1.5f;
 
 
         while (x != screenSizeX - width)
@@ -94,7 +94,7 @@ class Karim : Boss
         color = new Color(0, 128, 128);
         await Wait(600, ct);
 
-        int amountOfBullets = 10;
+        int amountOfBullets = 11;
 
         xSpeed = 0;
 
@@ -102,8 +102,8 @@ class Karim : Boss
 
         for (int i = 0; i < amountOfBullets; i++)
         {
-            new EnemyBullet(x + width / 2, y + height / 2, bulletHeight, bulletWidth, -(1100 - (i * 50)), 1000, 1700, bulletDamage, true);
-            await Wait(190, ct, false);
+            new BåtBullet(x + width / 2, y + height / 2, bulletHeight * 2, bulletWidth * 1.8f, -(1100 - (i * 70)), 1000, 1700, bulletDamage);
+            await Wait(140, ct, false);
         }
 
         color = temp;
@@ -124,7 +124,7 @@ class Karim : Boss
         xSpeed = 0;
         ySpeed = 0;
         xSpeed -= moveSpeed * 1.5f;
-        ySpeed += jumpHeight * 1.5f;
+        ySpeed += jumpForce * 1.5f;
 
         while (x >= screenSizeX / 2)
         {
@@ -175,7 +175,7 @@ class Karim : Boss
         contactDamageHitboxSizeRatio = 0.72f;
         moveSpeed = 600;
         gravity = 2300;
-        jumpHeight = 1200;
+        jumpForce = 1200;
 
         InitializeDelegates();
 

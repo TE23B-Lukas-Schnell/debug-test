@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 abstract class Player : FightableObject
 {
     //statiska variabler
@@ -20,6 +18,7 @@ abstract class Player : FightableObject
     public int score = 0;
     protected SpriteDrawer spriteDrawer = new SpriteDrawer();
     protected string spriteFilePath;
+    protected Item startItem;
 
     //player actions
     public Action moveLeft;
@@ -80,7 +79,7 @@ bullet speed:            {bulletxSpeed} {bulletySpeed}
 bullet gravity:          {bulletGravity}");
 
         Console.WriteLine("inventory:");
-        foreach (Items items in Inventory)
+        foreach (Item items in Inventory)
         {
             Console.WriteLine(items.name);
         }

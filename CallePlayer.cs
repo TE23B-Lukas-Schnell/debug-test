@@ -10,5 +10,9 @@ class CallePlayer : Player
         hp = maxHP;
 
         spriteFilePath = @"./Sprites/carlengman-scaled-600x600.jpg";
+
+        
+        
+        // Inventory.Add(startItem);
     }
 }

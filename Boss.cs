@@ -19,7 +19,7 @@ abstract class Boss : FightableObject
     //stats that could potentially change with items 
     public Color color = new Color(255, 255, 255, 255);
     public float moveSpeed;
-    public float jumpHeight;
+    public float jumpForce;
     public float gravity;
     public float bulletWidth;
     public float bulletHeight;
