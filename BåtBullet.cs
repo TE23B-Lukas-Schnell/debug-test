@@ -1,6 +1,5 @@
 class BåtBullet : EnemyBullet
 {
-
     string spriteFilePath = "./Sprites/assets/karimsbåt.jpg";
     readonly Color color = Color.White;
 
@@ -17,8 +16,7 @@ class BåtBullet : EnemyBullet
         spriteDrawer.LoadSprite(Raylib.LoadTexture(spriteFilePath), width, height);
     }
 
-    public BåtBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage) 
-    : base(x, y, width, height, xSpeed, ySpeed, gravity, damage)
+    public BåtBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage)  : base(x, y, width, height, xSpeed, ySpeed, gravity, damage)
     {
         this.canGoOffscreen = true;
     }

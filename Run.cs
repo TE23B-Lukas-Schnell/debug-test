@@ -1,3 +1,11 @@
+struct quaternion
+{
+    double k;
+    double j;
+    double i;
+    double w;
+}
+
 class Run
 {
     //lista för alla objekt som ska hanteras, det är lista för att den kan öka och minska under runtime
@@ -104,10 +112,10 @@ class Run
 
     public void ShowAvailableitems()
     {
-         for (int i = 0; i < availableItems.Count; i++)
-            {
-                Console.WriteLine($"{i +1}: {availableItems[i].name} \n {availableItems[i].description}");
-            }
+        for (int i = 0; i < availableItems.Count; i++)
+        {
+            Console.WriteLine($"{i + 1}: {availableItems[i].name} \n {availableItems[i].description}");
+        }
     }
 
     List<Item> GetRandomItems(int amount, List<Item> items)
@@ -132,13 +140,13 @@ class Run
             string correctGrammar;
             if (amount < 3) correctGrammar = "items"; else correctGrammar = "item";
             Console.WriteLine($"Choose an item, the {correctGrammar} you don't choose will be used by all the following bosses!");
-            
+
             for (int i = 0; i < availableItems.Count; i++)
             {
-                Console.WriteLine($"{i +1}: {availableItems[i].name} \n {availableItems[i].description}");
+                Console.WriteLine($"{i + 1}: {availableItems[i].name} \n {availableItems[i].description}");
             }
 
-            int itemToChoose = GibbManager.GetIntFromConsole(1, availableItems.Count)-1;
+            int itemToChoose = GibbManager.GetIntFromConsole(1, availableItems.Count) - 1;
 
             playerInventory.Add(availableItems[itemToChoose]);
             availableItems.Remove(availableItems[itemToChoose]);
@@ -150,7 +158,7 @@ class Run
         }
         System.Console.WriteLine("player: " + GibbManager.ListToString(playerInventory));
         System.Console.WriteLine("boss: " + GibbManager.ListToString(bossInventory));
-    
+
         playerReference.ApplyBuffsFromItem();
         /// kommer detta att funka??? 🧐🧐🧐
     }
@@ -275,8 +283,6 @@ class Run
                 Raylib.DrawText("Game Paused", Raylib.GetScreenWidth() / 2 - 250, Raylib.GetScreenHeight() / 2 - 45, 70, Color.Black);
                 Raylib.DrawText("The pause function is horribly broken but im too lazy", Raylib.GetScreenWidth() / 2 - 700, Raylib.GetScreenHeight() / 2 + 60, 50, Color.Black);
                 Raylib.DrawText("to fix it, use at own risk", Raylib.GetScreenWidth() / 2 - 690, Raylib.GetScreenHeight() / 2 + 110, 50, Color.Black);
-
-
             }
 
             Raylib.EndDrawing();
@@ -285,6 +291,12 @@ class Run
         if (gameList.Contains(playerReference))
         {
             loser = enemy;
+            Raylib.BeginDrawing();
+
+            // Raylib.DrawRectangle()
+            
+            Raylib.EndDrawing();
+
         }
         else loser = playerReference;
 
@@ -299,7 +311,7 @@ class Run
         Console.WriteLine(@$"Run stats:
 bosses killed            {currentBoss}
 ");
-        playerReference.PrintPlayerStats();
+        Console.WriteLine(playerReference.PrintPlayerStats());
     }
 
     List<Boss> GetBossesFromTypes(List<Type> list)

@@ -1,4 +1,4 @@
-class Karim : Boss
+class VoidKöttigBoss : Boss
 {
     void Moving(float value, float minValue, float maxValue)
     {
@@ -19,7 +19,11 @@ class Karim : Boss
         Color temp = color;
         float contactDamageTemp = contactDamage;
         contactDamage = 6;
-        color = new Color(200, 35, 35);
+        for (int i = 0; i < 255; i++)
+        {
+            color = new Color(i, 67, 67);
+
+        }
         xSpeed = 0;
         ySpeed = 0;
         await Wait(700, ct);
@@ -86,7 +90,7 @@ class Karim : Boss
         await Wait(400, ct);
     }
 
-    async Task BåtAttack(CancellationToken ct)
+    async Task SläckaNerLockenAttackenPlusBåtigInputPåslutet(CancellationToken ct)
     {
         xSpeed = 0;
         ySpeed = 0;
@@ -94,7 +98,7 @@ class Karim : Boss
         color = new Color(0, 128, 128);
         await Wait(600, ct);
 
-        int amountOfBullets = 10;
+        int amountOfBullets = 67;
 
         xSpeed = 0;
 
@@ -109,6 +113,7 @@ class Karim : Boss
         color = temp;
 
         await Wait(400, ct);
+        Console.ReadKey(true); // Checker för båtig input på slutet
     }
 
     async Task TeknikarDuschen(CancellationToken ct)
@@ -117,7 +122,7 @@ class Karim : Boss
         ySpeed = 0;
         Color temp = color;
         color = new Color(0, 234, 14);
-        await Wait(600, ct);
+        await Wait(367, ct);
 
         int amountOfBullets = 15;
 
@@ -139,33 +144,46 @@ class Karim : Boss
         for (int i = 0; i < amountOfBullets; i++)
         {
             new EnemyBullet(x, y, bulletWidth, bulletHeight, (float)Math.Cos(i) * 100, 0, 1700f, bulletDamage * 1.6f, true);
-            await Wait(50, ct, false);
+            await Wait(20, ct, false);
         }
 
         color = temp;
         gravity = tempGravity;
-        await Wait(400, ct);
+        await Wait(100, ct);
+    }
+
+    async Task DåKanViSläckaNerLocken(CancellationToken ct)
+    {
+        Console.WriteLine("Då kan ni va snälla och släcka ner locken");
+        Environment.Exit(0);
     }
 
     void InitializeDelegates()
     {
         bossAttacks.Add(JumpingAttack);
         bossAttacks.Add(SpiralAttack);
-        bossAttacks.Add(BåtAttack);
+        bossAttacks.Add(SläckaNerLockenAttackenPlusBåtigInputPåslutet);
         bossAttacks.Add(TeknikarDuschen);
+        bossAttacks.Add(DåKanViSläckaNerLocken);
     }
 
     public override void MoveCycle()
     {
         Moving(x, 1200, screenSizeX - width);
+
+        Console.WriteLine("Hej jag heter anton");
+        if (MathF.Log10(5) == MathF.Log10(5))
+        {
+            Console.WriteLine("Köttig text som skrivs här hej jag håller på att heta anton");
+        }
     }
 
-    public Karim()
+    public VoidKöttigBoss()
     {
-        screenSizeX = 1800;
-        screenSizeY = 900;
+        screenSizeX = (int)(1700 / 3);
+        screenSizeY = (int)(867 / 3);
         width = 255;
-        height = 255;
+        height = 200;
         x = screenSizeX;
         y = screenSizeY / 2;
         maxHP = 600;
@@ -173,19 +191,19 @@ class Karim : Boss
         objectIdentifier = "enemy";
         contactDamage = 3;
         contactDamageHitboxSizeRatio = 0.72f;
-        moveSpeed = 600;
+        moveSpeed = 1200;
         gravity = 2300;
-        jumpForce = 1200;
+        jumpForce = 6767;
 
         InitializeDelegates();
 
-        bulletWidth = 23;
-        bulletHeight = 60;
-        bulletDamage = 4;
-        waitMultiplier = 1;
-        name = "Karim the Ryder";
-        attackDelay = 1750;
+        bulletWidth = 67;
+        bulletHeight = 67;
+        bulletDamage = 67;
+        waitMultiplier = 0.6f;
+        name = "Ulf Beck";
+        attackDelay = 20;
 
-        spriteFilePath = @"./Sprites/karimryde-scaled-600x600.jpg";
+        spriteFilePath = @"./Sprites/ulfbeck-scaled-600x427.jpg";
     }
 }

@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+
 static class GibbManager
 {
     public static Color backgroundColor = Color.White;
@@ -27,16 +29,17 @@ static class GibbManager
 
     readonly public static List<Type> PeakBossPeakBoss = new()
     {
-        typeof(Karim), typeof(Karim), typeof(Karim), typeof(Karim), typeof(Karim)
+        typeof(Christian), typeof (Christian), typeof(Christian)
     };
 
     readonly public static List<Item> allItems = new List<Item>()
     {
-      Item.GetItem("Mickes hjälp"),
-      Item.GetItem("Martins fönster öppnare"),
-      Item.GetItem("Skolmaten"),
-      Item.GetItem("Kemibok"),
-      Item.GetItem("Calles krona"),
+        Item.GetItem("Mickes hjälp"),
+        Item.GetItem("Martins fönster öppnare"),
+        Item.GetItem("Skolmaten"),
+        Item.GetItem("Kemibok"),
+        Item.GetItem("Calles krona"),
+        // Item.GetItem("Erikas Waifu Köttbåt")
     };
 
     //local menu variables
@@ -83,8 +86,8 @@ static class GibbManager
                 currentMenu = mainMenu;
             }
         }},
-        {"Show your score", () =>  Console.WriteLine($"Your score is: {currentRun.playerReference.score}")},
-        {"Show player stats", () =>  currentRun.playerReference.PrintPlayerStats()},
+        {"Show your score", () => Console.WriteLine($"Your score is: {currentRun.playerReference.score}")},
+        {"Show player stats", () => Console.WriteLine( currentRun.playerReference.PrintPlayerStats())},
         {"Show bosses", () => currentRun.ShowBosses()},
         {"Show items left", () => currentRun.ShowAvailableitems()},
         {"Show seed", () =>   Console.WriteLine(currentRun.seed)},
@@ -246,8 +249,8 @@ static class GibbManager
             Console.Write(i + 1 + ": ");
 
             //måste bestämma om keybinds ska visas när man väljer control layout
-            Console.WriteLine(ControlLayout.controlLayouts[i].name);
-            // ControlLayout.controlLayouts[i].PrintControlLayout();
+            // Console.WriteLine(ControlLayout.controlLayouts[i].name);
+            ControlLayout.controlLayouts[i].PrintControlLayout();
         }
 
         currentLayout = ControlLayout.controlLayouts[GetIntFromConsole(1, ControlLayout.controlLayouts.Count) - 1];

@@ -1,16 +1,16 @@
-class Karim : Boss
+class Christian : Boss
 {
-    void Moving(float value, float minValue, float maxValue)
+    void Moving(float value, float minValue, float maxValue, ref float changeValue)
     {
-        if (xSpeed == 0) xSpeed = moveSpeed;
+        if (changeValue == 0) changeValue = moveSpeed;
 
         if (value >= maxValue)
         {
-            xSpeed = -Math.Abs(moveSpeed);
+            changeValue = -Math.Abs(moveSpeed);
         }
         else if (value <= minValue)
         {
-            xSpeed = Math.Abs(moveSpeed);
+            changeValue = Math.Abs(moveSpeed);
         }
     }
 
@@ -19,7 +19,7 @@ class Karim : Boss
         Color temp = color;
         float contactDamageTemp = contactDamage;
         contactDamage = 6;
-        color = new Color(200, 35, 35);
+        color = new Color(240, 35, 35);
         xSpeed = 0;
         ySpeed = 0;
         await Wait(700, ct);
@@ -94,7 +94,7 @@ class Karim : Boss
         color = new Color(0, 128, 128);
         await Wait(600, ct);
 
-        int amountOfBullets = 10;
+        int amountOfBullets = 11;
 
         xSpeed = 0;
 
@@ -147,45 +147,56 @@ class Karim : Boss
         await Wait(400, ct);
     }
 
+    async Task DåKanViSläckaNerLocken(CancellationToken ct)
+    {
+        //gör köttig attack här
+    }
+
     void InitializeDelegates()
     {
         bossAttacks.Add(JumpingAttack);
         bossAttacks.Add(SpiralAttack);
-        bossAttacks.Add(BåtAttack);
+        // bossAttacks.Add(BåtAttack);
         bossAttacks.Add(TeknikarDuschen);
+        bossAttacks.Add(DåKanViSläckaNerLocken);
     }
 
     public override void MoveCycle()
     {
-        Moving(x, 1200, screenSizeX - width);
+        Moving(x, 207, screenSizeX - width, ref xSpeed);
+
+        if (y > 567 && ySpeed < 0)
+        {
+            ySpeed += jumpForce;
+        }
     }
 
-    public Karim()
+    public Christian()
     {
-        screenSizeX = 1800;
-        screenSizeY = 900;
+        screenSizeX = 1200;
+        screenSizeY = 1000;
         width = 255;
         height = 255;
         x = screenSizeX;
         y = screenSizeY / 2;
-        maxHP = 600;
+        maxHP = 500;
         hp = maxHP;
         objectIdentifier = "enemy";
         contactDamage = 3;
         contactDamageHitboxSizeRatio = 0.72f;
-        moveSpeed = 600;
-        gravity = 2300;
-        jumpForce = 1200;
+        moveSpeed = 469;
+        gravity = 2100;
+        jumpForce = 1500;
 
         InitializeDelegates();
 
-        bulletWidth = 23;
+        bulletWidth = 25;
         bulletHeight = 60;
-        bulletDamage = 4;
+        bulletDamage = 4.4f;
         waitMultiplier = 1;
-        name = "Karim the Ryder";
-        attackDelay = 1750;
+        name = "Christian the Killiner";
+        attackDelay = 1700;
 
-        spriteFilePath = @"./Sprites/karimryde-scaled-600x600.jpg";
+        spriteFilePath = @"./Sprites/christiankilliner-scaled-600x600.jpg";
     }
 }

@@ -58,9 +58,9 @@ abstract class Player : FightableObject
     float dashCooldown = 0;
     float shootCooldown = 0;
 
-    public void PrintPlayerStats()
+    public string PrintPlayerStats()
     {
-        Console.WriteLine(@$"Stats:
+        string a = @$"Stats:
 pos                      {x} {y}
 velocity                 {xSpeed} {ySpeed}        
 size                     {width} {height}
@@ -76,13 +76,14 @@ bullet width:            {bulletWidth}
 bullet height:           {bulletHeight}
 bullet damage:           {bulletDamage}
 bullet speed:            {bulletxSpeed} {bulletySpeed}
-bullet gravity:          {bulletGravity}");
+bullet gravity:          {bulletGravity}";
 
-        Console.WriteLine("inventory:");
+        a += "\ninventory:";
         foreach (Item items in Inventory)
         {
-            Console.WriteLine(items.name);
+            a += "\n   " + items.name;
         }
+        return a;
     }
     //makes all the delegates work 
     void InitializeDelegates(/*HEJ JAG HETER  ANTON*/)
@@ -103,7 +104,7 @@ bullet gravity:          {bulletGravity}");
         shoot += () =>
         {
             shootCooldown = setShootCooldown;
-            new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletxSpeed, bulletySpeed, bulletGravity, bulletDamage,false);
+            new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletxSpeed, bulletySpeed, bulletGravity, bulletDamage, false);
         };
         upShoot += () =>
         {
