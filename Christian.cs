@@ -88,23 +88,22 @@ class Christian : Boss
 
     async Task BåtAttack(CancellationToken ct)
     {
-        xSpeed = 0;
-        ySpeed = 0;
+        // xSpeed = 0;
+        // ySpeed = 0;
         Color temp = color;
         color = new Color(0, 128, 128);
-        await Wait(600, ct);
+        await Wait(340, ct);
 
-        int amountOfBullets = 11;
+        int attacks = 6;
 
-        xSpeed = 0;
+        // for(int i = 0; i > attacks)
 
-        await Wait(400, ct);
+        new EnemyBullet(x, y, bulletWidth * 2, bulletHeight * 2, xSpeed, 112, 1400f, bulletDamage * 1.1f, true);
 
-        for (int i = 0; i < amountOfBullets; i++)
-        {
-            new BåtBullet(x + width / 2, y + height / 2, bulletHeight * 2, bulletWidth * 1.8f, -(1100 - (i * 70)), 1000, 1700, bulletDamage);
-            await Wait(140, ct, false);
-        }
+        ySpeed = jumpForce;
+        xSpeed = moveSpeed;
+
+        new EnemyBullet(x, y, bulletWidth * 2, bulletHeight * 2, xSpeed, 112, 1400f, bulletDamage * 1.1f, true);
 
         color = temp;
 
@@ -156,7 +155,7 @@ class Christian : Boss
     {
         bossAttacks.Add(JumpingAttack);
         bossAttacks.Add(SpiralAttack);
-        // bossAttacks.Add(BåtAttack);
+        bossAttacks.Add(BåtAttack);
         bossAttacks.Add(TeknikarDuschen);
         bossAttacks.Add(DåKanViSläckaNerLocken);
     }
@@ -165,7 +164,7 @@ class Christian : Boss
     {
         Moving(x, 207, screenSizeX - width, ref xSpeed);
 
-        if (y > 567 && ySpeed < 0)
+        if (y > 567 && ySpeed <= 0)
         {
             ySpeed += jumpForce;
         }
