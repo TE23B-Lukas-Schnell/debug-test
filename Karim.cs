@@ -79,7 +79,7 @@ class Karim : Boss
         await Wait(1000, ct);
         for (int i = 0; i < amountOfBullets; i++)
         {
-            new EnemyBullet(x, y, bulletWidth, bulletWidth, -800f, (float)Math.Cos(i) * 300f, 0f, bulletDamage,false);
+            new BossBullet(x, y, bulletWidth, bulletWidth, -800f, (float)Math.Cos(i) * 300f, 0f, bulletDamage,false);
             await Wait(100, ct, false);
         }
         color = temp;
@@ -102,7 +102,7 @@ class Karim : Boss
 
         for (int i = 0; i < amountOfBullets; i++)
         {
-            new BåtBullet(x + width / 2, y + height / 2, bulletHeight * 2, bulletWidth * 1.8f, -(1100 - (i * 70)), 1000, 1700, bulletDamage);
+            BåtBullet.KarimShoot(x + width / 2, y + height / 2, bulletHeight * 2, bulletWidth * 1.8f, -(1130 - (i * 70)), 1000, 1700, bulletDamage);
             await Wait(140, ct, false);
         }
 
@@ -138,7 +138,7 @@ class Karim : Boss
 
         for (int i = 0; i < amountOfBullets; i++)
         {
-            new EnemyBullet(x, y, bulletWidth, bulletHeight, (float)Math.Cos(i) * 100, 0, 1700f, bulletDamage * 1.6f, true);
+            new BossBullet(x, y, bulletWidth, bulletHeight, (float)Math.Cos(i) * 100, 0, 1700f, bulletDamage * 1.6f, true);
             await Wait(50, ct, false);
         }
 

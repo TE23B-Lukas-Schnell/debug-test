@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices;
-
 static class GibbManager
 {
     public static Color backgroundColor = Color.White;
@@ -29,7 +27,7 @@ static class GibbManager
 
     readonly public static List<Type> PeakBossPeakBoss = new()
     {
-        typeof(Christian), typeof (Christian), typeof(Christian)
+        typeof(Karim), typeof(Christian), typeof(Christian), typeof(Karim),
     };
 
     readonly public static List<Item> allItems = new List<Item>()

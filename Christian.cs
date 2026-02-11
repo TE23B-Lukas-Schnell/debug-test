@@ -84,7 +84,7 @@ class Christian : Boss
         await Wait(1000, ct);
         for (int i = 0; i < amountOfBullets; i++)
         {
-            new EnemyBullet(x, y, bulletWidth, bulletWidth, -800f, (float)Math.Cos(i) * 300f, 0f, bulletDamage);
+            new BossBullet(x, y, bulletWidth, bulletWidth, -800f, (float)Math.Cos(i) * 300f, 0f, bulletDamage);
             await Wait(100, ct, false);
         }
         color = temp;
@@ -95,7 +95,7 @@ class Christian : Boss
     {
         float tempJumpLine = jumpLine;
 
-        jumpLine = 567;
+        jumpLine = 569;
 
         Color temp = color;
         color = new Color(0, 128, 128);
@@ -122,7 +122,7 @@ class Christian : Boss
 
             await Wait(100, ct);
 
-            KemiBullet.EnemyShoot(x, y, bulletWidth * 2.5f, bulletHeight * 2, xSpeed / 2, 112, 2300f, bulletDamage, false);
+            KemiBullet.EnemyShoot(x, y, bulletWidth * 2.5f, bulletHeight * 2, 1+ xSpeed / 2, 112, 2300f, bulletDamage, false);
 
             await Wait(267, ct);
 
@@ -147,7 +147,7 @@ class Christian : Boss
 
             await Wait(550, ct);
 
-            KemiBullet.ChristianShoot(x, y, bulletWidth * 10, bulletHeight * 6, 0, 0, 670f, bulletDamage * 1.5f, false);
+            KemiBullet.ChristianShoot(x, y, bulletWidth * 10, bulletHeight * 6, 0, 0, 670f, bulletDamage * 1.5f, true);
 
             await Wait(800, ct);
             gravity = tempGravity;
@@ -183,7 +183,7 @@ class Christian : Boss
 
         for (int i = 0; i < amountOfBullets; i++)
         {
-            new EnemyBullet(x, y, bulletWidth, bulletHeight, (float)Math.Cos(i) * 100, 0, 1700f, bulletDamage * 1.6f, true);
+            new BossBullet(x, y, bulletWidth, bulletHeight, (float)Math.Cos(i) * 100, 0, 1700f, bulletDamage * 1.6f, true);
             await Wait(50, ct, false);
         }
 
@@ -220,15 +220,15 @@ class Christian : Boss
     {
         screenSizeX = 1200;
         screenSizeY = 1000;
-        width = 255;
-        height = 255;
+        width = 280;
+        height = 280;
         x = screenSizeX;
         y = screenSizeY / 2;
         maxHP = 500;
         hp = maxHP;
         objectIdentifier = "enemy";
         contactDamage = 3;
-        contactDamageHitboxSizeRatio = 0.72f;
+        contactDamageHitboxSizeRatio = 0.6f;
         moveSpeed = 469;
         gravity = 2100;
         jumpForce = 1500;

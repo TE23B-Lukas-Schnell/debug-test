@@ -1,4 +1,4 @@
-class EnemyBullet : Projectile
+class BossBullet : Projectile
 {
     public float gravity;
 
@@ -17,7 +17,7 @@ class EnemyBullet : Projectile
     }
     
 
-    public EnemyBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage)
+    public BossBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage)
     {
         this.x = x;
         this.y = y;
@@ -30,7 +30,7 @@ class EnemyBullet : Projectile
         canGoOffscreen = true;
         ignoreGround = true;
     }
-    public EnemyBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage, bool ignoreGround)
+    public BossBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage, bool ignoreGround)
     {
         this.x = x;
         this.y = y;

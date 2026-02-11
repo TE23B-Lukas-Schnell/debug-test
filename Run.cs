@@ -1,11 +1,3 @@
-struct quaternion
-{
-    double k;
-    double j;
-    double i;
-    double w;
-}
-
 class Run
 {
     //lista för alla objekt som ska hanteras, det är lista för att den kan öka och minska under runtime

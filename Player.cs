@@ -109,7 +109,7 @@ bullet gravity:          {bulletGravity}";
         upShoot += () =>
         {
             shootCooldown = setShootCooldown;
-            new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletxSpeed, bulletySpeed, bulletGravity, bulletDamage, true);
+            new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletxSpeed, bulletySpeed, bulletGravity, bulletDamage * 1.23f   , true);
         };
         takenDamage += () => invincibilityDuration = invincibilityTime;
 
