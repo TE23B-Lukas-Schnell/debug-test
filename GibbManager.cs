@@ -260,7 +260,7 @@ static class GibbManager
     {
         currentRun = run;
         currentMenu = gameMenu;
-        currentRun.playerReference = new CallePlayer(GibbManager.currentLayout);
+        currentRun.playerReference = new KarimPlayer(GibbManager.currentLayout);
         currentRun.playerReference.InitializePlayer();
     }
 }
