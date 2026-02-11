@@ -269,6 +269,10 @@ class Run
                 }*/
 
                 Raylib.DrawText(Raylib.GetFPS().ToString(), 0, 0, 30, Color.Black);
+                if (Raylib.IsKeyDown(KeyboardKey.Tab))
+                {
+                    Raylib.DrawText(playerReference.PrintPlayerStats(), 10, 40, 30, Color.Black);
+                }
             }
             else // pause logic here
             {
@@ -288,7 +292,7 @@ class Run
             {
                 Raylib.BeginDrawing();
 
-                Raylib.DrawRectangle(enemy.screenSizeX / 2 - 230, enemy.screenSizeY / 2 -5, 300, 80, Color.Yellow);
+                Raylib.DrawRectangle(enemy.screenSizeX / 2 - 230, enemy.screenSizeY / 2 -5, 400, 80, Color.Yellow);
                 Raylib.DrawText("You won!!", enemy.screenSizeX / 2 - 200, enemy.screenSizeY / 2 -5 , 70, Color.Black);
 
                 Raylib.EndDrawing();
@@ -302,7 +306,7 @@ class Run
             {
                 Raylib.BeginDrawing();
 
-                Raylib.DrawRectangle(enemy.screenSizeX / 2 - 230, enemy.screenSizeY / 2 - 5, 300, 80, Color.Black);
+                Raylib.DrawRectangle(enemy.screenSizeX / 2 - 230, enemy.screenSizeY / 2 - 5, 400, 80, Color.Black);
                 Raylib.DrawText("You died", enemy.screenSizeX / 2 - 200, enemy.screenSizeY / 2 - 5, 70, Color.Red);
 
                 Raylib.EndDrawing();

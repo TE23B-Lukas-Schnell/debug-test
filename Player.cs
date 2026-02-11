@@ -43,7 +43,7 @@ abstract class Player : FightableObject
     public float setDashDuration = 0.2f;
     public float setDashCooldown = 0.47f;
     public float fastFallSpeed = 1367f;
-    public float dashSpeed = 1895f;
+    public float dashSpeed = 1800f;
     public float invincibilityTime = 1f;
     public Color color = new Color(0, 0f, 235f, 254f);
 
@@ -67,32 +67,32 @@ abstract class Player : FightableObject
 
     public string PrintPlayerStats()
     {
-        string a = @$"Stats:
+        string output = @$"Stats:
 pos                      {x} {y}
-velocity                 {xSpeed} {ySpeed}        
+velocity                 {xSpeed} {ySpeed}
 size                     {width} {height}
 max hp                   {maxHP}
 current hp               {hp}
-gravity:                 {gravity}
-move speed:              {moveSpeed}
-jump force:              {jumpForce}
-dash duration:           {setDashDuration}
-dash cooldown:           {setDashCooldown}
-fastfall speed:          {fastFallSpeed}
-shoot cooldown:          {setShootCooldown}
-damage multiplier:       {damageMultiplier}
+gravity                  {gravity}
+move speed               {moveSpeed}
+jump force               {jumpForce}
+dash duration            {setDashDuration}
+dash cooldown            {setDashCooldown}
+fastfall speed           {fastFallSpeed}
+shoot cooldown           {setShootCooldown}
+damage multiplier        {damageMultiplier}
 bullet width:            {bulletWidth}
-bullet height:           {bulletHeight}
-bullet damage:           {bulletDamage}
-bullet speed:            {bulletxSpeed} {bulletySpeed}
-bullet gravity:          {bulletGravity}";
+bullet height            {bulletHeight}
+bullet damage            {bulletDamage}
+bullet speed             {bulletxSpeed} {bulletySpeed}
+bullet gravity           {bulletGravity}";
 
-        a += "\ninventory:";
+        output += "\ninventory:";
         foreach (Item items in Inventory)
         {
-            a += "\n   " + items.name;
+            output += "\n   " + items.name;
         }
-        return a;
+        return output;
     }
     //makes all the delegates work 
     void InitializeDelegates(/*HEJ JAG HETER  ANTON*/)

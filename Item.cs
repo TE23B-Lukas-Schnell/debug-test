@@ -138,8 +138,10 @@ class Item
                     Random random = new Random();
                     if(random.Next(0, 10) == 0)
                     {
-                        BåtBullet.PlayerShoot(p.x,p.y,110.2f,40, (p.bulletxSpeed * 0.67f) + p.xSpeed * 0.23f, (p.bulletySpeed * 0.67f) + p.ySpeed * 0.27f,1999,p.bulletDamage *2);
+                        float damage = p.bulletDamage + p.bulletDamage * (Math.Abs(p.xSpeed) / 100);
+                        BåtBullet.PlayerShoot(p.x, p.y, 110.2f, 50, (p.bulletxSpeed * 0.67f) + p.xSpeed * 0.67f, (p.bulletySpeed * 0.67f) + p.ySpeed, 1999, damage);
                     }
+                    p.setDashCooldown += 0.167f;
                 };
             }
             else if (objectToBuff is Boss)

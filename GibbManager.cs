@@ -27,7 +27,7 @@ static class GibbManager
 
     readonly public static List<Type> PeakBossPeakBoss = new()
     {
-        typeof(Karim),  typeof(Karim),
+        typeof(Karim),  typeof(Karim), typeof(Christian), typeof(Karim)
     };
 
     readonly public static List<Item> allItems = new List<Item>()
@@ -37,6 +37,7 @@ static class GibbManager
         Item.GetItem("Skolmaten"),
         Item.GetItem("Kemibok"),
         Item.GetItem("Calles krona"),
+        Item.GetItem("Smutje.se"),
         // Item.GetItem("Erikas Waifu Köttbåt")
     };
 
@@ -259,7 +260,7 @@ static class GibbManager
     {
         currentRun = run;
         currentMenu = gameMenu;
-        currentRun.playerReference = new KarimPlayer(GibbManager.currentLayout);
+        currentRun.playerReference = new CallePlayer(GibbManager.currentLayout);
         currentRun.playerReference.InitializePlayer();
     }
 }

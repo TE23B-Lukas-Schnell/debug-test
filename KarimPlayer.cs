@@ -17,7 +17,7 @@ class KarimPlayer : Player
         {
             bulletsShot = 0;
 
-            float damage = bulletDamage + bulletDamage * (xSpeed / 20);
+            float damage = bulletDamage + bulletDamage * (Math.Abs(xSpeed) / 100);
             BåtBullet.PlayerShoot(x, y, 110.2f, 50, (bulletxSpeed * 0.67f) + xSpeed * 0.67f, (bulletySpeed * 0.67f) + ySpeed, 1999, damage);
             System.Console.WriteLine(damage);
         }
@@ -37,11 +37,13 @@ class KarimPlayer : Player
         maxHP = 19;
         hp = maxHP;
 
-        setDashCooldown = 0.5f;
+        setDashCooldown = 0.59f;
         bulletxSpeed = 1800f;
         bulletWidth = 30f;
         bulletHeight = 20f;
-        jumpForce = 1400;
+        jumpForce = 1450;
+        dashSpeed = 2200;
+        setDashDuration = 0.3f;
 
         spriteFilePath = @"./Sprites/karimryde-scaled-600x600.jpg";
 

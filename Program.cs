@@ -17,9 +17,6 @@ while (true)
 /*---------------------------------------------------------------------------------------------------------------------------------
 
 
-kopiera items från itemlistan så att man de inte försvinner
-
-
 gör så att player bullet flyger uppåt baserat på spelarens input
 
 gör den indicator som visar vilket håll spelaren siktar åt 
