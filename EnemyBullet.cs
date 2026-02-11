@@ -27,7 +27,8 @@ class EnemyBullet : Projectile
         this.ySpeed = ySpeed;
         this.gravity = gravity;
         this.damage = damage;
-        this.canGoOffscreen = true;
+        canGoOffscreen = true;
+        ignoreGround = true;
     }
     public EnemyBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage, bool ignoreGround)
     {

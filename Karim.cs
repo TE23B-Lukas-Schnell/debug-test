@@ -79,7 +79,7 @@ class Karim : Boss
         await Wait(1000, ct);
         for (int i = 0; i < amountOfBullets; i++)
         {
-            new EnemyBullet(x, y, bulletWidth, bulletWidth, -800f, (float)Math.Cos(i) * 300f, 0f, bulletDamage);
+            new EnemyBullet(x, y, bulletWidth, bulletWidth, -800f, (float)Math.Cos(i) * 300f, 0f, bulletDamage,false);
             await Wait(100, ct, false);
         }
         color = temp;

@@ -1,5 +1,10 @@
 class Christian : Boss
 {
+
+    public float jumpLine = 500f;
+    public float moveLine = 207f;
+
+
     void Moving(float value, float minValue, float maxValue, ref float changeValue)
     {
         if (changeValue == 0) changeValue = moveSpeed;
@@ -86,28 +91,69 @@ class Christian : Boss
         await Wait(400, ct);
     }
 
-    async Task BåtAttack(CancellationToken ct)
+    async Task BombPlan(CancellationToken ct)
     {
-        // xSpeed = 0;
-        // ySpeed = 0;
+        float tempJumpLine = jumpLine;
+
+        jumpLine = 567;
+
         Color temp = color;
         color = new Color(0, 128, 128);
-        await Wait(340, ct);
+
+        {
+            float tempXspeed = xSpeed;
+            float tempGravity = gravity;
+
+            gravity = 0;
+            xSpeed = 0;
+            ySpeed = 0;
+
+            await Wait(1000, ct);
+
+            xSpeed = tempXspeed;
+            gravity = tempGravity;
+        }
 
         int attacks = 6;
+        bool jumpLeft = true;
 
-        // for(int i = 0; i > attacks)
+        for (int i = 0; i < attacks; i++)
+        {
 
-        new EnemyBullet(x, y, bulletWidth * 2, bulletHeight * 2, xSpeed, 112, 1400f, bulletDamage * 1.1f, true);
+            await Wait(100, ct);
 
-        ySpeed = jumpForce;
-        xSpeed = moveSpeed;
+            KemiBullet.EnemyShoot(x, y, bulletWidth * 2.5f, bulletHeight * 2, xSpeed / 2, 112, 2300f, bulletDamage, false);
 
-        new EnemyBullet(x, y, bulletWidth * 2, bulletHeight * 2, xSpeed, 112, 1400f, bulletDamage * 1.1f, true);
+            await Wait(267, ct);
 
+            if (y > jumpLine) ySpeed = jumpForce;
+            else ySpeed = jumpForce / 2;
+
+            if (jumpLeft) xSpeed = -moveSpeed * 1.2f;
+            else xSpeed = moveSpeed * 1.2f;
+
+
+            jumpLeft = !jumpLeft;
+
+            await Wait(450, ct);
+        }
+
+        {
+            float tempGravity = gravity;
+
+            gravity = 0;
+            xSpeed = 0;
+            ySpeed = 0;
+
+            await Wait(550, ct);
+
+            KemiBullet.ChristianShoot(x, y, bulletWidth * 10, bulletHeight * 6, 0, 0, 670f, bulletDamage * 1.5f, false);
+
+            await Wait(800, ct);
+            gravity = tempGravity;
+        }
         color = temp;
-
-        await Wait(400, ct);
+        jumpLine = tempJumpLine;
     }
 
     async Task TeknikarDuschen(CancellationToken ct)
@@ -153,18 +199,18 @@ class Christian : Boss
 
     void InitializeDelegates()
     {
-        bossAttacks.Add(JumpingAttack);
-        bossAttacks.Add(SpiralAttack);
-        bossAttacks.Add(BåtAttack);
-        bossAttacks.Add(TeknikarDuschen);
-        bossAttacks.Add(DåKanViSläckaNerLocken);
+        // bossAttacks.Add(JumpingAttack);
+        // bossAttacks.Add(SpiralAttack);
+        bossAttacks.Add(BombPlan);
+        // bossAttacks.Add(TeknikarDuschen);
+        // bossAttacks.Add(DåKanViSläckaNerLocken);
     }
 
     public override void MoveCycle()
     {
-        Moving(x, 207, screenSizeX - width, ref xSpeed);
+        Moving(x, moveLine, screenSizeX - width, ref xSpeed);
 
-        if (y > 567 && ySpeed <= 0)
+        if (y > jumpLine && ySpeed <= 0)
         {
             ySpeed += jumpForce;
         }

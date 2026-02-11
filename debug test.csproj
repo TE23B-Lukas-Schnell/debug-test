@@ -30,6 +30,8 @@
     <Content Include="./Sprites/annalundh-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
     <Content Include="./Sprites/jessicalindh-scaled-600x401.jpg" CopyToOutputDirectory="PreserveNewest"/>
     <Content Include="./Sprites/assets/karimsbåt.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/assets/killerMeme.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/assets/kemi.png" CopyToOutputDirectory="PreserveNewest"/>
 
 
   </ItemGroup>

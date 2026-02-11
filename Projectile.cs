@@ -2,6 +2,7 @@ abstract class Projectile : MoveableObject
 {
     protected float damage;
     protected bool piercing = false;
+    protected float gravity;
 
     // when you collide with an enemy, check whether 
     public void OnHit(float damage, string objectIdentifier)
