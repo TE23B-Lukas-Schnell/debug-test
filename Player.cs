@@ -14,11 +14,14 @@ abstract class Player : FightableObject
         {"shoot", false },
     };
 
+    public string name = "";
+    public string description = "";
     public ControlLayout currentLayout;
     public int score = 0;
     protected SpriteDrawer spriteDrawer = new SpriteDrawer();
     protected string spriteFilePath;
-    protected Item startItem;
+    //start items behövs nog inte
+    // protected Item startItem;
 
     //player actions
     public Action moveLeft;
@@ -44,6 +47,10 @@ abstract class Player : FightableObject
     public float invincibilityTime = 1f;
     public Color color = new Color(0, 0f, 235f, 254f);
 
+    // hur gör man det här på ett bra sätt?
+
+    public Type Projectile = typeof(PlayerBullet);
+
     //bullet stats
     public float setShootCooldown = 0.5f;
     public float bulletWidth = 40f;
@@ -64,6 +71,8 @@ abstract class Player : FightableObject
 pos                      {x} {y}
 velocity                 {xSpeed} {ySpeed}        
 size                     {width} {height}
+max hp                   {maxHP}
+current hp               {hp}
 gravity:                 {gravity}
 move speed:              {moveSpeed}
 jump force:              {jumpForce}

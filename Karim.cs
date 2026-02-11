@@ -175,7 +175,7 @@ class Karim : Boss
         contactDamageHitboxSizeRatio = 0.72f;
         moveSpeed = 600;
         gravity = 2300;
-        jumpForce = 1200;
+        jumpForce = 1100;
 
         InitializeDelegates();
 

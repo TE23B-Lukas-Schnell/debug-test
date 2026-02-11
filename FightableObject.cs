@@ -5,23 +5,29 @@ abstract class FightableObject : MoveableObject
     public float damageMultiplier = 1;
     public float healMultiplier = 1;
     public bool healthy = true;
-    
+
     protected float invincibilityDuration = 0;
     protected float hp;
 
 
     public List<Item> Inventory = new List<Item>();
 
+    protected void Displaybar(float x, float y, float w, float h, float value, float horizontalPadding, float verticalPadding, Color fillColor)
+    {
+        Raylib.DrawRectangle(R(x), R(y), R(w), R(h), Color.Gray); // drrawing the outline rec first
+        Raylib.DrawRectangle(R(x + horizontalPadding), R(y + verticalPadding), R(value), R(h - verticalPadding * 2), fillColor);
+    }
+
     protected void DisplayHealthBar(float x, float y, float sizeMultiplier)
     {
-        Raylib.DrawRectangle(R(x), R(y), R((maxHP * sizeMultiplier) + 10), 60, Color.Gray);
-        Raylib.DrawRectangle(R(x + 5), R(y + 5), R(hp * sizeMultiplier), 50, Color.Green);
+        // Raylib.DrawRectangle(R(x), R(y), R((maxHP * sizeMultiplier) + 10), 60, Color.Gray);
+        // Raylib.DrawRectangle(R(x + 5), R(y + 5), R(hp * sizeMultiplier), 50, Color.Green);
+        Displaybar(x, y, (maxHP * sizeMultiplier) + 10, 60, hp * sizeMultiplier, 5, 5, Color.Green);
     }
 
     protected void DisplayHealthBar(float x, float y, float sizeMultiplier, string text, float textSize)
     {
-        Raylib.DrawRectangle(R(x), R(y), R((maxHP * sizeMultiplier) + 10), 60, Color.Gray);
-        Raylib.DrawRectangle(R(x + 5), R(y + 5), R(hp * sizeMultiplier), 50, Color.Green);
+        Displaybar(x, y, (maxHP * sizeMultiplier) + 10, 60, hp * sizeMultiplier, 5, 5, Color.Green);
         Raylib.DrawText(text, R(x + 10), R(y - textSize), R(textSize), Color.Black);
     }
 

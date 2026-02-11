@@ -126,6 +126,28 @@ class Item
             }
         }),
 
+
+         new Item("Smutje.se", "Gör att du båtar ner informationen", applier: (FightableObject objectToBuff) =>
+        {
+            if(objectToBuff is Player)
+            {
+                Player p = objectToBuff as Player;
+
+                p.shoot += () =>
+                {
+                    Random random = new Random();
+                    if(random.Next(0, 10) == 0)
+                    {
+                        BåtBullet.PlayerShoot(p.x,p.y,110.2f,40, (p.bulletxSpeed * 0.67f) + p.xSpeed * 0.23f, (p.bulletySpeed * 0.67f) + p.ySpeed * 0.27f,1999,p.bulletDamage *2);
+                    }
+                };
+            }
+            else if (objectToBuff is Boss)
+            {
+                Boss b = objectToBuff as Boss;
+            }
+        }),
+
         new Item("Erikas Waifu Köttbåt",
 "extremt båtig waifu-item: meaty michaels i hjärnan gör att kulor blir tyngre men snabbare men långsammare samtidigt",
 applier: (FightableObject objectToBuff) =>
