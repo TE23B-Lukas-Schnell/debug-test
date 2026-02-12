@@ -102,13 +102,13 @@ class Karim : Boss
 
         for (int i = 0; i < amountOfBullets; i++)
         {
-            BåtBullet.KarimShoot(x + width / 2, y + height / 2, bulletHeight * 2, bulletWidth * 1.8f, -(1130 - (i * 70)), 1000, 1700, bulletDamage);
+            BåtBullet.KarimShoot(x + width / 2, y + height / 2, bulletHeight * 2, bulletWidth * 1.8f, -(1130 - (i * 71)), 1040, 1800, bulletDamage);
             await Wait(140, ct, false);
         }
 
         color = temp;
 
-        await Wait(400, ct);
+        await Wait(900, ct);
     }
 
     async Task TeknikarDuschen(CancellationToken ct)

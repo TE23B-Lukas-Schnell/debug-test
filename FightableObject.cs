@@ -98,7 +98,7 @@ abstract class FightableObject : MoveableObject
             }
         }
     }
- //😂😂😂 𝼀𰻝Ꮸ𐃵
+    //😂😂😂 𝼀𰻝Ꮸ𐃵
     public void ApplyBuffsFromItem()
     {
         if (Inventory.Count > 0)
@@ -107,12 +107,13 @@ abstract class FightableObject : MoveableObject
             {
                 if (!Inventory[i].buffActivated)
                 {
+                    
                     Inventory[i].buffActivated = true;
                     Inventory[i].ApplyStatChangesFunction(this);
                 }
             }
         }
-        else Console.WriteLine("tomt inventory");
+        // else Console.WriteLine("tomt inventory");
     }
 
     public abstract void TakenDamage();

@@ -27,17 +27,21 @@ static class GibbManager
 
     readonly public static List<Type> PeakBossPeakBoss = new()
     {
-        typeof(Karim),  typeof(Karim), typeof(Christian), typeof(Karim)
+        typeof(Christian), typeof(Christian), typeof(Karim), typeof (Karim),
+         typeof (Karim)
     };
 
     readonly public static List<Item> allItems = new List<Item>()
     {
         Item.GetItem("Mickes hjälp"),
         Item.GetItem("Martins fönster öppnare"),
-        Item.GetItem("Skolmaten"),
+        Item.GetItem("Tung väska"),
         Item.GetItem("Kemibok"),
         Item.GetItem("Calles krona"),
         Item.GetItem("Smutje.se"),
+        Item.GetItem("Anton Faren"),
+        Item.GetItem("Skolmaten"),
+        Item.GetItem("Tu's Genomgång"),
         // Item.GetItem("Erikas Waifu Köttbåt")
     };
 
@@ -65,6 +69,7 @@ static class GibbManager
     static Menu configureRunMenu = new Menu("configure", new Dictionary<string, Action>()
     {
         {"Start run", () => {StartRun(new Run(SetSeed,bossList,itemList));}},
+        {"Choose Character(not implemented)",() => {}},
         {"Change seed", () =>
             {
                 Console.WriteLine("Enter your seed");
@@ -88,6 +93,7 @@ static class GibbManager
         {"Show your score", () => Console.WriteLine($"Your score is: {currentRun.playerReference.score}")},
         {"Show player stats", () => Console.WriteLine( currentRun.playerReference.PrintPlayerStats())},
         {"Show bosses", () => currentRun.ShowBosses()},
+        {"Show boss inventory",() => currentRun.ShowBossInventory()},
         {"Show items left", () => currentRun.ShowAvailableitems()},
         {"Show seed", () =>   Console.WriteLine(currentRun.seed)},
         });
@@ -140,7 +146,7 @@ static class GibbManager
         string output = "";
         for (int i = 0; i < list.Count; i++)
         {
-            output += list[i].name + " ";
+            output += "\n   " + list[i].name;
         }
         if (output == "") return "empty list";
         else return output;
@@ -151,7 +157,7 @@ static class GibbManager
         string output = "";
         for (int i = 0; i < list.Count; i++)
         {
-            output += list[i].name + " ";
+            output += "\n   " + list[i].name;
         }
         if (output == "") return "empty list";
         else return output;
@@ -162,7 +168,7 @@ static class GibbManager
         string output = "";
         for (int i = 0; i < list.Count; i++)
         {
-            output += list[i] + " ";
+            output += "\n   " + list[i];
         }
         if (output == "") return "empty list";
         else return output;
@@ -260,7 +266,7 @@ static class GibbManager
     {
         currentRun = run;
         currentMenu = gameMenu;
-        currentRun.playerReference = new KarimPlayer(GibbManager.currentLayout);
+        currentRun.playerReference = new MickePlayer(GibbManager.currentLayout);
         currentRun.playerReference.InitializePlayer();
     }
 }

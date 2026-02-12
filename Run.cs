@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+
 class Run
 {
     //lista för alla objekt som ska hanteras, det är lista för att den kan öka och minska under runtime
@@ -101,6 +103,12 @@ class Run
         }
     }
 
+    public void ShowBossInventory()
+    {
+        System.Console.WriteLine("boss inventory:");
+        System.Console.WriteLine(GibbManager.ListToString(bossItems));
+    }
+
     public void ShowAvailableitems()
     {
         for (int i = 0; i < availableItems.Count; i++)
@@ -179,7 +187,8 @@ class Run
     {
         Boss bossToFight = bossesToFight.Keys.ToArray()[currentBoss];
 
-        System.Console.WriteLine(GibbManager.ListToString(bossToFight.Inventory));
+        bossToFight.Inventory.AddRange(bossItems);
+        bossToFight.ApplyBuffsFromItem();
 
         MoveableObject objectThatDied = ActualGibbNoWay(bossToFight);
         // Console.WriteLine(objectThatDied + " died a deathly death");
@@ -218,9 +227,8 @@ class Run
         // ClearGameList();
 
         enemy.InitializePlayableBoss();
-        enemy.Inventory.AddRange(bossItems);
-        enemy.ApplyBuffsFromItem();
-        
+
+
         GibbManager.currentlyGibbing = true;
 
         Raylib.InitWindow(enemy.screenSizeX, enemy.screenSizeY, "Game");
@@ -341,6 +349,9 @@ class Run
 bosses killed            {currentBoss}
 ");
         Console.WriteLine(playerReference.PrintPlayerStats());
+
+        System.Console.WriteLine("boss items: ");
+        System.Console.WriteLine(GibbManager.ListToString(bossItems));
     }
 
     List<Boss> GetBossesFromTypes(List<Type> list)

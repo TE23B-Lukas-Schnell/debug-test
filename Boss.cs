@@ -27,6 +27,31 @@ abstract class Boss : FightableObject
     public float waitMultiplier = 1;
     public float attackDelay = 2000;
 
+    public string PrintBossStats()
+    {
+        string output = @$"Stats:
+pos                      {x} {y}
+velocity                 {xSpeed} {ySpeed}
+size                     {width} {height}
+max hp                   {maxHP}
+current hp               {hp}
+gravity                  {gravity}
+move speed               {moveSpeed}
+jump force               {jumpForce}
+wait multiplier          {waitMultiplier}
+damage multiplier        {damageMultiplier}
+bullet width:            {bulletWidth}
+bullet height            {bulletHeight}
+bullet damage            {bulletDamage}";
+
+
+        output += "\ninventory:";
+        foreach (Item items in Inventory)
+        {
+            output += "\n   " + items.name;
+        }
+        return output;
+    }
     protected void CallThisInTheUpdateFunction()
     {
         ChooseAttack();

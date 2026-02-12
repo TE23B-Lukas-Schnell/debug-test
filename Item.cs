@@ -8,22 +8,14 @@ class Item
         {
             if (itemName == name)
             {
-                return AllItems[name];
-                // return new Item(AllItems[name].name,AllItems[name].description,AllItems[name].ApplyStatChangesFunction);
+                return AllItems[name].CopyItem(AllItems[name]);
             }
         }
-        return new Item("EROOR: non existent item", " this item was returned because the desired item that was searched was not found, ok batig", applier: (FightableObject objectToBuff) =>
+        return new Item()
         {
-            if (objectToBuff is Player)
-            {
-                Player p = objectToBuff as Player;
-
-            }
-            else if (objectToBuff is Boss)
-            {
-                Boss b = objectToBuff as Boss;
-            }
-        });
+            name = "EROOR: non existent item",
+            description = " this item was returned because the desired item that was searched was not found, ok batig",
+        };
     }
 
     public string name;
@@ -39,6 +31,17 @@ class Item
         Console.WriteLine(description);
     }
 
+    Item CopyItem(Item itemToCopy)
+    {
+        Item kopieratItem = new Item()
+        {
+            name = itemToCopy.name,
+            description = itemToCopy.description,
+            ApplyStatChangesFunction = itemToCopy.ApplyStatChangesFunction
+        };
+        return kopieratItem;
+    }
+
     public Item(string name, string description, ApplyStatChanges applier)
     {
         ApplyStatChangesFunction = applier;
@@ -47,10 +50,16 @@ class Item
         AllItems.Add(this.name, this);
     }
 
+    //this constructor does not it add to AllItems 
+    public Item()
+    {
+
+    }
+
     static Item[] dags_att_skapa_alla_items_här = {
 
 
-        new Item("Mickes hjälp", "båtig item, gör bullet snabbare", applier: (FightableObject objectToBuff) =>
+        new Item("Mickes hjälp", "Köttiga Micke hjälper dig att optimisera din kod, det gör dina bullets snabbare   ZOOM", applier: (FightableObject objectToBuff) =>
         {
             if(objectToBuff is Player)
             {
@@ -64,24 +73,40 @@ class Item
                 b.maxHP += 50;
                 b.HealDamage(50, b);
             }
+
         }),
 
-        new Item("Martins fönster öppnare", "gör att estetare hoppar ut ur fönstret", applier: (FightableObject objectToBuff) =>
+         new Item("Anton Faren", "Hej jag heter...", applier: (FightableObject objectToBuff) =>
         {
             if(objectToBuff is Player)
             {
                 Player p = objectToBuff as Player;
-                p.jumpForce *= 1.5f;
+                p.name = "Anton";
+            }
+            else if (objectToBuff is Boss)
+            {
+                Boss b = objectToBuff as Boss;
+                b.name = "Anton";
+            }
+        }),
+
+        new Item("Martins fönster öppnare", "gör att estetare hoppar ut ur fönstret vilket gör att du hoppar högre", applier: (FightableObject objectToBuff) =>
+        {
+            if(objectToBuff is Player)
+            {
+                Player p = objectToBuff as Player;
+                p.jumpForce *= 1.23f;
                 p.gravity *= 1.1f;
             }
             else if (objectToBuff is Boss)
             {
                 Boss b = objectToBuff as Boss;
                 b.jumpForce += 200;
+
             }
         }),
 
-        new Item("Skolmaten", "från alexander: man blir liksom tjock så man får gravity", applier: (FightableObject objectToBuff) =>
+        new Item("Tung väska", "Martin tvingar dig att ta med dig 5 kontroller till skolan vilket gör väskan tung och dina bullets är nu påverkade av gravitation", applier: (FightableObject objectToBuff) =>
         {
             if(objectToBuff is Player)
             {
@@ -100,7 +125,7 @@ class Item
             }
         }),
 
-        new Item("Kemibok", "från dante: när man träffar bossen så blir det en acid effekt!!111", applier: (FightableObject objectToBuff) =>
+        new Item("Kemibok", "Kemilabben gick fel och dina bullets gör poison damage", applier: (FightableObject objectToBuff) =>
         {
             if(objectToBuff is Player)
             {
@@ -141,18 +166,60 @@ class Item
                     Random random = new Random();
                     if(random.Next(0, 10) == 0)
                     {
-                        float damage = p.bulletDamage + p.bulletDamage * (Math.Abs(p.xSpeed) / 100);
-                        BåtBullet.PlayerShoot(p.x, p.y, 110.2f, 50, (p.bulletxSpeed * 0.67f) + p.xSpeed * 0.67f, (p.bulletySpeed * 0.67f) + p.ySpeed, 1999, damage);
+                         KarimPlayer.BåtigBulletHorizontal(p.x,p.y,p.xSpeed,p.ySpeed,p.bulletxSpeed,p.bulletDamage);
                     }
-                    p.setShootCooldown += 0.13f;
                 };
+
+                p.upShoot += () =>
+                {
+                    Random random = new Random();
+                    if(random.Next(0, 10) == 0)
+                    {
+                        KarimPlayer.BåtigBulletVertical(p.x,p.y,p.xSpeed,p.ySpeed,p.bulletxSpeed,p.bulletDamage);
+                    }
+                };
+
+                p.setShootCooldown += 0.13f;
             }
             else if (objectToBuff is Boss)
             {
                 Boss b = objectToBuff as Boss;
-                
+                b.waitMultiplier += 0.1f;
             }
         }),
+
+        new Item("Tu's Genomgång", "Ahn Tu Tran går igenom imaginära tal på tavlan vilket invertar ditt movement men ökar damage", applier: (FightableObject objectToBuff) =>
+        {
+            if(objectToBuff is Player)
+            {
+                Player p = objectToBuff as Player;
+                p.bulletDamage *= 1.69f;
+                p.moveSpeed = -p.moveSpeed;
+            }
+            else if (objectToBuff is Boss)
+            {
+                Boss b = objectToBuff as Boss;
+                b.moveSpeed += 23f;
+            }
+        }),
+
+         new Item("Skolmaten", "Gör att du blir tjock                               haku bygg", applier: (FightableObject objectToBuff) =>
+        {
+            if(objectToBuff is Player)
+            {
+                Player p = objectToBuff as Player;
+                p.maxHP += 20;
+                p.HealDamage(p.maxHP,p);
+                p.width *= 2f;
+                p.height *= 1.1f;
+            }
+            else if (objectToBuff is Boss)
+            {
+                Boss b = objectToBuff as Boss;
+                b.width *= 1.3f;
+            }
+        }),
+
 
 
         new Item("Erikas Waifu Köttbåt",

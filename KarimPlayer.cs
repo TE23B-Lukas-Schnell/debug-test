@@ -16,10 +16,7 @@ class KarimPlayer : Player
         if (bulletsShot >= båtThreshold)
         {
             bulletsShot = 0;
-
-            float damage = bulletDamage + bulletDamage * (Math.Abs(xSpeed) / 100);
-            BåtBullet.PlayerShoot(x, y, 110.2f, 50, (bulletxSpeed * 0.67f) + xSpeed * 0.67f, (bulletySpeed * 0.67f) + ySpeed, 1999, damage);
-            System.Console.WriteLine(damage);
+            BåtigBulletHorizontal(x, y, xSpeed, ySpeed, bulletxSpeed, bulletDamage);
         }
         else
         {
@@ -27,6 +24,38 @@ class KarimPlayer : Player
         }
 
     }
+
+    void CheckBåtigAttackUp()
+    {
+
+        if (bulletsShot >= båtThreshold)
+        {
+            bulletsShot = 0;
+            BåtigBulletVertical(x, y, xSpeed, ySpeed, bulletxSpeed, bulletDamage);
+        }
+        else
+        {
+            bulletsShot++;
+        }
+
+    }
+
+    public static void BåtigBulletHorizontal(float x, float y, float xSpeed, float ySpeed, float bulletSpeed, float damage)
+    {
+        float calcSpeed = Math.Abs(bulletSpeed * 0.69f) + xSpeed;
+        float calcDamage = damage + damage * (calcSpeed / 100);
+        BåtBullet.PlayerShoot(x, y, 110.2f, 50, calcSpeed, ySpeed * 0.67f, 1999, calcDamage);
+        // System.Console.WriteLine(calcDamage);
+    }
+
+    public static void BåtigBulletVertical(float x, float y, float xSpeed, float ySpeed, float bulletSpeed, float damage)
+    {
+        float calcSpeed = Math.Abs(bulletSpeed * 0.69f) + ySpeed;
+        float calcDamage = damage + damage * (calcSpeed / 100);
+        BåtBullet.PlayerShoot(x, y, 110.2f, 50, xSpeed * 0.67f, calcSpeed, 1999, calcDamage);
+        // System.Console.WriteLine(calcDamage);
+    }
+
 
     public KarimPlayer(ControlLayout controlLayout) : base(controlLayout)
     {
@@ -36,21 +65,23 @@ class KarimPlayer : Player
         height = 90;
         maxHP = 19;
         hp = maxHP;
+        name = "Karim Ryde";
 
         setDashCooldown = 0.59f;
         bulletxSpeed = 1800f;
         bulletWidth = 30f;
         bulletHeight = 20f;
         jumpForce = 1450;
-        dashSpeed = 2200;
-        setDashDuration = 0.3f;
+        dashSpeed = 2000;
+        setDashDuration = 0.21f;
 
         spriteFilePath = @"./Sprites/karimryde-scaled-600x600.jpg";
 
         bulletDamage = 5;
 
-        upShoot += CheckBåtigAttack;
         shoot += CheckBåtigAttack;
+        upShoot += CheckBåtigAttackUp;
+
 
     }
 }

@@ -88,10 +88,7 @@ bullet speed             {bulletxSpeed} {bulletySpeed}
 bullet gravity           {bulletGravity}";
 
         output += "\ninventory:";
-        foreach (Item items in Inventory)
-        {
-            output += "\n   " + items.name;
-        }
+        output += GibbManager.ListToString(Inventory);
         return output;
     }
     //makes all the delegates work 
@@ -261,7 +258,7 @@ bullet gravity           {bulletGravity}";
             }
         }
 
-        DisplayHealthBar(50, 145, 10);
+        DisplayHealthBar(50, 145, 10,name,30);
         spriteDrawer.DrawTexture(color, x, y);
     }
 

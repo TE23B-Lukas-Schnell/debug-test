@@ -61,34 +61,38 @@ class Christian : Boss
         await Wait(300, ct, true);
     }
 
-    async Task SpiralAttack(CancellationToken ct)
+    async Task DashAttack(CancellationToken ct)
     {
         xSpeed = 0;
         ySpeed = 0;
         Color temp = color;
-        if (hp < maxHP / 2)
+        color = new Color(12, 170, 200);
+
+        while (x <= screenSizeX - width)
         {
-            color = new Color(230, 170, 0);
+            ySpeed = 0;
+            xSpeed = moveSpeed;
         }
-        else
+        await Wait(1200, ct);
+
+        KemiBullet.EnemyShoot(bulletWidth * 2.5f, 0, bulletWidth * 2.5f, bulletHeight * 2, 0, 0, 1800f, bulletDamage, true);
+
+        KemiBullet.EnemyShoot(screenSizeX / 2 - bulletWidth * 2.5f, 0, bulletWidth * 2.5f, bulletHeight * 2, 0, 0, 1800f, bulletDamage, true);
+
+        KemiBullet.EnemyShoot(screenSizeX - bulletWidth * 2.5f, 0, bulletWidth * 2.5f, bulletHeight * 2, 0, 0, 1800f, bulletDamage, true);
+
+        await Wait(230, ct);
+        
+        xSpeed = -moveSpeed * 2;
+
+        while (x >= 0)
         {
-            color = new Color(255, 200, 0);
+
         }
 
-        int amountOfBullets = 8;
-        if (hp < maxHP / 2)
-        {
-            amountOfBullets = 16;
-        }
-
-        await Wait(1000, ct);
-        for (int i = 0; i < amountOfBullets; i++)
-        {
-            new BossBullet(x, y, bulletWidth, bulletWidth, -800f, (float)Math.Cos(i) * 300f, 0f, bulletDamage);
-            await Wait(100, ct, false);
-        }
         color = temp;
-        await Wait(400, ct);
+        await Wait(600, ct);
+        ySpeed += jumpForce;
     }
 
     async Task BombPlan(CancellationToken ct)
@@ -98,7 +102,7 @@ class Christian : Boss
         jumpLine = 569;
 
         Color temp = color;
-        color = new Color(0, 128, 128);
+        color = new Color(128, 0, 128);
 
         {
             float tempXspeed = xSpeed;
@@ -122,7 +126,7 @@ class Christian : Boss
 
             await Wait(100, ct);
 
-            KemiBullet.EnemyShoot(x, y, bulletWidth * 2.5f, bulletHeight * 2, 1+ xSpeed / 2, 112, 2300f, bulletDamage, false);
+            KemiBullet.EnemyShoot(x, y, bulletWidth * 2.5f, bulletHeight * 2, 1 + xSpeed / 2, 112, 2300f, bulletDamage, false);
 
             await Wait(267, ct);
 
@@ -200,7 +204,7 @@ class Christian : Boss
     void InitializeDelegates()
     {
         // bossAttacks.Add(JumpingAttack);
-        // bossAttacks.Add(SpiralAttack);
+        bossAttacks.Add(DashAttack);
         bossAttacks.Add(BombPlan);
         // bossAttacks.Add(TeknikarDuschen);
         // bossAttacks.Add(DåKanViSläckaNerLocken);
