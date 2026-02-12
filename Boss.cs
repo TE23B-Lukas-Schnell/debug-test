@@ -92,7 +92,7 @@ abstract class Boss : FightableObject
     public void InitializePlayableBoss()
     {
         GibbManager.currentRun.AddToGameList(this);
-        GibbManager.currentRun.AddToHitboxList(hitbox);
+        GibbManager.currentRun.AddToHitboxList(hurtbox);
         GibbManager.currentRun.AddToHitboxList(contactDamageHitbox);
     }
 
@@ -115,7 +115,7 @@ abstract class Boss : FightableObject
     public override void Despawn()
     {
         contactDamageHitbox.DeleteHitbox();
-        hitbox.DeleteHitbox();
+        hurtbox.DeleteHitbox();
         GibbManager.currentlyGibbing = false;
         cancellationToken?.Cancel();
     }

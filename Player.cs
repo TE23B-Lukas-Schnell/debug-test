@@ -209,7 +209,7 @@ bullet gravity           {bulletGravity}";
     public void InitializePlayer()
     {
         // GibbManager.currentRun.AddToGameList(this);
-        GibbManager.currentRun.AddToHitboxList(hitbox);
+        GibbManager.currentRun.AddToHitboxList(hurtbox);
     }
 
     public override void Update()
@@ -277,7 +277,7 @@ bullet gravity           {bulletGravity}";
 
     public override void Despawn()
     {
-        hitbox.DeleteHitbox();
+        hurtbox.DeleteHitbox();
         // Console.WriteLine("spelaren har despawnat");
         GibbManager.currentlyGibbing = false;
 

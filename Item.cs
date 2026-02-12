@@ -61,6 +61,8 @@ class Item
             else if (objectToBuff is Boss)
             {
                 Boss b = objectToBuff as Boss;
+                b.maxHP += 50;
+                b.HealDamage(50, b);
             }
         }),
 
@@ -75,6 +77,7 @@ class Item
             else if (objectToBuff is Boss)
             {
                 Boss b = objectToBuff as Boss;
+                b.jumpForce += 200;
             }
         }),
 
@@ -92,6 +95,7 @@ class Item
             else if (objectToBuff is Boss)
             {
                 Boss b = objectToBuff as Boss;
+                b.bulletDamage += 2;
 
             }
         }),
@@ -126,8 +130,7 @@ class Item
             }
         }),
 
-
-         new Item("Smutje.se", "Gör att du båtar ner informationen", applier: (FightableObject objectToBuff) =>
+        new Item("Smutje.se", "Gör att du båtar ner informationen", applier: (FightableObject objectToBuff) =>
         {
             if(objectToBuff is Player)
             {
@@ -141,14 +144,16 @@ class Item
                         float damage = p.bulletDamage + p.bulletDamage * (Math.Abs(p.xSpeed) / 100);
                         BåtBullet.PlayerShoot(p.x, p.y, 110.2f, 50, (p.bulletxSpeed * 0.67f) + p.xSpeed * 0.67f, (p.bulletySpeed * 0.67f) + p.ySpeed, 1999, damage);
                     }
-                    p.setDashCooldown += 0.167f;
+                    p.setShootCooldown += 0.13f;
                 };
             }
             else if (objectToBuff is Boss)
             {
                 Boss b = objectToBuff as Boss;
+                
             }
         }),
+
 
         new Item("Erikas Waifu Köttbåt",
 "extremt båtig waifu-item: meaty michaels i hjärnan gör att kulor blir tyngre men snabbare men långsammare samtidigt",
@@ -204,8 +209,6 @@ applier: (FightableObject objectToBuff) =>
         b.damageMultiplier *= 0.95f;
     }
 })
-
-
 
     };
 }

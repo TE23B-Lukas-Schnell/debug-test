@@ -4,7 +4,7 @@ abstract class MoveableObject
 
     public string objectIdentifier = "";
     public bool remove = false;
-    public Hitbox hitbox;
+    public Hitbox hurtbox;
     public float x, y;
     public float xSpeed, ySpeed;
     public float width, height;
@@ -16,11 +16,11 @@ abstract class MoveableObject
 
     protected bool Grounded() => y >= Raylib.GetScreenHeight() - height;
 
-    protected Hitbox GetHitbox() => hitbox;
+    protected Hitbox GetHitbox() => hurtbox;
 
     protected void UpdateHitboxPosition(float x, float y, float w, float h)
     {
-        hitbox.hitbox = new Rectangle(R(x), R(y), R(w), R(h));
+        hurtbox.hitbox = new Rectangle(R(x), R(y), R(w), R(h));
     }
 
     //returnar objektet som kollideras med 
@@ -156,6 +156,6 @@ abstract class MoveableObject
     protected MoveableObject()
     {
         AddToGameList();
-        hitbox = new(new Rectangle(x, y, width, height), this);
+        hurtbox = new(new Rectangle(x, y, width, height), this,Color.Green);
     }
 }

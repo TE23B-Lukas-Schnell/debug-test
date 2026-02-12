@@ -9,7 +9,6 @@ abstract class FightableObject : MoveableObject
     protected float invincibilityDuration = 0;
     protected float hp;
 
-
     public List<Item> Inventory = new List<Item>();
 
     protected void Displaybar(float x, float y, float w, float h, float value, float horizontalPadding, float verticalPadding, Color fillColor)
@@ -80,7 +79,7 @@ abstract class FightableObject : MoveableObject
             target.healthy = true;
         }
     }
-    //😂😂😂 𝼀𰻝Ꮸ𐃵
+   
     protected void CheckDamagingHitbox(float damage, string objectIdentifier, Hitbox newHitbox)
     {
         FightableObject? target;
@@ -99,7 +98,7 @@ abstract class FightableObject : MoveableObject
             }
         }
     }
-
+ //😂😂😂 𝼀𰻝Ꮸ𐃵
     public void ApplyBuffsFromItem()
     {
         if (Inventory.Count > 0)

@@ -87,7 +87,6 @@ class Run
         Console.WriteLine(@$"
     current boss    {currentBoss}
     seed            {seed}
-    amount of items to choose from   {amountOfItemsToChooseFrom}
     ");
 
         ShowBosses();
@@ -180,6 +179,8 @@ class Run
     {
         Boss bossToFight = bossesToFight.Keys.ToArray()[currentBoss];
 
+        System.Console.WriteLine(GibbManager.ListToString(bossToFight.Inventory));
+
         MoveableObject objectThatDied = ActualGibbNoWay(bossToFight);
         // Console.WriteLine(objectThatDied + " died a deathly death");
 
@@ -217,6 +218,9 @@ class Run
         // ClearGameList();
 
         enemy.InitializePlayableBoss();
+        enemy.Inventory.AddRange(bossItems);
+        enemy.ApplyBuffsFromItem();
+        
         GibbManager.currentlyGibbing = true;
 
         Raylib.InitWindow(enemy.screenSizeX, enemy.screenSizeY, "Game");
@@ -229,8 +233,15 @@ class Run
         FightableObject loser = playerReference;
         bool pause = false;
 
-        while (!Raylib.WindowShouldClose() && GibbManager.currentlyGibbing)
+        float endTimer = 1f;
+
+        while (!Raylib.WindowShouldClose() && endTimer >= 0)
         {
+            if (GibbManager.currentlyGibbing == false)
+            {
+                endTimer -= Raylib.GetFrameTime();
+            }
+
             Raylib.SetExitKey(KeyboardKey.Null);
 
             if (Raylib.IsKeyPressed(KeyboardKey.Escape))
@@ -292,8 +303,10 @@ class Run
             {
                 Raylib.BeginDrawing();
 
-                Raylib.DrawRectangle(enemy.screenSizeX / 2 - 230, enemy.screenSizeY / 2 -5, 400, 80, Color.Yellow);
-                Raylib.DrawText("You won!!", enemy.screenSizeX / 2 - 200, enemy.screenSizeY / 2 -5 , 70, Color.Black);
+                Raylib.DrawRectangle(enemy.screenSizeX / 2 - 230, enemy.screenSizeY / 2 - 5, 400, 80, Color.Yellow);
+                Raylib.DrawText("You won!!", enemy.screenSizeX / 2 - 200, enemy.screenSizeY / 2 - 5, 70, Color.Black);
+
+                Raylib.DrawText("Press enter to continue", enemy.screenSizeX / 2 - 200, enemy.screenSizeY / 2 + 200, 30, Color.Black);
 
                 Raylib.EndDrawing();
             }
@@ -308,6 +321,8 @@ class Run
 
                 Raylib.DrawRectangle(enemy.screenSizeX / 2 - 230, enemy.screenSizeY / 2 - 5, 400, 80, Color.Black);
                 Raylib.DrawText("You died", enemy.screenSizeX / 2 - 200, enemy.screenSizeY / 2 - 5, 70, Color.Red);
+
+                Raylib.DrawText("Press enter to continue", enemy.screenSizeX / 2 - 200, enemy.screenSizeY / 2 + 200, 30, Color.Black);
 
                 Raylib.EndDrawing();
             }
