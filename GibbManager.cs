@@ -27,8 +27,8 @@ static class GibbManager
 
     readonly public static List<Type> PeakBossPeakBoss = new()
     {
-        typeof(Christian), typeof(Christian), typeof(Karim), typeof (Karim),
-         typeof (Karim)
+        typeof(ChristianBoss), typeof(ChristianBoss), typeof(KarimBoss), typeof (KarimBoss),
+         typeof (KarimBoss), 
     };
 
     readonly public static List<Item> allItems = new List<Item>()
@@ -56,7 +56,10 @@ static class GibbManager
         {"Start playing", () => currentMenu = configureRunMenu},
         {"Show high scores", () =>  WriteDictionary(highscores)},
         {"select controll layout", () => currentMenu = controlMenu},
-        {"quit game", () => {Console.WriteLine("quitting game");}},
+        {"quit game", () => {
+            Console.WriteLine("quitting game");
+            StartRun(new Run(SetSeed,bossList,itemList));
+        }}
     });
 
     static Menu controlMenu = new("controls", new Dictionary<string, Action>()
@@ -266,7 +269,7 @@ static class GibbManager
     {
         currentRun = run;
         currentMenu = gameMenu;
-        currentRun.playerReference = new MickePlayer(GibbManager.currentLayout);
+        currentRun.playerReference = new KarimPlayer(GibbManager.currentLayout);
         currentRun.playerReference.InitializePlayer();
     }
 }

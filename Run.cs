@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices;
-
 class Run
 {
     //lista för alla objekt som ska hanteras, det är lista för att den kan öka och minska under runtime
@@ -205,19 +203,15 @@ class Run
         {
             if (objectThatDied == playerReference)
             {
-
                 Console.WriteLine("YOU DIED!!!111");
                 EndRun();
             }
             else
             {
                 currentBoss++;
-
-                // System.Console.WriteLine(GibbManager.ListToString(availableItems));
                 GiveItem(amountOfItemsToChooseFrom, GetRandomItems(amountOfItemsToChooseFrom, availableItems), playerReference.Inventory, bossItems);
             }
         }
-
     }
 
     // this is the actual game!!!11 veri important
@@ -225,9 +219,7 @@ class Run
     {
         // playerReference.InitializePlayer();
         // ClearGameList();
-
         enemy.InitializePlayableBoss();
-
 
         GibbManager.currentlyGibbing = true;
 

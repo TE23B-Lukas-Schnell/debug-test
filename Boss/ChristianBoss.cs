@@ -1,4 +1,4 @@
-class Christian : Boss
+class ChristianBoss : Boss
 {
 
     public float jumpLine = 500f;
@@ -17,48 +17,6 @@ class Christian : Boss
         {
             changeValue = Math.Abs(moveSpeed);
         }
-    }
-
-    async Task JumpingAttack(CancellationToken ct)
-    {
-        Color temp = color;
-        float contactDamageTemp = contactDamage;
-        contactDamage = 6;
-        color = new Color(240, 35, 35);
-        xSpeed = 0;
-        ySpeed = 0;
-        await Wait(700, ct);
-
-        xSpeed = 0;
-        ySpeed = 0;
-        xSpeed -= moveSpeed * 1.5f;
-        ySpeed += jumpForce;
-
-
-        while (x != 0)
-        {
-
-        }
-        xSpeed = 0;
-        await Wait(300, ct);
-
-
-        xSpeed += moveSpeed * 1.5f;
-        ySpeed += jumpForce * 1.5f;
-
-
-        while (x != screenSizeX - width)
-        {
-            if (hp < maxHP / 2)
-            {
-
-            }
-        }
-        xSpeed = 0;
-        ySpeed = 0;
-        color = temp;
-        contactDamage = contactDamageTemp;
-        await Wait(300, ct, true);
     }
 
     async Task DashAttack(CancellationToken ct)
@@ -196,18 +154,11 @@ class Christian : Boss
         await Wait(400, ct);
     }
 
-    async Task DåKanViSläckaNerLocken(CancellationToken ct)
-    {
-        //gör köttig attack här
-    }
-
     void InitializeDelegates()
     {
-        // bossAttacks.Add(JumpingAttack);
         bossAttacks.Add(DashAttack);
         bossAttacks.Add(BombPlan);
         // bossAttacks.Add(TeknikarDuschen);
-        // bossAttacks.Add(DåKanViSläckaNerLocken);
     }
 
     public override void MoveCycle()
@@ -220,7 +171,7 @@ class Christian : Boss
         }
     }
 
-    public Christian()
+    public ChristianBoss()
     {
         screenSizeX = 1200;
         screenSizeY = 1000;

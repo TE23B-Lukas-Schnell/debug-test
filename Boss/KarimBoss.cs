@@ -1,4 +1,4 @@
-class Karim : Boss
+class KarimBoss : Boss
 {
     void Moving(float value, float minValue, float maxValue)
     {
@@ -160,7 +160,7 @@ class Karim : Boss
         Moving(x, 1200, screenSizeX - width);
     }
 
-    public Karim()
+    public KarimBoss()
     {
         screenSizeX = 1800;
         screenSizeY = 900;

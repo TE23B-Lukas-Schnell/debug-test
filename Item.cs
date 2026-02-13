@@ -200,10 +200,12 @@ class Item
             {
                 Boss b = objectToBuff as Boss;
                 b.moveSpeed += 23f;
+                b.maxHP += 30;
+                b.HealDamage(30, b);
             }
         }),
 
-         new Item("Skolmaten", "Gör att du blir tjock                               haku bygg", applier: (FightableObject objectToBuff) =>
+        new Item("Skolmaten", "Gör att du blir tjock                               haku bygg", applier: (FightableObject objectToBuff) =>
         {
             if(objectToBuff is Player)
             {
@@ -216,11 +218,26 @@ class Item
             else if (objectToBuff is Boss)
             {
                 Boss b = objectToBuff as Boss;
-                b.width *= 1.3f;
+                b.width *= 1.4f;
             }
         }),
 
+        new Item("Mobil låda", "", applier: (FightableObject objectToBuff) =>
+        {
+            if(objectToBuff is Player)
+            {
+                Player p = objectToBuff as Player;
 
+            }
+            else if (objectToBuff is Boss)
+            {
+                Boss b = objectToBuff as Boss;
+                b.width *= 1.2f;
+                b.height *= 1.2f;
+                b.maxHP += 20;
+                b.HealDamage(20, b);
+            }
+        }),
 
         new Item("Erikas Waifu Köttbåt",
 "extremt båtig waifu-item: meaty michaels i hjärnan gör att kulor blir tyngre men snabbare men långsammare samtidigt",

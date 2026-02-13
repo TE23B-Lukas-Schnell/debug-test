@@ -13,6 +13,7 @@ class MickePlayer : Player
 
         setDashCooldown = 0.43f;
         bulletxSpeed = 1800f;
+        bulletDamage = 10f;
 
         spriteFilePath = @"./Sprites/mikaelbergstrom-scaled-600x600.jpg";
 
