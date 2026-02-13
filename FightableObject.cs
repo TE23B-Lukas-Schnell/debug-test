@@ -68,7 +68,7 @@ abstract class FightableObject : MoveableObject
                 target.remove = true;
                 Despawn();
             }
-            target.TakenDamage();
+            target.TakenDamage(damage);
         }
     }
 
@@ -116,7 +116,7 @@ abstract class FightableObject : MoveableObject
         // else Console.WriteLine("tomt inventory");
     }
 
-    public abstract void TakenDamage();
+    public abstract void TakenDamage(float damage);
 
     public override void AddToGameList()
     {

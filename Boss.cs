@@ -126,6 +126,11 @@ bullet damage            {bulletDamage}";
         CallThisInTheUpdateFunction();
     }
 
+    void DrawDamageNumbers(float damage)
+    {
+        Raylib.DrawText(damage.ToString(), R(x), R(y), 20, Color.Red);
+    }
+
     public override void Draw()
     {
         spriteDrawer.DrawTexture(color, x, y); ;
@@ -145,9 +150,8 @@ bullet damage            {bulletDamage}";
         cancellationToken?.Cancel();
     }
 
-    public override void TakenDamage()
+    public override void TakenDamage(float damage)
     {
-
     }
 
     abstract public void MoveCycle();

@@ -1,5 +1,7 @@
 class VoidKöttigBoss : Boss
 {
+
+    //https://mrkoll.se/person/John-Torsten-Mattias-Gunnarsson-Hajum-19-Hedekas/sqqkuerAcYfrulaTkyqRaQDYuqkyqRaQcYfrkyqRaQbTAQmsqqkuerArahA
     void Moving(float value, float minValue, float maxValue)
     {
         if (xSpeed == 0) xSpeed = moveSpeed;

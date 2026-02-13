@@ -267,7 +267,7 @@ bullet gravity           {bulletGravity}";
         spriteDrawer.LoadSprite(Raylib.LoadTexture(spriteFilePath), width, height);
     }
 
-    public override void TakenDamage()
+    public override void TakenDamage(float damage)
     {
         takenDamage();
     }
