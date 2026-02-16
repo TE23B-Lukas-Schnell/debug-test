@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices;
-
 static class GibbManager
 {
     public static Color backgroundColor = Color.White;
@@ -29,7 +27,7 @@ static class GibbManager
 
     readonly public static List<Type> PeakBossPeakBoss = new()
     {
-        typeof(CalleBoss), typeof(KarimBoss), typeof(ChristianBoss), typeof(ChristianBoss),
+        typeof(CalleBoss),
     };
 
     readonly public static List<Item> allItems = new List<Item>()
@@ -304,7 +302,7 @@ static class GibbManager
     {
         currentRun = run;
         currentMenu = gameMenu;
-        currentRun.playerReference = playerCharacter;
+        currentRun.playerReference = (Player)Activator.CreateInstance(playerCharacter.GetType(), currentLayout);;
         currentRun.playerReference.InitializePlayer();
     }
 }
