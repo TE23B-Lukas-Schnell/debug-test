@@ -9,7 +9,7 @@ abstract class Projectile : MoveableObject
     {
         FightableObject? target;
 
-        MoveableObject? träffatObjekt = CheckCollisions(hurtbox);
+        MoveableObject? träffatObjekt = CheckCollisions(hitbox);
         if (träffatObjekt is FightableObject)
         {
             target = träffatObjekt as FightableObject;
@@ -21,7 +21,7 @@ abstract class Projectile : MoveableObject
                     target.TakeDamage(damage, target);
                     if (!piercing)
                     {
-                        hurtbox.DeleteHitbox();
+                        hitbox.DeleteHitbox();
                         remove = true;
                     }
                 }

@@ -79,7 +79,7 @@ abstract class FightableObject : MoveableObject
             target.healthy = true;
         }
     }
-   
+
     protected void CheckDamagingHitbox(float damage, string objectIdentifier, Hitbox newHitbox)
     {
         FightableObject? target;
@@ -107,7 +107,7 @@ abstract class FightableObject : MoveableObject
             {
                 if (!Inventory[i].buffActivated)
                 {
-                    
+
                     Inventory[i].buffActivated = true;
                     Inventory[i].ApplyStatChangesFunction(this);
                 }
@@ -120,7 +120,7 @@ abstract class FightableObject : MoveableObject
 
     public override void AddToGameList()
     {
-        GibbManager.currentRun.AddToGameList(this);
+       
     }
 
     protected FightableObject()

@@ -95,9 +95,13 @@ class Run
 
     public void ShowBosses()
     {
+        System.Console.WriteLine("bosses you will fight this run:");
         for (int i = 0; i < bossesToFight.Count; i++)
         {
-            Console.WriteLine($"boss {i + 1}: {bossesToFight.Keys.ToArray()[i].name} defeated: {bossesToFight.Values.ToArray()[i]}");
+            string myString = "";
+            if (bossesToFight.Values.ToArray()[i]) myString = "defeated";
+            else myString = "not defeated";
+            Console.WriteLine($"boss {i + 1}: {bossesToFight.Keys.ToArray()[i].name} {myString}");
         }
     }
 
@@ -153,25 +157,29 @@ class Run
         {
             Console.WriteLine("there are no items left!!1 :(");
         }
-        System.Console.WriteLine("player: " + GibbManager.ListToString(playerInventory));
-        System.Console.WriteLine("boss: " + GibbManager.ListToString(bossInventory));
+        Console.WriteLine("player: " + GibbManager.ListToString(playerInventory));
+        Console.WriteLine("boss: " + GibbManager.ListToString(bossInventory));
 
         playerReference.ApplyBuffsFromItem();
         /// kommer detta att funka??? 🧐🧐🧐
     }
 
-    public List<Boss> GenerateBossList(List<Boss> availableBosses, int amountOfBosses)
+    public List<Type> GenerateBossList(List<Type> availableBosses, int amountOfBosses)
     {
-        amountOfBosses = Math.Clamp(amountOfBosses, 0, availableBosses.Count);
+        // amountOfBosses = Math.Clamp(amountOfBosses, 0, availableBosses.Count);
         Random random = Random.Shared;
-        List<Boss> output = [];
-        List<Boss> tempList = new List<Boss>(availableBosses);
+        List<Type> output = [];
+        List<Type> tempList = new List<Type>(availableBosses);
 
         for (int i = 0; i < amountOfBosses; i++)
         {
             int index = random.Next(0, tempList.Count);
             output.Add(tempList[index]);
             tempList.Remove(tempList[index]);
+            if (tempList.Count == 0)
+            {
+                tempList.AddRange(availableBosses);
+            }
         }
         return output;
     }
@@ -185,7 +193,8 @@ class Run
     {
         Boss bossToFight = bossesToFight.Keys.ToArray()[currentBoss];
 
-        bossToFight.Inventory.AddRange(bossItems);
+        bossToFight.Inventory.AddRange(bossItems.Select(i => i.CopyItem()));
+
         bossToFight.ApplyBuffsFromItem();
 
         MoveableObject objectThatDied = ActualGibbNoWay(bossToFight);
@@ -196,6 +205,7 @@ class Run
         if (CheckBossesBeaten(bossesToFight.Values.ToArray()))
         {
             Console.WriteLine("köttigt run klarat");
+            Console.ReadLine();
             currentBoss++;
             EndRun();
         }
@@ -204,6 +214,7 @@ class Run
             if (objectThatDied == playerReference)
             {
                 Console.WriteLine("YOU DIED!!!111");
+                Console.ReadLine();
                 EndRun();
             }
             else
@@ -219,7 +230,7 @@ class Run
     {
         // playerReference.InitializePlayer();
         // ClearGameList();
-        enemy.InitializePlayableBoss();
+        enemy.InitializeBoss();
 
         GibbManager.currentlyGibbing = true;
 
@@ -260,14 +271,15 @@ class Run
                 AddPendingHitboxes();
 
 
+
                 for (int i = 0; i < gameList.Count; i++)
                 {
                     //först uppdatera alla värden
                     gameList[i].Update();
                     gameList[i].Draw(); // sen ritar man ut allt till skärmen
                 }
-
                 Hitbox.ShowHitboxes();
+
 
                 //denna rad skrevs av mikael 
                 gameList.RemoveAll(obj => obj.remove == true);
@@ -363,18 +375,18 @@ bosses killed            {currentBoss}
     {
         this.seed = seed;
 
-        availableItems = new(items);
+        availableItems.AddRange(items.Select(i => i.CopyItem()));
 
-        List<Boss> newBossList = GetBossesFromTypes(bossList);
+        List<Type> typeList = GenerateBossList(bossList, 7);
 
-        // System.Console.WriteLine(GibbManager.ListToString(newBossList));
-
-        newBossList = GenerateBossList(newBossList, newBossList.Count);
+        List<Boss> newBossList = GetBossesFromTypes(typeList);
 
         for (int i = 0; i < newBossList.Count; i++)
         {
             bossesToFight.Add(newBossList[i], false);
         }
+
+        ShowBosses();
 
     }
 }

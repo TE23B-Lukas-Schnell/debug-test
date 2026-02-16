@@ -1,5 +1,8 @@
 class KarimBoss : Boss
 {
+    public bool Båtdatorprojekt = false;
+    public bool båtModeActivated = false;
+
     void Moving(float value, float minValue, float maxValue)
     {
         if (xSpeed == 0) xSpeed = moveSpeed;
@@ -79,7 +82,7 @@ class KarimBoss : Boss
         await Wait(1000, ct);
         for (int i = 0; i < amountOfBullets; i++)
         {
-            new BossBullet(x, y, bulletWidth, bulletWidth, -800f, (float)Math.Cos(i) * 300f, 0f, bulletDamage,false);
+            new BossBullet(x, y, bulletWidth, bulletWidth, -800f, (float)Math.Cos(i) * 300f, 0f, bulletDamage, false);
             await Wait(100, ct, false);
         }
         color = temp;
@@ -154,6 +157,25 @@ class KarimBoss : Boss
         bossAttacks.Add(BåtAttack);
         bossAttacks.Add(TeknikarDuschen);
     }
+
+
+    public override void Despawn()
+    {
+        if (!Båtdatorprojekt || båtModeActivated)
+        {
+            base.Despawn();
+        }
+        else
+        {
+            //aktivera fas 2
+            remove = false;
+            båtModeActivated = true;
+            name = "Karim the final Båtdatorprojekt";
+            maxHP *= 2;
+            HealDamage(maxHP, this);
+        }
+    }
+
 
     public override void MoveCycle()
     {

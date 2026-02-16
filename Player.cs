@@ -15,13 +15,10 @@ abstract class Player : FightableObject
     };
 
     public string name = "";
-    public string description = "";
     public ControlLayout currentLayout;
     public int score = 0;
     protected SpriteDrawer spriteDrawer = new SpriteDrawer();
     protected string spriteFilePath;
-    //start items behövs nog inte
-    // protected Item startItem;
 
     //player actions
     public Action moveLeft;
@@ -40,30 +37,30 @@ abstract class Player : FightableObject
     public float gravity = 2300f;
     public float moveSpeed = 900f;
     public float jumpForce = 1300f;
-    public float setDashDuration = 0.2f;
-    public float setDashCooldown = 0.47f;
-    public float fastFallSpeed = 1367f;
     public float dashSpeed = 1800f;
+    public float dashDuration = 0.2f;
+    public float dashCooldown = 0.47f;
+    public float fastFallSpeed = 1367f;
     public float invincibilityTime = 1f;
     public Color color = new Color(0, 0f, 235f, 254f);
 
     // hur gör man det här på ett bra sätt?
-
     public Type Projectile = typeof(PlayerBullet);
 
     //bullet stats
-    public float setShootCooldown = 0.5f;
+    public float shootCooldown = 0.5f;
     public float bulletWidth = 40f;
     public float bulletHeight = 20f;
-    public float bulletDamage = 10f; //vanligtvis 5, borde vara 50 när man debuggar
+    public float bulletDamage = 5f; //vanligtvis 5, borde vara 50 när man debuggar
+    public float bulletDamageMultiplier = 1;
     public float bulletxSpeed = 1600f;
     public float bulletySpeed = 0f;
     public float bulletGravity = 0f;
 
     //variabler
-    float dashDuration = 0;
-    float dashCooldown = 0;
-    float shootCooldown = 0;
+    float _dashDuration = 0;
+    float _dashCooldown = 0;
+    float _shootCooldown = 0;
 
     public string PrintPlayerStats()
     {
@@ -76,13 +73,15 @@ current hp               {hp}
 gravity                  {gravity}
 move speed               {moveSpeed}
 jump force               {jumpForce}
-dash duration            {setDashDuration}
-dash cooldown            {setDashCooldown}
+dash speed               {dashSpeed}
+dash duration            {dashDuration}
+dash cooldown            {dashCooldown}
 fastfall speed           {fastFallSpeed}
-shoot cooldown           {setShootCooldown}
+shoot cooldown           {shootCooldown}
 damage multiplier        {damageMultiplier}
 bullet width:            {bulletWidth}
 bullet height            {bulletHeight}
+bullet damage multiplier {bulletDamageMultiplier}
 bullet damage            {bulletDamage}
 bullet speed             {bulletxSpeed} {bulletySpeed}
 bullet gravity           {bulletGravity}";
@@ -105,17 +104,19 @@ bullet gravity           {bulletGravity}";
         {
             xSpeed = dashSpeed;
             ySpeed = 0;
-            dashCooldown = setDashCooldown;
+            _dashCooldown = dashCooldown;
         };
         shoot += () =>
         {
-            shootCooldown = setShootCooldown;
-            new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletxSpeed, bulletySpeed, bulletGravity, bulletDamage, false);
+            float damage = bulletDamage * bulletDamageMultiplier;
+            _shootCooldown = shootCooldown;
+            new PlayerBullet(x + width / 2, y + height / 2, bulletWidth, bulletHeight, bulletxSpeed, bulletySpeed, bulletGravity, damage, false);
         };
         upShoot += () =>
         {
-            shootCooldown = setShootCooldown;
-            new PlayerBullet(x, y, bulletWidth, bulletHeight, bulletxSpeed, bulletySpeed, bulletGravity, bulletDamage * 1.23f   , true);
+            float damage = bulletDamage * 1.2f * bulletDamageMultiplier;
+            _shootCooldown = shootCooldown;
+            new PlayerBullet(x + width / 2, y + height / 2, bulletWidth, bulletHeight, bulletxSpeed, bulletySpeed, bulletGravity, damage, true);
         };
         takenDamage += () => invincibilityDuration = invincibilityTime;
 
@@ -152,7 +153,7 @@ bullet gravity           {bulletGravity}";
     //checks if the player is pressing the dash key
     void DashCheck(/*HEJ JAG HETER  ANTON*/)
     {
-        if (keyPressed["dash"] && dashCooldown == 0)
+        if (keyPressed["dash"] && _dashCooldown == 0)
         {
             if (keyPressed["left"])
             {
@@ -162,9 +163,9 @@ bullet gravity           {bulletGravity}";
             {
                 rightDash();
             }
-            dashDuration = setDashDuration;
+            _dashDuration = dashDuration;
         }
-        if (dashDuration > 0)
+        if (_dashDuration > 0)
         {
             duringDash();
         }
@@ -172,11 +173,11 @@ bullet gravity           {bulletGravity}";
     //checks if the shoot key is pressed 
     void ShootCheck(/*HEJ JAG HETER  ANTON*/)
     {
-        if (keyPressed["shoot"] && shootCooldown <= 0 && !keyPressed["up"])
+        if (keyPressed["shoot"] && _shootCooldown <= 0 && !keyPressed["up"])
         {
             shoot();
         }
-        else if (keyPressed["shoot"] && shootCooldown <= 0 && keyPressed["up"])
+        else if (keyPressed["shoot"] && _shootCooldown <= 0 && keyPressed["up"])
         {
             upShoot();
         }
@@ -205,17 +206,17 @@ bullet gravity           {bulletGravity}";
 
     public void InitializePlayer()
     {
-        // GibbManager.currentRun.AddToGameList(this);
-        GibbManager.currentRun.AddToHitboxList(hurtbox);
+        GibbManager.currentRun.AddToGameList(this);
+        GibbManager.currentRun.AddToHitboxList(hitbox);
     }
 
     public override void Update()
     {
         // System.Console.WriteLine(köttig );
 
-        dashCooldown = MathF.Max(dashCooldown - Raylib.GetFrameTime(), 0);
-        dashDuration = MathF.Max(dashDuration - Raylib.GetFrameTime(), 0);
-        shootCooldown = MathF.Max(shootCooldown - Raylib.GetFrameTime(), 0);
+        _dashCooldown = MathF.Max(_dashCooldown - Raylib.GetFrameTime(), 0);
+        _dashDuration = MathF.Max(_dashDuration - Raylib.GetFrameTime(), 0);
+        _shootCooldown = MathF.Max(_shootCooldown - Raylib.GetFrameTime(), 0);
         invincibilityDuration = MathF.Max(invincibilityDuration - Raylib.GetFrameTime(), 0);
 
         //debug cheat mode för båtig purpose
@@ -248,7 +249,7 @@ bullet gravity           {bulletGravity}";
         else
         {
             color.A = 255;
-            if (dashDuration > 0)
+            if (_dashDuration > 0)
             {
                 AddTrailEffects(maxTrailSize, new Color(22, 15, 55, 255), 100, 100, 0, -1);
             }
@@ -258,7 +259,7 @@ bullet gravity           {bulletGravity}";
             }
         }
 
-        DisplayHealthBar(50, 145, 10,name,30);
+        DisplayHealthBar(50, 145, 10, name, 30);
         spriteDrawer.DrawTexture(color, x, y);
     }
 
@@ -274,7 +275,7 @@ bullet gravity           {bulletGravity}";
 
     public override void Despawn()
     {
-        hurtbox.DeleteHitbox();
+        hitbox.DeleteHitbox();
         // Console.WriteLine("spelaren har despawnat");
         GibbManager.currentlyGibbing = false;
 

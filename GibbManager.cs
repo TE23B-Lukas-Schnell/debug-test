@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+
 static class GibbManager
 {
     public static Color backgroundColor = Color.White;
@@ -27,8 +29,7 @@ static class GibbManager
 
     readonly public static List<Type> PeakBossPeakBoss = new()
     {
-        typeof(ChristianBoss), typeof(ChristianBoss), typeof(KarimBoss), typeof (KarimBoss),
-         typeof (KarimBoss), 
+        typeof(CalleBoss), typeof(KarimBoss), typeof(ChristianBoss), typeof(ChristianBoss),
     };
 
     readonly public static List<Item> allItems = new List<Item>()
@@ -36,12 +37,15 @@ static class GibbManager
         Item.GetItem("Mickes hjälp"),
         Item.GetItem("Martins fönster öppnare"),
         Item.GetItem("Tung väska"),
-        Item.GetItem("Kemibok"),
+        // Item.GetItem("Kemibok"),
         Item.GetItem("Calles krona"),
         Item.GetItem("Smutje.se"),
         Item.GetItem("Anton Faren"),
-        Item.GetItem("Skolmaten"),
+        Item.GetItem("Maxburgare"),
         Item.GetItem("Tu's Genomgång"),
+        Item.GetItem("Skolmaten"),
+        // Item.GetItem("Y8"),
+       
         // Item.GetItem("Erikas Waifu Köttbåt")
     };
 
@@ -49,14 +53,15 @@ static class GibbManager
     static int SetSeed;
     static List<Type> bossList = PeakBossPeakBoss;
     static List<Item> itemList = allItems;
+    static Player playerCharacter = new MickePlayer(currentLayout);
 
     //action menus
     static Menu mainMenu = new Menu("main", new Dictionary<string, Action>()
     {
         {"Start playing", () => currentMenu = configureRunMenu},
         {"Show high scores", () =>  WriteDictionary(highscores)},
-        {"select controll layout", () => currentMenu = controlMenu},
-        {"quit game", () => {
+        {"Select control layout", () => currentMenu = controlMenu},
+        {"Quit game", () => {
             Console.WriteLine("quitting game");
             StartRun(new Run(SetSeed,bossList,itemList));
         }}
@@ -65,14 +70,14 @@ static class GibbManager
     static Menu controlMenu = new("controls", new Dictionary<string, Action>()
     {
         {"select control layout", SelectControlLayout},
-        {"create control layout", () => new ControlLayout(Player.keyPressed.Keys.ToArray())},
-        {"go back to main menu", () => currentMenu = mainMenu},
+        {"Create control layout", () => new ControlLayout(Player.keyPressed.Keys.ToArray())},
+        {"Go back to main menu", () => currentMenu = mainMenu},
     });
 
     static Menu configureRunMenu = new Menu("configure", new Dictionary<string, Action>()
     {
         {"Start run", () => {StartRun(new Run(SetSeed,bossList,itemList));}},
-        {"Choose Character(not implemented)",() => {}},
+        {"Choose Character",() => {SelectCharacter();}},
         {"Change seed", () =>
             {
                 Console.WriteLine("Enter your seed");
@@ -166,6 +171,17 @@ static class GibbManager
         else return output;
     }
 
+    public static string ListToString(List<Type> list)
+    {
+        string output = "";
+        for (int i = 0; i < list.Count; i++)
+        {
+            output += "\n   " + list[i];
+        }
+        if (output == "") return "empty list";
+        else return output;
+    }
+
     public static string ListToString(List<MoveableObject> list)
     {
         string output = "";
@@ -250,6 +266,25 @@ static class GibbManager
         menu.menuActions[actions[GetIntFromConsole(1, actions.Length) - 1]]();
     }
 
+    static void SelectCharacter()
+    {
+        System.Console.WriteLine("choose your character");
+        Type type = typeof(Player);
+
+        List<Type> types = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(s => s.GetTypes())
+            .Where(p => type.IsAssignableFrom(p) && p != type).ToList();
+
+        for (int i = 0; i < types.Count; i++)
+        {
+            Type playerType = types[i];
+            Player player = (Player)Activator.CreateInstance(playerType, currentLayout);
+            System.Console.WriteLine($"{i+1}: {player.name}");
+        }
+        playerCharacter = (Player)Activator.CreateInstance(types[GetIntFromConsole(1,types.Count)-1], currentLayout);
+
+    }
+
     static void SelectControlLayout()
     {
         for (int i = 0; i < ControlLayout.controlLayouts.Count; i++)
@@ -269,7 +304,7 @@ static class GibbManager
     {
         currentRun = run;
         currentMenu = gameMenu;
-        currentRun.playerReference = new KarimPlayer(GibbManager.currentLayout);
+        currentRun.playerReference = playerCharacter;
         currentRun.playerReference.InitializePlayer();
     }
 }

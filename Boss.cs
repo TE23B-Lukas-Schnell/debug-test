@@ -15,6 +15,7 @@ abstract class Boss : FightableObject
     protected delegate Task BossAttack(CancellationToken ct);
     protected List<BossAttack> bossAttacks = new List<BossAttack>();
     protected CancellationTokenSource cancellationToken;
+    protected Player p;
 
     //stats that could potentially change with items 
     public Color color = new Color(255, 255, 255, 255);
@@ -42,7 +43,8 @@ wait multiplier          {waitMultiplier}
 damage multiplier        {damageMultiplier}
 bullet width:            {bulletWidth}
 bullet height            {bulletHeight}
-bullet damage            {bulletDamage}";
+bullet damage            {bulletDamage}
+contact damage           {contactDamage}";
 
 
         output += "\ninventory:";
@@ -51,22 +53,6 @@ bullet damage            {bulletDamage}";
             output += "\n   " + items.name;
         }
         return output;
-    }
-    protected void CallThisInTheUpdateFunction()
-    {
-        ChooseAttack();
-
-        if (notAttacking)
-        {
-            MoveCycle();
-        }
-
-        UpdateHitboxPosition(x, y, width, height);
-        UpdateContactDamageHitbox();
-
-        ContactDamage();
-
-        MoveObject(gravity);
     }
 
     protected void ContactDamage()
@@ -84,6 +70,7 @@ bullet damage            {bulletDamage}";
 
         contactDamageHitbox.hitbox = new Rectangle(R(xpos), R(ypos), R(w), R(h));
     }
+
     //this function makes the wait amount multiplied by the wait multiplier
     protected async Task Wait(float time, CancellationToken ct) => await Task.Delay(R(time * waitMultiplier), ct);
 
@@ -93,15 +80,15 @@ bullet damage            {bulletDamage}";
         else await Task.Delay(R(time), ct);
     }
 
-    protected async Task AttackLoop(CancellationToken token)
+   protected async virtual Task AttackLoop(CancellationToken token)
     {
-        while (!token.IsCancellationRequested)
+        while (!token.IsCancellationRequested) //körs till den cancellas, förmodligen när den dör
         {
-            notAttacking = true;
-            await Wait(attackDelay, token, true);
+            notAttacking = true; //hoppa lite
+            await Wait(attackDelay, token, true); //vänta lite
 
-            notAttacking = false;
-            await bossAttacks[Random.Shared.Next(bossAttacks.Count)](token);
+            notAttacking = false; //sluta hoppa 
+            await bossAttacks[Random.Shared.Next(bossAttacks.Count)](token);//börjar attackera
         }
     }
 
@@ -114,16 +101,29 @@ bullet damage            {bulletDamage}";
         }
     }
 
-    public void InitializePlayableBoss()
+    public void InitializeBoss()
     {
         GibbManager.currentRun.AddToGameList(this);
-        GibbManager.currentRun.AddToHitboxList(hurtbox);
+        GibbManager.currentRun.AddToHitboxList(hitbox);
         GibbManager.currentRun.AddToHitboxList(contactDamageHitbox);
+        p = GibbManager.currentRun.playerReference;
     }
 
     public override void Update()
     {
-        CallThisInTheUpdateFunction();
+        ChooseAttack();
+
+        if (notAttacking)
+        {
+            MoveCycle();
+        }
+
+        UpdateHitboxPosition(x, y, width, height);
+        UpdateContactDamageHitbox();
+
+        ContactDamage();
+
+        MoveObject(gravity);
     }
 
     void DrawDamageNumbers(float damage)
@@ -145,13 +145,14 @@ bullet damage            {bulletDamage}";
     public override void Despawn()
     {
         contactDamageHitbox.DeleteHitbox();
-        hurtbox.DeleteHitbox();
+        hitbox.DeleteHitbox();
         GibbManager.currentlyGibbing = false;
         cancellationToken?.Cancel();
     }
 
     public override void TakenDamage(float damage)
     {
+
     }
 
     abstract public void MoveCycle();

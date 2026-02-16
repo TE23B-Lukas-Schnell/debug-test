@@ -11,12 +11,12 @@ class MickePlayer : Player
         fastFallSpeed = 1400f;
         dashSpeed = 1900f;
 
-        setDashCooldown = 0.43f;
+        dashCooldown = 0.43f;
         bulletxSpeed = 1800f;
         bulletDamage = 10f;
 
         spriteFilePath = @"./Sprites/mikaelbergstrom-scaled-600x600.jpg";
 
-        name = "Micke";
+        name = "Köttig Micke";
     }
 }

@@ -8,7 +8,7 @@ class Item
         {
             if (itemName == name)
             {
-                return AllItems[name].CopyItem(AllItems[name]);
+                return AllItems[name].CopyItem();
             }
         }
         return new Item()
@@ -31,13 +31,16 @@ class Item
         Console.WriteLine(description);
     }
 
-    Item CopyItem(Item itemToCopy)
+    public Item CopyItem()
     {
+        string båt = name;
+        string kött = description;
+        ApplyStatChanges doktorGlas = ApplyStatChangesFunction;
         Item kopieratItem = new Item()
         {
-            name = itemToCopy.name,
-            description = itemToCopy.description,
-            ApplyStatChangesFunction = itemToCopy.ApplyStatChangesFunction
+            name = båt,
+            description = kött,
+            ApplyStatChangesFunction = doktorGlas
         };
         return kopieratItem;
     }
@@ -65,13 +68,15 @@ class Item
             {
                 Player p = objectToBuff as Player;
                 p.bulletxSpeed *= 1.5f;
-                p.setShootCooldown -= 0.1f;
+                p.bulletxSpeed *= 1.2f;
+                p.shootCooldown -= 0.1f;
             }
             else if (objectToBuff is Boss)
             {
                 Boss b = objectToBuff as Boss;
                 b.maxHP += 50;
                 b.HealDamage(50, b);
+                b.waitMultiplier -= 0.1f;
             }
 
         }),
@@ -90,7 +95,7 @@ class Item
             }
         }),
 
-        new Item("Martins fönster öppnare", "gör att estetare hoppar ut ur fönstret vilket gör att du hoppar högre", applier: (FightableObject objectToBuff) =>
+        new Item("Martins fönster öppnare", "gör att estetare hoppar ut ur fönstret", applier: (FightableObject objectToBuff) =>
         {
             if(objectToBuff is Player)
             {
@@ -102,7 +107,7 @@ class Item
             {
                 Boss b = objectToBuff as Boss;
                 b.jumpForce += 200;
-
+                b.gravity *= 1.067f;
             }
         }),
 
@@ -121,7 +126,8 @@ class Item
             {
                 Boss b = objectToBuff as Boss;
                 b.bulletDamage += 2;
-
+                b.maxHP += 50;
+                b.HealDamage(50, b);
             }
         }),
 
@@ -152,6 +158,15 @@ class Item
             else if (objectToBuff is Boss)
             {
                 Boss b = objectToBuff as Boss;
+                if(b is CalleBoss)
+                {
+                    b.maxHP += 100;
+                    b.HealDamage(100, b);
+                }
+                else
+                {
+                    b.width += 50;
+                }
             }
         }),
 
@@ -161,30 +176,58 @@ class Item
             {
                 Player p = objectToBuff as Player;
 
-                p.shoot += () =>
+                if(p is KarimPlayer)
                 {
-                    Random random = new Random();
-                    if(random.Next(0, 10) == 0)
-                    {
-                         KarimPlayer.BåtigBulletHorizontal(p.x,p.y,p.xSpeed,p.ySpeed,p.bulletxSpeed,p.bulletDamage);
-                    }
-                };
+                    KarimPlayer k = p as KarimPlayer;
+                    k.bulletDamage *= 0.5f;
 
-                p.upShoot += () =>
+                    k.båtThreshold -= 5;
+                    k.bulletxSpeed *= 1.69f;
+                    k.moveSpeed *= 1.3f;
+                    k.dashCooldown -= 0.2f;
+                    k.dashSpeed *= 1.5f;
+                    k.dashDuration *= 0.6f;
+                    k.shootCooldown *= 0.67f;
+                }
+                else
                 {
-                    Random random = new Random();
-                    if(random.Next(0, 10) == 0)
+                    p.shoot += () =>
                     {
-                        KarimPlayer.BåtigBulletVertical(p.x,p.y,p.xSpeed,p.ySpeed,p.bulletxSpeed,p.bulletDamage);
-                    }
-                };
+                        Random random = new Random();
+                        if(random.Next(0, 10) == 0)
+                        {
+                            KarimPlayer.BåtigBulletHorizontal(p.x,p.y,p.xSpeed,p.ySpeed,p.bulletxSpeed,p.bulletDamage);
+                        }
+                    };
 
-                p.setShootCooldown += 0.13f;
+                    p.upShoot += () =>
+                    {
+                        Random random = new Random();
+                        if(random.Next(0, 10) == 0)
+                        {
+                            KarimPlayer.BåtigBulletVertical(p.x,p.y,p.xSpeed,p.ySpeed,p.bulletxSpeed,p.bulletDamage);
+                        }
+                    };
+                }
+
+                p.shootCooldown += 0.13f;
             }
             else if (objectToBuff is Boss)
             {
                 Boss b = objectToBuff as Boss;
-                b.waitMultiplier += 0.1f;
+                if(b is KarimBoss)
+                {
+                    KarimBoss k = b as KarimBoss;
+                    k.attackDelay *= 0.67f;
+                    k.maxHP += 100;
+                    k.HealDamage(100, b);
+                    k.Båtdatorprojekt = true;
+                }else{
+                    b.waitMultiplier -= 0.1f;
+                    b.maxHP += 50;
+                    b.HealDamage(50, b);
+                }
+
             }
         }),
 
@@ -199,13 +242,33 @@ class Item
             else if (objectToBuff is Boss)
             {
                 Boss b = objectToBuff as Boss;
-                b.moveSpeed += 23f;
+                b.moveSpeed += 100f;
                 b.maxHP += 30;
                 b.HealDamage(30, b);
             }
         }),
 
-        new Item("Skolmaten", "Gör att du blir tjock                               haku bygg", applier: (FightableObject objectToBuff) =>
+         new Item("Skolmaten", "Din movement blir långsam men din dashen har mindre cooldown och är kortare", applier: (FightableObject objectToBuff) =>
+        {
+            if(objectToBuff is Player)
+            {
+                Player p = objectToBuff as Player;
+                p.moveSpeed *= 0.4f;
+                p.dashCooldown *= 0.5f;
+                p.dashDuration -= 0.11f;
+            }
+            else if (objectToBuff is Boss)
+            {
+                Boss b = objectToBuff as Boss;
+                b.width *= 1.3f;
+                b.height *= 1.2f;
+                b.moveSpeed *= 1.2f;
+                b.maxHP += 25;
+                b.HealDamage(25, b);
+            }
+        }),
+
+        new Item("Maxburgare", "Skollunchen var äcklig så du gick till Max och blev tjock, men du blev mätt i alla fall                          haku bygg", applier: (FightableObject objectToBuff) =>
         {
             if(objectToBuff is Player)
             {
@@ -219,23 +282,41 @@ class Item
             {
                 Boss b = objectToBuff as Boss;
                 b.width *= 1.4f;
+                b.maxHP += 75;
+                b.HealDamage(75, b);
             }
         }),
 
-        new Item("Mobil låda", "", applier: (FightableObject objectToBuff) =>
+        new Item("Mobil låda", "Läraren tar din mobil", applier: (FightableObject objectToBuff) =>
         {
             if(objectToBuff is Player)
             {
                 Player p = objectToBuff as Player;
-
+                p.moveSpeed *= 0.9f;
             }
             else if (objectToBuff is Boss)
             {
                 Boss b = objectToBuff as Boss;
                 b.width *= 1.2f;
                 b.height *= 1.2f;
-                b.maxHP += 20;
-                b.HealDamage(20, b);
+                b.maxHP += 50;
+                b.HealDamage(50, b);
+            }
+        }),
+
+        new Item("Y8", " \"Y8\"  Dante Hardoff 2025", applier: (FightableObject objectToBuff) =>
+        {
+            if(objectToBuff is Player)
+            {
+                Player p = objectToBuff as Player;
+                p.y = 8;
+                p.ySpeed = 8000;
+            }
+            else if (objectToBuff is Boss)
+            {
+                Boss b = objectToBuff as Boss;
+                b.y = 8;
+                b.ySpeed = 8000;
             }
         }),
 
@@ -277,9 +358,9 @@ applier: (FightableObject objectToBuff) =>
         p.damageMultiplier -= 0.05f;
 
         // 🚀 cooldown chaos
-        p.setShootCooldown -= 0.2f;
-        p.setShootCooldown += 0.11f;
-        p.setShootCooldown -= 0.03f;
+        p.shootCooldown -= 0.2f;
+        p.shootCooldown += 0.11f;
+        p.shootCooldown -= 0.03f;
 
         // 🍖 final meaty michael blessing
         p.bulletxSpeed += p.width;

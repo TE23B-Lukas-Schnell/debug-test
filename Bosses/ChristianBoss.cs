@@ -32,6 +32,7 @@ class ChristianBoss : Boss
             xSpeed = moveSpeed;
         }
         await Wait(1200, ct);
+        contactDamage *= 2;
 
         KemiBullet.EnemyShoot(bulletWidth * 2.5f, 0, bulletWidth * 2.5f, bulletHeight * 2, 0, 0, 1800f, bulletDamage, true);
 
@@ -40,7 +41,7 @@ class ChristianBoss : Boss
         KemiBullet.EnemyShoot(screenSizeX - bulletWidth * 2.5f, 0, bulletWidth * 2.5f, bulletHeight * 2, 0, 0, 1800f, bulletDamage, true);
 
         await Wait(230, ct);
-        
+
         xSpeed = -moveSpeed * 2;
 
         while (x >= 0)
@@ -50,6 +51,7 @@ class ChristianBoss : Boss
 
         color = temp;
         await Wait(600, ct);
+        contactDamage /= 2;
         ySpeed += jumpForce;
     }
 
@@ -182,7 +184,7 @@ class ChristianBoss : Boss
         maxHP = 500;
         hp = maxHP;
         objectIdentifier = "enemy";
-        contactDamage = 3;
+        contactDamage = 2.6f;
         contactDamageHitboxSizeRatio = 0.6f;
         moveSpeed = 469;
         gravity = 2100;
