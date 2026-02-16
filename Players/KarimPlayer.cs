@@ -44,7 +44,7 @@ class KarimPlayer : Player
         float calcSpeed = Math.Abs(bulletSpeed * 0.69f) + xSpeed;
         float calcDamage = damage + damage * (calcSpeed / 100);
         BåtBullet.PlayerShoot(x, y, 110.2f, 50, calcSpeed, ySpeed * 0.67f, 1999, calcDamage);
-        System.Console.WriteLine(calcDamage);
+        // System.Console.WriteLine(calcDamage);
     }
 
     public static void BåtigBulletVertical(float x, float y, float xSpeed, float ySpeed, float bulletSpeed, float damage)
@@ -52,7 +52,7 @@ class KarimPlayer : Player
         float calcSpeed = Math.Abs(bulletSpeed * 0.69f) + ySpeed;
         float calcDamage = damage + damage * (calcSpeed / 100);
         BåtBullet.PlayerShoot(x, y, 110.2f, 50, xSpeed * 0.67f, calcSpeed, 1999, calcDamage);
-        System.Console.WriteLine(calcDamage);
+        // System.Console.WriteLine(calcDamage);
     }
 
 
@@ -80,7 +80,5 @@ class KarimPlayer : Player
 
         shoot += CheckBåtigAttack;
         upShoot += CheckBåtigAttackUp;
-
-
     }
 }

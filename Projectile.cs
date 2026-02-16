@@ -3,6 +3,7 @@ abstract class Projectile : MoveableObject
     protected float damage;
     protected bool piercing = false;
     protected float gravity;
+    List<MoveableObject> objectsAlreadyHit = [];
 
     // when you collide with an enemy, check whether 
     public void OnHit(float damage, string objectIdentifier)
@@ -13,16 +14,21 @@ abstract class Projectile : MoveableObject
         if (träffatObjekt is FightableObject)
         {
             target = träffatObjekt as FightableObject;
-            if (target != null)
+            if (target != null && !objectsAlreadyHit.Contains(target))
             {
                 if (target.objectIdentifier == objectIdentifier)
                 {
                     //ok båtig
-                    target.TakeDamage(damage, target);
                     if (!piercing)
                     {
                         hitbox.DeleteHitbox();
                         remove = true;
+                        target.TakeDamage(damage, target);
+                    }
+                    else
+                    {
+                        objectsAlreadyHit.Add(target);
+                        target.TakeDamage(damage, target);
                     }
                 }
             }

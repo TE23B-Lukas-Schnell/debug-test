@@ -176,7 +176,7 @@ class ChristianBoss : Boss
     public ChristianBoss()
     {
         screenSizeX = 1200;
-        screenSizeY = 1000;
+        screenSizeY = 1020;
         width = 280;
         height = 280;
         x = screenSizeX;

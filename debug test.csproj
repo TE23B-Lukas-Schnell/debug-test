@@ -33,6 +33,7 @@
     <Content Include="./Sprites/assets/killerMeme.jpg" CopyToOutputDirectory="PreserveNewest"/>
     <Content Include="./Sprites/assets/kemi.png" CopyToOutputDirectory="PreserveNewest"/>
     <Content Include="./Sprites/assets/fireball.png" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/assets/blåsaUpp.png" CopyToOutputDirectory="PreserveNewest"/>
 
 
   </ItemGroup>

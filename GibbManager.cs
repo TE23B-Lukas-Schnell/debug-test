@@ -27,7 +27,7 @@ static class GibbManager
 
     readonly public static List<Type> PeakBossPeakBoss = new()
     {
-        typeof(CalleBoss),
+        typeof(CalleBoss), typeof(ChristianBoss), typeof(KarimBoss)
     };
 
     readonly public static List<Item> allItems = new List<Item>()
@@ -42,6 +42,9 @@ static class GibbManager
         Item.GetItem("Maxburgare"),
         Item.GetItem("Tu's Genomgång"),
         Item.GetItem("Skolmaten"),
+        Item.GetItem("Mobil låda"),
+        Item.GetItem("Internationella relations klubben"),
+
         // Item.GetItem("Y8"),
        
         // Item.GetItem("Erikas Waifu Köttbåt")

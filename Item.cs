@@ -54,10 +54,7 @@ class Item
     }
 
     //this constructor does not it add to AllItems 
-    public Item()
-    {
-
-    }
+    public Item(){}
 
     static Item[] dags_att_skapa_alla_items_här = {
 
@@ -287,12 +284,16 @@ class Item
             }
         }),
 
-        new Item("Mobil låda", "Läraren tar din mobil", applier: (FightableObject objectToBuff) =>
+        new Item("Mobil låda", "Läraren tar din mobil, det gör dig mycket snabbare", applier: (FightableObject objectToBuff) =>
         {
             if(objectToBuff is Player)
             {
                 Player p = objectToBuff as Player;
-                p.moveSpeed *= 0.9f;
+                p.moveSpeed *= 1.5f;
+                p.jumpForce *= 1.5f;
+                p.gravity *= 1.5f;
+                p.fastFallSpeed *= 1.5f;
+
             }
             else if (objectToBuff is Boss)
             {
@@ -318,6 +319,11 @@ class Item
                 b.y = 8;
                 b.ySpeed = 8000;
             }
+        }),
+
+        new Item("Internationella relations klubben", "Du får ett till item att välja mellan", applier: (FightableObject objectToBuff) =>
+        {
+           GibbManager.currentRun.amountOfItemsToChooseFrom++;
         }),
 
         new Item("Erikas Waifu Köttbåt",
