@@ -80,7 +80,7 @@ contact damage           {contactDamage}";
         else await Task.Delay(R(time), ct);
     }
 
-   protected async virtual Task AttackLoop(CancellationToken token)
+    protected async virtual Task AttackLoop(CancellationToken token)
     {
         while (!token.IsCancellationRequested) //körs till den cancellas, förmodligen när den dör
         {
@@ -152,7 +152,7 @@ contact damage           {contactDamage}";
 
     public override void TakenDamage(float damage)
     {
-
+        new DamageNumbers(x + width / 2, y, damage);
     }
 
     abstract public void MoveCycle();

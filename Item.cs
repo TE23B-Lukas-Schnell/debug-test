@@ -97,8 +97,7 @@ class Item
             if(objectToBuff is Player)
             {
                 Player p = objectToBuff as Player;
-                p.jumpForce *= 1.23f;
-                p.gravity *= 1.1f;
+                p.jumpForce *= 1.4f;
             }
             else if (objectToBuff is Boss)
             {
@@ -113,7 +112,6 @@ class Item
             if(objectToBuff is Player)
             {
                 Player p = objectToBuff as Player;
-                p.bulletDamage++;
                 p.bulletDamage *= 1.5f;
                 p.bulletGravity += 1067;
                 p.bulletxSpeed *= 0.67f;
@@ -250,9 +248,10 @@ class Item
             if(objectToBuff is Player)
             {
                 Player p = objectToBuff as Player;
-                p.moveSpeed *= 0.4f;
+                p.moveSpeed *= 0.5f;
                 p.dashCooldown *= 0.5f;
-                p.dashDuration -= 0.11f;
+                p.dashDuration -= 0.115f;
+                p.dashSpeed *= 1.34f;
             }
             else if (objectToBuff is Boss)
             {
@@ -289,10 +288,10 @@ class Item
             if(objectToBuff is Player)
             {
                 Player p = objectToBuff as Player;
-                p.moveSpeed *= 1.5f;
-                p.jumpForce *= 1.5f;
-                p.gravity *= 1.5f;
-                p.fastFallSpeed *= 1.5f;
+                p.moveSpeed *= 1.35f;
+                p.jumpForce *= 1.35f;
+                p.gravity *= 1.35f;
+                p.fastFallSpeed *= 1.35f;
 
             }
             else if (objectToBuff is Boss)
