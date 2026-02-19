@@ -2,8 +2,6 @@ class MickePlayer : Player
 {
     public MickePlayer(ControlLayout controlLayout) : base(controlLayout)
     {
-        x = 400;
-        y = 450;
         width = 85;
         height = 80;
         maxHP = 20;

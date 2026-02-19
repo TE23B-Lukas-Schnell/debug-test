@@ -29,8 +29,6 @@ class MohammedPlayer : Player
 
     public MohammedPlayer(ControlLayout controlLayout) : base(controlLayout)
     {
-        x = 400;
-        y = 450;
         width = 600 / 6;
         height = 489 / 6;
         maxHP = 27;

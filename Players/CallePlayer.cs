@@ -9,11 +9,9 @@ class CallePlayer : Player
 
     public CallePlayer(ControlLayout controlLayout) : base(controlLayout)
     {
-        x = 400;
-        y = 450;
         width = 100;
         height = 80;
-        maxHP = 23;
+        maxHP = 27;
         hp = maxHP;
         bulletDamage = 10f;
 

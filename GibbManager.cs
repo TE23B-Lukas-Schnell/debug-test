@@ -3,24 +3,45 @@ static class GibbManager
     public static Color backgroundColor = Color.White;
     public static int targetFrameRate;
     public static bool currentlyGibbing = false;
-    public static bool fullscreen = false;
-    public static Menu currentMenu = mainMenu;
+    public static Menu currentMenu;
     public static Run? currentRun = null;
-
-
+    public static Settings currentSettings;
     static string scoreFilePath = "./scores.txt";
     static Dictionary<string, int> highscores = new Dictionary<string, int>();
 
+    readonly public static List<Type> PeakBossPeakBoss = new()
+    {
+        typeof(CalleBoss), typeof(ChristianBoss), typeof(KarimBoss)
+    };
 
+    readonly public static List<Item> allItems = new List<Item>()
+    {
+        Item.GetItem("Mickes hjälp"),
+        Item.GetItem("Martins fönster öppnare"),
+        Item.GetItem("Tung väska"),
+        // Item.GetItem("Kemibok"),
+        Item.GetItem("Calles krona"),
+        Item.GetItem("Smutje.se"),
+        Item.GetItem("Anton Faren"),
+        Item.GetItem("Maxburgare"),
+        Item.GetItem("Tu's Genomgång"),
+        Item.GetItem("Skolmaten"),
+        Item.GetItem("Mobil låda"),
+        // Item.GetItem("Internationella relations klubben"),
+
+        // Item.GetItem("Y8"),
+       
+        // Item.GetItem("Erikas Waifu Köttbåt")
+    };
+
+    // settings
     public struct Settings
     {
         [JsonInclude] public bool enableDamageNumbers;
-        // [JsonInclude] public Color playerColor;
+        [JsonInclude] public Color playerColor;
         [JsonInclude] public int fps;
-
+        [JsonInclude] public List<ControlLayout> controlLayouts;
     }
-
-    public static Settings currentSettings;
 
     static void SaveSettings(Settings settings)
     {
@@ -44,45 +65,19 @@ static class GibbManager
             System.Console.WriteLine("file exists");
             System.Console.WriteLine(data);
             return JsonSerializer.Deserialize<Settings>(data);
-            
+
         }
         else
         {
-             System.Console.WriteLine("file doesnt exist");
+            System.Console.WriteLine("file doesnt exist");
             return new()
             {
                 enableDamageNumbers = true,
-                // playerColor = new Color(0, 0f, 235f, 254f)  
+                playerColor = new Color(0, 0f, 235f, 255f)
             };
         }
 
     }
-
-
-    readonly public static List<Type> PeakBossPeakBoss = new()
-    {
-        typeof(CalleBoss), typeof(ChristianBoss), typeof(KarimBoss)
-    };
-
-    readonly public static List<Item> allItems = new List<Item>()
-    {
-        Item.GetItem("Mickes hjälp"),
-        Item.GetItem("Martins fönster öppnare"),
-        Item.GetItem("Tung väska"),
-        // Item.GetItem("Kemibok"),
-        Item.GetItem("Calles krona"),
-        Item.GetItem("Smutje.se"),
-        Item.GetItem("Anton Faren"),
-        Item.GetItem("Maxburgare"),
-        Item.GetItem("Tu's Genomgång"),
-        Item.GetItem("Skolmaten"),
-        Item.GetItem("Mobil låda"),
-        Item.GetItem("Internationella relations klubben"),
-
-        // Item.GetItem("Y8"),
-       
-        // Item.GetItem("Erikas Waifu Köttbåt")
-    };
 
     //control layouts
     public static ControlLayout defaultKeybindsWASD = new ControlLayout(new Dictionary<string, KeyboardKey>()
@@ -128,7 +123,7 @@ static class GibbManager
     static Menu settingsMenu = new("settings", new Dictionary<string, Action>()
     {
         {"Enable damage numbers", EnableDamageNumbers},
-        {"Change player color", () => EnableDamageNumbers()},
+        {"Change player color",ChooseColor},
         {"Set FPS",ChooseFPS},
         {"Go back to main menu", () => {currentMenu = mainMenu; SaveSettings(currentSettings);}},
     });
@@ -342,6 +337,16 @@ static class GibbManager
         currentSettings.enableDamageNumbers = !currentSettings.enableDamageNumbers;
         if (currentSettings.enableDamageNumbers) System.Console.WriteLine("Damagenumbers is turned on");
         else System.Console.WriteLine("Damagenumbers is turned off");
+    }
+
+    static void ChooseColor()
+    {
+        System.Console.WriteLine("choose the RED value");
+        currentSettings.playerColor.R = (byte)GetIntFromConsole(0, 255);
+        System.Console.WriteLine("choose the GREEN value");
+        currentSettings.playerColor.G = (byte)GetIntFromConsole(0, 255);
+        System.Console.WriteLine("choose the BlUE value");
+        currentSettings.playerColor.B = (byte)GetIntFromConsole(0, 255);
     }
 
     static void SelectControlLayout()

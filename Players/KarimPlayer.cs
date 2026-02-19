@@ -58,8 +58,6 @@ class KarimPlayer : Player
 
     public KarimPlayer(ControlLayout controlLayout) : base(controlLayout)
     {
-        x = 400;
-        y = 450;
         width = 90;
         height = 90;
         maxHP = 19;

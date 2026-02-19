@@ -98,6 +98,11 @@ class Item
             {
                 Player p = objectToBuff as Player;
                 p.jumpForce *= 1.4f;
+                if(p is MartinPlayer)
+                {
+                    MartinPlayer m = p as MartinPlayer;
+                    m.moveSpeed *= 1.5f;
+                }
             }
             else if (objectToBuff is Boss)
             {
@@ -251,7 +256,7 @@ class Item
                 p.moveSpeed *= 0.5f;
                 p.dashCooldown *= 0.5f;
                 p.dashDuration -= 0.115f;
-                p.dashSpeed *= 1.34f;
+                p.dashSpeed *= 1.44f;
             }
             else if (objectToBuff is Boss)
             {
@@ -283,16 +288,16 @@ class Item
             }
         }),
 
-        new Item("Mobil låda", "Läraren tar din mobil, det gör dig mycket snabbare", applier: (FightableObject objectToBuff) =>
+        new Item("Mobil låda", "Läraren tar din mobil, det gör dig mycket snabbare, men gör att du tar mer damage", applier: (FightableObject objectToBuff) =>
         {
             if(objectToBuff is Player)
             {
                 Player p = objectToBuff as Player;
-                p.moveSpeed *= 1.35f;
-                p.jumpForce *= 1.35f;
-                p.gravity *= 1.35f;
-                p.fastFallSpeed *= 1.35f;
-
+                p.moveSpeed *= 1.4f;
+                p.jumpForce *= 1.4f;
+                p.gravity *= 1.4f;
+                p.fastFallSpeed *= 1.4f;
+                p.damageMultiplier *= 1.2f;
             }
             else if (objectToBuff is Boss)
             {

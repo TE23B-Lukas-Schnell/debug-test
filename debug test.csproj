@@ -36,6 +36,8 @@
     <Content Include="./Sprites/assets/kemi.png" CopyToOutputDirectory="PreserveNewest"/>
     <Content Include="./Sprites/assets/fireball.png" CopyToOutputDirectory="PreserveNewest"/>
     <Content Include="./Sprites/assets/blåsaUpp.png" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/båt.png" CopyToOutputDirectory="PreserveNewest"/>
+
 
   </ItemGroup>
 
