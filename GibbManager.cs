@@ -7,38 +7,57 @@ static class GibbManager
     public static Menu currentMenu = mainMenu;
     public static Run? currentRun = null;
 
+
     static string scoreFilePath = "./scores.txt";
     static Dictionary<string, int> highscores = new Dictionary<string, int>();
 
 
-
-    class Settings
+    public struct Settings
     {
-        public bool enableDamageNumbers;
-        public Color playerColor;
+        [JsonInclude] public bool enableDamageNumbers;
+        // [JsonInclude] public Color playerColor;
+        [JsonInclude] public int fps;
 
-        public Settings()
-        {
-            
-        }
     }
 
-    static Settings settings = new();
+    public static Settings currentSettings;
 
-    //control layouts
-    public static ControlLayout defaultKeybindsWASD = new ControlLayout(new Dictionary<string, KeyboardKey>()
+    static void SaveSettings(Settings settings)
     {
-        {"up", KeyboardKey.W},{"down",KeyboardKey.S},{"left", KeyboardKey.A},{"right",KeyboardKey.D},
-        {"jump", KeyboardKey.Space },{"dash", KeyboardKey.LeftShift}, {"shoot",KeyboardKey.L}
-    }, "wasd");
+        string path = "settings.json";
 
-    public static ControlLayout defaultKeybindsArrowKeys = new ControlLayout(new Dictionary<string, KeyboardKey>()
+        string text = JsonSerializer.Serialize(settings, new JsonSerializerOptions
+        {
+            WriteIndented = true
+        });
+
+        File.WriteAllText(path, text);
+        System.Console.WriteLine("settings saved");
+        System.Console.WriteLine(text);
+    }
+
+    static Settings LoadSettings(string path)
     {
-        {"up", KeyboardKey.Up},{"down",KeyboardKey.Down},{"left", KeyboardKey.Left},{"right",KeyboardKey.Right},
-        {"jump", KeyboardKey.Z}, {"dash", KeyboardKey.C}, {"shoot", KeyboardKey.X}
-    }, "arrow keys");
+        if (File.Exists("settings.json"))
+        {
+            string data = File.ReadAllText(path);
+            System.Console.WriteLine("file exists");
+            System.Console.WriteLine(data);
+            return JsonSerializer.Deserialize<Settings>(data);
+            
+        }
+        else
+        {
+             System.Console.WriteLine("file doesnt exist");
+            return new()
+            {
+                enableDamageNumbers = true,
+                // playerColor = new Color(0, 0f, 235f, 254f)  
+            };
+        }
 
-    public static ControlLayout currentLayout = defaultKeybindsWASD;
+    }
+
 
     readonly public static List<Type> PeakBossPeakBoss = new()
     {
@@ -64,6 +83,21 @@ static class GibbManager
        
         // Item.GetItem("Erikas Waifu Köttbåt")
     };
+
+    //control layouts
+    public static ControlLayout defaultKeybindsWASD = new ControlLayout(new Dictionary<string, KeyboardKey>()
+    {
+        {"up", KeyboardKey.W},{"down",KeyboardKey.S},{"left", KeyboardKey.A},{"right",KeyboardKey.D},
+        {"jump", KeyboardKey.Space },{"dash", KeyboardKey.LeftShift}, {"shoot",KeyboardKey.L}
+    }, "wasd");
+
+    public static ControlLayout defaultKeybindsArrowKeys = new ControlLayout(new Dictionary<string, KeyboardKey>()
+    {
+        {"up", KeyboardKey.Up},{"down",KeyboardKey.Down},{"left", KeyboardKey.Left},{"right",KeyboardKey.Right},
+        {"jump", KeyboardKey.Z}, {"dash", KeyboardKey.C}, {"shoot", KeyboardKey.X}
+    }, "arrow keys");
+
+    public static ControlLayout currentLayout = defaultKeybindsWASD;
 
     //local menu variables
     static int SetSeed;
@@ -91,13 +125,13 @@ static class GibbManager
         {"Go back to main menu", () => currentMenu = mainMenu},
     });
 
-     static Menu settingsMenu = new("settings", new Dictionary<string, Action>()
+    static Menu settingsMenu = new("settings", new Dictionary<string, Action>()
     {
-        {"Enable damage numbers", SelectControlLayout},
-        {"Change player color", () => },
-        {"Go back to main menu", () => currentMenu = mainMenu},
+        {"Enable damage numbers", EnableDamageNumbers},
+        {"Change player color", () => EnableDamageNumbers()},
+        {"Set FPS",ChooseFPS},
+        {"Go back to main menu", () => {currentMenu = mainMenu; SaveSettings(currentSettings);}},
     });
-
 
     static Menu configureRunMenu = new Menu("configure", new Dictionary<string, Action>()
     {
@@ -213,12 +247,12 @@ static class GibbManager
         else return output;
     }
 
-    static int ChooseFPS()
+    static void ChooseFPS()
     {
         Console.WriteLine("How much FPS do you want? (0 for uncapped)\nrecommended: 120 to 600");
 
         targetFrameRate = GetIntFromConsole(0, int.MaxValue);
-        return targetFrameRate;
+        currentSettings.fps = targetFrameRate;
     }
 
     static string[] ReadSaveFile(string filePath)
@@ -266,9 +300,7 @@ static class GibbManager
     {
         Raylib.SetTraceLogLevel(TraceLogLevel.Error); // gör så att raylib inte skriver till konsolen
         LoadSave();
-        Raylib.SetTargetFPS(ChooseFPS());
-        // Intructions();
-
+        LoadSettings("settings.json");
         currentMenu = mainMenu;
     }
 
@@ -299,15 +331,17 @@ static class GibbManager
         {
             Type playerType = types[i];
             Player player = (Player)Activator.CreateInstance(playerType, currentLayout);
-            System.Console.WriteLine($"{i+1}: {player.name}");
+            System.Console.WriteLine($"{i + 1}: {player.name}");
         }
-        playerCharacter = (Player)Activator.CreateInstance(types[GetIntFromConsole(1,types.Count)-1], currentLayout);
+        playerCharacter = (Player)Activator.CreateInstance(types[GetIntFromConsole(1, types.Count) - 1], currentLayout);
 
     }
 
     static void EnableDamageNumbers()
     {
-        
+        currentSettings.enableDamageNumbers = !currentSettings.enableDamageNumbers;
+        if (currentSettings.enableDamageNumbers) System.Console.WriteLine("Damagenumbers is turned on");
+        else System.Console.WriteLine("Damagenumbers is turned off");
     }
 
     static void SelectControlLayout()
@@ -327,9 +361,10 @@ static class GibbManager
 
     static void StartRun(Run run)
     {
+        Raylib.SetTargetFPS(currentSettings.fps);
         currentRun = run;
         currentMenu = gameMenu;
-        currentRun.playerReference = (Player)Activator.CreateInstance(playerCharacter.GetType(), currentLayout);;
+        currentRun.playerReference = (Player)Activator.CreateInstance(playerCharacter.GetType(), currentLayout); ;
         currentRun.playerReference.InitializePlayer();
     }
 }

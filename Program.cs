@@ -2,6 +2,8 @@
 global using System;
 global using System.Threading;
 global using System.Threading.Tasks;
+global using System.Text.Json;
+global using System.Text.Json.Serialization;
 
 GibbManager.Setup();
 
@@ -15,6 +17,8 @@ while (true)
 //saker att fixa:
 
 /*---------------------------------------------------------------------------------------------------------------------------------
+
+vart finns settings.json filen? data sparas någonstans men inte i settings.json filen
 
 
 gör så att player bullet flyger uppåt baserat på spelarens input

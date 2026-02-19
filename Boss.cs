@@ -152,7 +152,7 @@ contact damage           {contactDamage}";
 
     public override void TakenDamage(float damage)
     {
-        new DamageNumbers(x + width / 2, y, damage);
+        if(GibbManager.currentSettings.enableDamageNumbers) new DamageNumbers(x + width / 2, y, damage);
     }
 
     abstract public void MoveCycle();
