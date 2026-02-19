@@ -10,6 +10,21 @@ static class GibbManager
     static string scoreFilePath = "./scores.txt";
     static Dictionary<string, int> highscores = new Dictionary<string, int>();
 
+
+
+    class Settings
+    {
+        public bool enableDamageNumbers;
+        public Color playerColor;
+
+        public Settings()
+        {
+            
+        }
+    }
+
+    static Settings settings = new();
+
     //control layouts
     public static ControlLayout defaultKeybindsWASD = new ControlLayout(new Dictionary<string, KeyboardKey>()
     {
@@ -62,6 +77,7 @@ static class GibbManager
         {"Start playing", () => currentMenu = configureRunMenu},
         {"Show high scores", () =>  WriteDictionary(highscores)},
         {"Select control layout", () => currentMenu = controlMenu},
+        {"Change settings", () => currentMenu = settingsMenu},
         {"Quit game", () => {
             Console.WriteLine("quitting game");
             StartRun(new Run(SetSeed,bossList,itemList));
@@ -70,21 +86,24 @@ static class GibbManager
 
     static Menu controlMenu = new("controls", new Dictionary<string, Action>()
     {
-        {"select control layout", SelectControlLayout},
+        {"Select control layout", SelectControlLayout},
         {"Create control layout", () => new ControlLayout(Player.keyPressed.Keys.ToArray())},
         {"Go back to main menu", () => currentMenu = mainMenu},
     });
+
+     static Menu settingsMenu = new("settings", new Dictionary<string, Action>()
+    {
+        {"Enable damage numbers", SelectControlLayout},
+        {"Change player color", () => },
+        {"Go back to main menu", () => currentMenu = mainMenu},
+    });
+
 
     static Menu configureRunMenu = new Menu("configure", new Dictionary<string, Action>()
     {
         {"Start run", () => {StartRun(new Run(SetSeed,bossList,itemList));}},
         {"Choose Character",() => {SelectCharacter();}},
-        {"Change seed", () =>
-            {
-                Console.WriteLine("Enter your seed");
-                SetSeed = GetIntFromConsole();
-            }
-        },
+        {"Change seed", () =>{Console.WriteLine("Enter your seed"); SetSeed = GetIntFromConsole();}},
         {"Change available items (not implemented)", () => WriteDictionary(highscores)},
         {"Change available bosses (not implemented)", () => WriteDictionary(highscores)},
     });
@@ -284,6 +303,11 @@ static class GibbManager
         }
         playerCharacter = (Player)Activator.CreateInstance(types[GetIntFromConsole(1,types.Count)-1], currentLayout);
 
+    }
+
+    static void EnableDamageNumbers()
+    {
+        
     }
 
     static void SelectControlLayout()
