@@ -18,12 +18,11 @@ class MohammedPlayer : Player
     {
         float damage = bulletDamage * 0.5f * bulletsShot;
         new Explosion(x, y, 2500 / 4, 1248 / 4, damage);
-        System.Console.WriteLine("allah akbar");
     }
 
     public override void Despawn()
     {
-        BlåsaUpp();
+        BlåsaUpp(); 
         base.Despawn();
     }
 
@@ -45,7 +44,6 @@ class MohammedPlayer : Player
         bulletxSpeed = 1800;
         bulletySpeed = 100;
         
-
         //bullet stats
         shootCooldown = 0.7f;
         bulletWidth = 30f;

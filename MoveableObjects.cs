@@ -16,8 +16,6 @@ abstract class MoveableObject
 
     protected bool Grounded() => y >= Raylib.GetScreenHeight() - height;
 
-    protected Hitbox GetHitbox() => hitbox;
-
     protected void UpdateHitboxPosition(float x, float y, float w, float h)
     {
         hitbox.hitbox = new Rectangle(R(x), R(y), R(w), R(h));
@@ -28,7 +26,7 @@ abstract class MoveableObject
     {
         foreach (Hitbox obj in GibbManager.currentRun.hitboxes)
         {
-            if (Raylib.CheckCollisionRecs(GetHitbox().hitbox, obj.hitbox))
+            if (Raylib.CheckCollisionRecs(hitbox.hitbox, obj.hitbox))
             {
                 // Console.WriteLine("${obj} asg nazg durbatuluk asg nazg gimbatul asg nazg thrakatuluk av jack");
                 return obj.owner;
@@ -104,9 +102,14 @@ abstract class MoveableObject
     //tar bort objekt om de är offscreen
     protected void HandleOffscreen()
     {
+        float leftRemoveRange = -Raylib.GetScreenWidth() * 0.5f + width;
+        float rightRemoveRange = Raylib.GetScreenWidth() * 1.5f;
+        float topRemoveRange = -Raylib.GetScreenHeight() * 0.5f + height;
+        float bottomRemoveRange = Raylib.GetScreenHeight() * 1.5f;
+
         if (canGoOffscreen)
         {
-            bool isOffscreen = x + width < 0 || x > Raylib.GetScreenWidth() || y + height < 0 || y > Raylib.GetScreenHeight();
+            bool isOffscreen = x < leftRemoveRange || x > rightRemoveRange || y < topRemoveRange || y > bottomRemoveRange;
 
             if (isOffscreen)
             {

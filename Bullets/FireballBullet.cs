@@ -1,4 +1,8 @@
-class FireballBullet : Projectile
+using System.Numerics;
+using System.Runtime.Intrinsics;
+
+class
+ FireballBullet : Projectile
 {
     public float gravity;
     string spriteFilePath = "./Sprites/assets/fireball.png";
@@ -20,15 +24,17 @@ class FireballBullet : Projectile
 
     public override void Draw()
     {
+        spriteDrawer.Rotation =spriteDrawer.RotateAccordingToMovement(new(xSpeed, ySpeed));
+
         spriteDrawer.DrawTexture(color, x, y);
         // Raylib.DrawRectangle(R(hitbox.hitbox.X), R(hitbox.hitbox.Y), R(hitbox.hitbox.Width), R(hitbox.hitbox.Height), Color.Red);
+        // hitbox.DrawHitbox();
     }
 
     public override void BeginDraw()
     {
         spriteDrawer.LoadSprite(Raylib.LoadTexture(spriteFilePath), width, height);
     }
-
 
     public FireballBullet(float x, float y, float xSpeed, float ySpeed, float gravity, float width, float height, float damage)
     {

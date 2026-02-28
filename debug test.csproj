@@ -3,8 +3,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <!-- byt target framework till 8.0 på skoldatorn och 9.0 hemma -->
-     <!-- <TargetFramework>net8.0</TargetFramework> -->
-    <TargetFramework>net9.0</TargetFramework>
+     <TargetFramework>net8.0</TargetFramework>
+    <!-- <TargetFramework>net9.0</TargetFramework> -->
     <RootNamespace>debug_test</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -36,6 +36,10 @@
     <Content Include="./Sprites/assets/kemi.png" CopyToOutputDirectory="PreserveNewest"/>
     <Content Include="./Sprites/assets/fireball.png" CopyToOutputDirectory="PreserveNewest"/>
     <Content Include="./Sprites/assets/blåsaUpp.png" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/assets/hollowArrow.png" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/assets/arrowFill.png" CopyToOutputDirectory="PreserveNewest"/>
+
+
     <Content Include="./Sprites/båt.png" CopyToOutputDirectory="PreserveNewest"/>
 
 

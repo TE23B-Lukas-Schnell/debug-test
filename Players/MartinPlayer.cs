@@ -11,8 +11,8 @@ class MartinPlayer : Player
         gravity = 2700;
 
         moveSpeed = 500f;
-        dashDuration = 0.19f;
-        dashCooldown = 67f;
+        dashDuration = 0.25f;
+        dashCooldown = 0.4f;
         dashSpeed = 1300;
 
         spriteFilePath = @"./Sprites/martinsoderblom-scaled-600x600.jpg";

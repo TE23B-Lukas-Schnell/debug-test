@@ -1,3 +1,5 @@
 {
-  "enableDamageNumbers": false
+  "enableDamageNumbers": true,
+  "playerColor": {},
+  "fps": 600
 }

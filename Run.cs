@@ -71,7 +71,8 @@ class Run
     //sparar alla bossar man ska möta, boolen av gör om man har klarat den. falsk i början, sann när man har klarat den
     public Dictionary<Boss, bool> bossesToFight = new();
 
-    public int currentBoss = 0;
+    public int currentBossIndex = 0;
+    public Boss currentBoss;
 
     //möjliga items att få på ett run, oftast en kopia listan med alla items, när ett item plockas från listan så borde försvinna ur den
     public List<Item> availableItems = [];
@@ -85,7 +86,7 @@ class Run
     public void PrintRunStats()
     {
         Console.WriteLine(@$"
-    current boss    {currentBoss}
+    current boss    {currentBossIndex}
     seed            {seed}
     ");
 
@@ -191,11 +192,13 @@ class Run
 
     public void GibbigtVärre()
     {
-        Boss bossToFight = bossesToFight.Keys.ToArray()[currentBoss];
+        Boss bossToFight = bossesToFight.Keys.ToArray()[currentBossIndex];
 
         bossToFight.Inventory.AddRange(bossItems.Select(i => i.CopyItem()));
 
         bossToFight.ApplyBuffsFromItem();
+
+        currentBoss = bossToFight;
 
         MoveableObject objectThatDied = ActualGibbNoWay(bossToFight);
         // Console.WriteLine(objectThatDied + " died a deathly death");
@@ -206,7 +209,7 @@ class Run
         {
             Console.WriteLine("köttigt run klarat");
             Console.ReadLine();
-            currentBoss++;
+            currentBossIndex++;
             EndRun();
         }
         else
@@ -219,7 +222,7 @@ class Run
             }
             else
             {
-                currentBoss++;
+                currentBossIndex++;
                 GiveItem(amountOfItemsToChooseFrom, GetRandomItems(amountOfItemsToChooseFrom, availableItems), playerReference.Inventory, bossItems);
             }
         }
@@ -350,7 +353,7 @@ class Run
     {
         deadRun = true;
         Console.WriteLine(@$"Run stats:
-bosses killed            {currentBoss}
+bosses killed            {currentBossIndex}
 ");
         Console.WriteLine(playerReference.PrintPlayerStats());
 

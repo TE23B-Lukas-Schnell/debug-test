@@ -11,7 +11,8 @@ static class GibbManager
 
     readonly public static List<Type> PeakBossPeakBoss = new()
     {
-        typeof(CalleBoss), typeof(ChristianBoss), typeof(KarimBoss)
+        // typeof(CalleBoss), typeof(KarimBoss), typeof(ChristianBoss)
+        typeof(MatteBoss)
     };
 
     readonly public static List<Item> allItems = new List<Item>()
@@ -40,18 +41,13 @@ static class GibbManager
         [JsonInclude] public bool enableDamageNumbers;
         [JsonInclude] public Color playerColor;
         [JsonInclude] public int fps;
-        [JsonInclude] public List<ControlLayout> controlLayouts;
     }
 
     static void SaveSettings(Settings settings)
     {
         string path = "settings.json";
 
-        string text = JsonSerializer.Serialize(settings, new JsonSerializerOptions
-        {
-            WriteIndented = true
-        });
-
+        string text = JsonSerializer.Serialize(settings);
         File.WriteAllText(path, text);
         System.Console.WriteLine("settings saved");
         System.Console.WriteLine(text);
@@ -65,7 +61,6 @@ static class GibbManager
             System.Console.WriteLine("file exists");
             System.Console.WriteLine(data);
             return JsonSerializer.Deserialize<Settings>(data);
-
         }
         else
         {
@@ -76,20 +71,19 @@ static class GibbManager
                 playerColor = new Color(0, 0f, 235f, 255f)
             };
         }
-
     }
 
     //control layouts
     public static ControlLayout defaultKeybindsWASD = new ControlLayout(new Dictionary<string, KeyboardKey>()
     {
         {"up", KeyboardKey.W},{"down",KeyboardKey.S},{"left", KeyboardKey.A},{"right",KeyboardKey.D},
-        {"jump", KeyboardKey.Space },{"dash", KeyboardKey.LeftShift}, {"shoot",KeyboardKey.L}
+        {"jump", KeyboardKey.Space },{"dash", KeyboardKey.LeftShift}, {"shoot",KeyboardKey.L},{"upshoot",KeyboardKey.P}
     }, "wasd");
 
     public static ControlLayout defaultKeybindsArrowKeys = new ControlLayout(new Dictionary<string, KeyboardKey>()
     {
         {"up", KeyboardKey.Up},{"down",KeyboardKey.Down},{"left", KeyboardKey.Left},{"right",KeyboardKey.Right},
-        {"jump", KeyboardKey.Z}, {"dash", KeyboardKey.C}, {"shoot", KeyboardKey.X}
+        {"jump", KeyboardKey.Z}, {"dash", KeyboardKey.C}, {"shoot", KeyboardKey.X},{"upshoot",KeyboardKey.S}
     }, "arrow keys");
 
     public static ControlLayout currentLayout = defaultKeybindsWASD;
@@ -183,7 +177,6 @@ static class GibbManager
                 }
                 else return output;
             }
-
         }
     }
 

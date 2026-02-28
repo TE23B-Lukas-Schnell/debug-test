@@ -13,9 +13,15 @@ class Hitbox
         {
             for (int i = 0; i < GibbManager.currentRun.hitboxes.Count; i++)
             {
-              Raylib.DrawRectangle((int)MathF.Round(GibbManager.currentRun.hitboxes[i].hitbox.X), (int)MathF.Round(GibbManager.currentRun.hitboxes[i].hitbox.Y), (int)MathF.Round(GibbManager.currentRun.hitboxes[i].hitbox.Width), (int)MathF.Round(GibbManager.currentRun.hitboxes[i].hitbox.Height), new Color((byte)GibbManager.currentRun.hitboxes[i].color.R, (byte)GibbManager.currentRun.hitboxes[i].color.G, (byte)GibbManager.currentRun.hitboxes[i].color.B, (byte)180));
+                GibbManager.currentRun.hitboxes[i].DrawHitbox();
             }
         }
+    }
+
+    public void DrawHitbox()
+    {
+        color.A = 188;
+        Raylib.DrawRectangle((int)MathF.Round(hitbox.X), (int)MathF.Round(hitbox.Y), (int)MathF.Round(hitbox.Width), (int)MathF.Round(hitbox.Height), color);
     }
 
     public bool remove = false;
@@ -46,5 +52,6 @@ class Hitbox
         this.hitbox = hitbox;
         this.owner = owner;
         this.color = color;
+    
     }
 }

@@ -1,7 +1,5 @@
 abstract class Player : FightableObject
 {
-    //statiska variabler
-
     //sparar alla olika actions spelaren kan göra och om knappen för den actionen är ned tryckt
     public static Dictionary<string, bool> keyPressed = new Dictionary<string, bool>()
     {
@@ -12,13 +10,19 @@ abstract class Player : FightableObject
         {"jump", false },
         {"dash", false },
         {"shoot", false },
+        {"upshoot",false}
     };
 
     public string name = "";
     public ControlLayout currentLayout;
     public int score = 0;
+    public int facingDirection = 1;
     protected SpriteDrawer spriteDrawer = new SpriteDrawer();
     protected string spriteFilePath;
+    protected PointingArrow arrow;
+    float arrowSize = 2;
+    float arrowRotation = 0;
+    float upPointRotaion = -90;
 
     //player actions
     public Action moveLeft;
@@ -32,6 +36,7 @@ abstract class Player : FightableObject
     public Action shoot;
     public Action upShoot;
     public Action takenDamage;
+    public Action up;
 
     //player stats 
     public float gravity = 2300f;
@@ -110,18 +115,21 @@ bullet gravity           {bulletGravity}";
         {
             float damage = bulletDamage * bulletDamageMultiplier;
             _shootCooldown = shootCooldown;
-            new PlayerBullet(x + width / 2, y + height / 2, bulletWidth, bulletHeight, bulletxSpeed, bulletySpeed, bulletGravity, damage, false);
+            new PlayerBullet(x + width / 2, y + height / 2, bulletWidth, bulletHeight, bulletxSpeed * facingDirection, bulletySpeed, bulletGravity, damage);
         };
         upShoot += () =>
         {
-            float damage = bulletDamage * 1.2f * bulletDamageMultiplier;
+            float damage = bulletDamage * 1.05f * bulletDamageMultiplier;
             _shootCooldown = shootCooldown;
-            new PlayerBullet(x + width / 2, y + height / 2, bulletWidth, bulletHeight, bulletxSpeed, bulletySpeed, bulletGravity, damage, true);
+            new PlayerBullet(x + width / 2, y + height / 2, bulletHeight, bulletWidth, bulletySpeed * facingDirection, bulletxSpeed, bulletGravity, damage);
+        };
+        up += () =>
+        {
+
         };
         takenDamage += () => invincibilityDuration = invincibilityTime;
-
     }
-    //checks if the player is pressing the move keys
+
     void MoveCheck(/*HEJ JAG HETER  ANTON*/)
     {
         if (keyPressed["left"])
@@ -134,7 +142,7 @@ bullet gravity           {bulletGravity}";
         }
         else notmoving();
     }
-    // checks if the player is fastfalling
+
     void FastFallCheck(/*HEJ JAG HETER  ANTON*/)
     {
         if (keyPressed["down"] && !Grounded())
@@ -142,7 +150,7 @@ bullet gravity           {bulletGravity}";
             fastFall();
         }
     }
-    // checks if hte player is jumping 
+
     void JumpCheck(/*HEJ JAG HETER  ANTON*/)
     {
         if (keyPressed["jump"] && Grounded())
@@ -150,7 +158,7 @@ bullet gravity           {bulletGravity}";
             jump();
         }
     }
-    //checks if the player is pressing the dash key
+
     void DashCheck(/*HEJ JAG HETER  ANTON*/)
     {
         if (keyPressed["dash"] && _dashCooldown == 0)
@@ -170,7 +178,15 @@ bullet gravity           {bulletGravity}";
             duringDash();
         }
     }
-    //checks if the shoot key is pressed 
+
+    void UpCheck(/*HEJ JAG HETER  ANTON*/)
+    {
+        if (keyPressed["up"])
+        {
+            up();
+        }
+    }
+
     void ShootCheck(/*HEJ JAG HETER  ANTON*/)
     {
         if (keyPressed["shoot"] && _shootCooldown <= 0 && !keyPressed["up"])
@@ -182,6 +198,16 @@ bullet gravity           {bulletGravity}";
             upShoot();
         }
     }
+
+    void UpShootMacroCheck(/*HEJ JAG HETER  ANTON*/)
+    {
+        if (keyPressed["upshoot"])
+        {
+            keyPressed["up"] = true;
+            keyPressed["shoot"] = true;
+        }
+    }
+
     //check the players inputs every frame
     void Checkinputs(/*HEJ JAG HETER  ANTON*/)
     {
@@ -199,9 +225,7 @@ bullet gravity           {bulletGravity}";
             {
                 keyPressed[currentKey] = false;
             }
-
         }
-
     }
 
     public void InitializePlayer()
@@ -217,6 +241,14 @@ bullet gravity           {bulletGravity}";
         _dashCooldown = MathF.Max(_dashCooldown - Raylib.GetFrameTime(), 0);
         _dashDuration = MathF.Max(_dashDuration - Raylib.GetFrameTime(), 0);
         _shootCooldown = MathF.Max(_shootCooldown - Raylib.GetFrameTime(), 0);
+        if (GibbManager.currentRun.currentBoss.x + GibbManager.currentRun.currentBoss.width / 2 <= x)
+        {
+            facingDirection = -1;
+        }
+        else
+        {
+            facingDirection = 1;
+        }
         invincibilityDuration = MathF.Max(invincibilityDuration - Raylib.GetFrameTime(), 0);
 
         //debug cheat mode för båtig purpose
@@ -228,6 +260,10 @@ bullet gravity           {bulletGravity}";
         FastFallCheck();
         JumpCheck();
         DashCheck();
+
+        UpShootMacroCheck();
+
+        UpCheck();
         ShootCheck();
 
         UpdateHitboxPosition(x, y, width, height);
@@ -261,11 +297,32 @@ bullet gravity           {bulletGravity}";
 
         DisplayHealthBar(50, 145, 10, name, 30);
         spriteDrawer.DrawTexture(color, x, y);
+
+
+        if (keyPressed["up"])
+        {
+            arrowRotation = upPointRotaion;
+        }
+        else
+        {
+            if (facingDirection > 0) arrowRotation = 0;
+            else arrowRotation = 180;
+        }
+
+        // float lerpedArrowRotation = 
+
+        arrow.DrawArrow(x, y, -width, 0, arrowRotation);
+
+        if (keyPressed["shoot"])
+        {
+            arrow.LightUpArrow(x, y, -width, 0, arrowRotation);
+        }
     }
 
     public override void BeginDraw()
     {
-        spriteDrawer.LoadSprite(Raylib.LoadTexture(spriteFilePath), width, height);
+        spriteDrawer.LoadSprite(Raylib.LoadTexture(spriteFilePath), width * facingDirection, height);
+        arrow = new(Color.Red, 32 * arrowSize, 17 * arrowSize, true);
     }
 
     public override void TakenDamage(float damage)

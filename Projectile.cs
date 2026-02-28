@@ -48,10 +48,12 @@ abstract class Projectile : MoveableObject
     public override void AddToGameList()
     {
         GibbManager.currentRun.AddToGameList(this);
+        
     }
 
     protected Projectile()
     {
         objectIdentifier = "projectile";
+        hitbox = new(new Rectangle(x, y, width, height), this);
     }
 }
