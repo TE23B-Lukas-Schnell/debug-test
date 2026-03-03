@@ -11,8 +11,8 @@ static class GibbManager
 
     readonly public static List<Type> PeakBossPeakBoss = new()
     {
-        // typeof(CalleBoss), typeof(KarimBoss), typeof(ChristianBoss)
-        typeof(MatteBoss)
+        typeof(CalleBoss), 
+        // typeof(MatteBoss)
     };
 
     readonly public static List<Item> allItems = new List<Item>()
@@ -20,7 +20,6 @@ static class GibbManager
         Item.GetItem("Mickes hjälp"),
         Item.GetItem("Martins fönster öppnare"),
         Item.GetItem("Tung väska"),
-        // Item.GetItem("Kemibok"),
         Item.GetItem("Calles krona"),
         Item.GetItem("Smutje.se"),
         Item.GetItem("Anton Faren"),
@@ -28,7 +27,11 @@ static class GibbManager
         Item.GetItem("Tu's Genomgång"),
         Item.GetItem("Skolmaten"),
         Item.GetItem("Mobil låda"),
-        // Item.GetItem("Internationella relations klubben"),
+        Item.GetItem("3D printer"),
+        Item.GetItem("Kallocain av Karin Boye"),
+
+         // Item.GetItem("Kemibok"),
+        // Item.GetItem("Internationella relations klubben")
 
         // Item.GetItem("Y8"),
        

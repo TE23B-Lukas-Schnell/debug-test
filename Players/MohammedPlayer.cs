@@ -17,12 +17,12 @@ class MohammedPlayer : Player
     void BlåsaUpp()
     {
         float damage = bulletDamage * 0.5f * bulletsShot;
-        new Explosion(x, y, 2500 / 4, 1248 / 4, damage);
+        new Explosion(x, y, 2500 / 4, 1248 / 4, 0, 0, 0, damage);
     }
 
     public override void Despawn()
     {
-        BlåsaUpp(); 
+        BlåsaUpp();
         base.Despawn();
     }
 
@@ -43,7 +43,7 @@ class MohammedPlayer : Player
         fastFallSpeed = 1300f;
         bulletxSpeed = 1800;
         bulletySpeed = 100;
-        
+
         //bullet stats
         shootCooldown = 0.7f;
         bulletWidth = 30f;

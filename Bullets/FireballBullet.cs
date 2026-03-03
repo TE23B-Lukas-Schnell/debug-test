@@ -24,7 +24,7 @@ class
 
     public override void Draw()
     {
-        spriteDrawer.Rotation =spriteDrawer.RotateAccordingToMovement(new(xSpeed, ySpeed));
+        spriteDrawer.Rotation = spriteDrawer.RotateAccordingToMovement(new(xSpeed, ySpeed));
 
         spriteDrawer.DrawTexture(color, x, y);
         // Raylib.DrawRectangle(R(hitbox.hitbox.X), R(hitbox.hitbox.Y), R(hitbox.hitbox.Width), R(hitbox.hitbox.Height), Color.Red);
@@ -36,18 +36,10 @@ class
         spriteDrawer.LoadSprite(Raylib.LoadTexture(spriteFilePath), width, height);
     }
 
-    public FireballBullet(float x, float y, float xSpeed, float ySpeed, float gravity, float width, float height, float damage)
+    // new FireballBullet(x(), y2, 3.5f * speedMultiplier, 3 * speedMultiplier, gravity, bulletWidth, bulletHeight, bulletDamage);
+
+    public FireballBullet(float x, float y, float xSpeed, float ySpeed, float gravity, float width, float height, float damage) : base(x, y, width, height, xSpeed, ySpeed, gravity, damage)
     {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.xSpeed = xSpeed;
-        this.ySpeed = ySpeed;
-        this.gravity = gravity;
-        this.damage = damage;
-        canGoOffscreen = true;
-        ignoreGround = true;
 
     }
 }

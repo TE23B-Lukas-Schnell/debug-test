@@ -8,8 +8,8 @@ abstract class MoveableObject
     public float x, y;
     public float xSpeed, ySpeed;
     public float width, height;
-    protected bool canGoOffscreen = false;
-    protected bool ignoreGround = false;
+    public bool canGoOffscreen = false;
+    public bool ignoreGround = false;
 
     // detta är min avrundnings funktion
     protected static int R(float input) => (int)MathF.Round(input);

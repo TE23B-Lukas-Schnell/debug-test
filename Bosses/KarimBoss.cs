@@ -82,7 +82,7 @@ class KarimBoss : Boss
         await Wait(1000, ct);
         for (int i = 0; i < amountOfBullets; i++)
         {
-            new BossBullet(x, y, bulletWidth, bulletWidth, -800f, (float)Math.Cos(i) * 300f, 0f, bulletDamage, false);
+            new BossBullet(x, y, bulletWidth, bulletWidth, -800f, (float)Math.Cos(i) * 300f, 0f, bulletDamage);
             await Wait(100, ct, false);
         }
         color = temp;
@@ -141,7 +141,7 @@ class KarimBoss : Boss
 
         for (int i = 0; i < amountOfBullets; i++)
         {
-            new BossBullet(x, y, bulletWidth, bulletHeight, (float)Math.Cos(i) * 100, 0, 1700f, bulletDamage * 1.6f, true);
+            new BossBullet(x, y, bulletWidth, bulletHeight, (float)Math.Cos(i) * 100, 0, 1700f, bulletDamage * 1.6f);
             await Wait(50, ct, false);
         }
 

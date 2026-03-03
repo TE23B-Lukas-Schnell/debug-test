@@ -16,31 +16,9 @@ class BossBullet : Projectile
         Raylib.DrawRectangle(R(x), R(y), R(width), R(height), color);
     }
     
+    public BossBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage) : base(x, y, width, height, xSpeed, ySpeed, gravity, damage)
+    {
 
-    public BossBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage)
-    {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.xSpeed = xSpeed;
-        this.ySpeed = ySpeed;
-        this.gravity = gravity;
-        this.damage = damage;
-        canGoOffscreen = true;
-        ignoreGround = true;
     }
-    public BossBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage, bool ignoreGround)
-    {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.xSpeed = xSpeed;
-        this.ySpeed = ySpeed;
-        this.gravity = gravity;
-        this.damage = damage;
-        this.canGoOffscreen = true;
-        this.ignoreGround = ignoreGround;
-    }
+   
 }

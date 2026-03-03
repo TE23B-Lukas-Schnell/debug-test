@@ -1,15 +1,15 @@
 class KemiBullet : Projectile
 {
-    string spriteFilePath = "./Sprites/assets/kemi.png";
+    public string spriteFilePath = "./Sprites/assets/kemi.png";
     readonly Color color = Color.White;
 
-    string target;
+    public string target = "player";
 
     SpriteDrawer spriteDrawer = new();
 
     public override void Draw()
     {
-        Raylib.DrawRectangle(R(x), R(y), R(width), R(height), color);
+        // Raylib.DrawRectangle(R(x), R(y), R(width), R(height), color);
         spriteDrawer.DrawTexture(color, x, y); ;
     }
 
@@ -25,42 +25,27 @@ class KemiBullet : Projectile
         spriteDrawer.LoadSprite(Raylib.LoadTexture(spriteFilePath), width, height);
     }
 
-    KemiBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage, bool ignoreGround)
+    public KemiBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage) : base(x, y, width, height, xSpeed, ySpeed, gravity, damage)
     {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.xSpeed = xSpeed;
-        this.ySpeed = ySpeed;
-        this.gravity = gravity;
-        this.damage = damage;
-        this.canGoOffscreen = true;
-        this.ignoreGround = ignoreGround;
+
     }
 
-    static public void PlayerShoot(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage, bool ignoreGround)
+    static public void PlayerShoot(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage)
     {
-        new KemiBullet(x, y, width, height, xSpeed, ySpeed, gravity, damage, ignoreGround)
+        new KemiBullet(x, y, width, height, xSpeed, ySpeed, gravity, damage)
         {
-            target = "enemy"
+            target = "enemy",
+            ignoreGround = false,
         };
     }
 
-    public static void EnemyShoot(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage, bool ignoreGround)
+    public static void ChristianShoot(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage)
     {
-        new KemiBullet(x, y, width, height, xSpeed, ySpeed, gravity, damage, ignoreGround)
-        {
-            target = "player"
-        };
-    }
-
-     public static void ChristianShoot(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage, bool ignoreGround)
-    {
-        new KemiBullet(x, y, width, height, xSpeed, ySpeed, gravity, damage, ignoreGround)
+        new KemiBullet(x, y, width, height, xSpeed, ySpeed, gravity, damage)
         {
             target = "player",
             spriteFilePath = "./Sprites/assets/killerMeme.jpg",
+            ignoreGround = true,
         };
     }
 }

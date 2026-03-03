@@ -22,7 +22,5 @@ class CallePlayer : Player
         spriteFilePath = @"./Sprites/carlengman-scaled-600x600.jpg";
 
         name = "Carl Engman";
-
-        // Inventory.Add(startItem);
     }
 }

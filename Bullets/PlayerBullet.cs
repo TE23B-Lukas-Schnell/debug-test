@@ -15,17 +15,8 @@ class PlayerBullet : Projectile
         Raylib.DrawRectangle((int)x, (int)y, (int)width, (int)height, color);
     }
 
-    public PlayerBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage)
+    public PlayerBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage) : base(x, y, width, height, xSpeed, ySpeed, gravity, damage)
     {
-        ignoreGround = true;
-        canGoOffscreen = true;
-        this.x = x;
-        this.y = y;
-        this.xSpeed = xSpeed;
-        this.ySpeed = ySpeed;
-        this.width = width;
-        this.height = height;
-        this.gravity = gravity;
-        this.damage = damage;
+    
     }
 }

@@ -54,7 +54,7 @@ class Item
     }
 
     //this constructor does not it add to AllItems 
-    public Item(){}
+    public Item() { }
 
     static Item[] dags_att_skapa_alla_items_här = {
 
@@ -71,8 +71,6 @@ class Item
             else if (objectToBuff is Boss)
             {
                 Boss b = objectToBuff as Boss;
-                b.maxHP += 50;
-                b.HealDamage(50, b);
                 b.waitMultiplier -= 0.1f;
             }
 
@@ -108,7 +106,6 @@ class Item
             {
                 Boss b = objectToBuff as Boss;
                 b.jumpForce += 200;
-                b.gravity *= 1.067f;
             }
         }),
 
@@ -125,9 +122,7 @@ class Item
             else if (objectToBuff is Boss)
             {
                 Boss b = objectToBuff as Boss;
-                b.bulletDamage += 2;
-                b.maxHP += 50;
-                b.HealDamage(50, b);
+                b.bulletDamage *= 1.1f;
             }
         }),
 
@@ -261,11 +256,8 @@ class Item
             else if (objectToBuff is Boss)
             {
                 Boss b = objectToBuff as Boss;
-                b.width *= 1.3f;
+                b.width *= 1.2f;
                 b.height *= 1.2f;
-                b.moveSpeed *= 1.2f;
-                b.maxHP += 25;
-                b.HealDamage(25, b);
             }
         }),
 
@@ -282,7 +274,6 @@ class Item
             else if (objectToBuff is Boss)
             {
                 Boss b = objectToBuff as Boss;
-                b.width *= 1.4f;
                 b.maxHP += 75;
                 b.HealDamage(75, b);
             }
@@ -302,12 +293,57 @@ class Item
             else if (objectToBuff is Boss)
             {
                 Boss b = objectToBuff as Boss;
-                b.width *= 1.2f;
-                b.height *= 1.2f;
                 b.maxHP += 50;
                 b.HealDamage(50, b);
             }
         }),
+
+        new Item("3D printer", "När du skjuter uppåt så går din bullet diagonalt neråt istället", applier: (FightableObject objectToBuff) =>
+        {
+            if(objectToBuff is Player)
+            {
+                Player p = objectToBuff as Player;
+                p.upPointRotaion = 45;
+                p.upShoot -= p.StandardUpShootFunction;
+                p.upShoot += () =>
+                {
+                    float damage = p.bulletDamage * 1.5f * p.bulletDamageMultiplier;
+                    p._shootCooldown = p.shootCooldown;
+                    new PlayerBullet(p.x + p.width / 2, p.y + p.height / 2, p.bulletWidth, p.bulletHeight, p.bulletxSpeed * 0.8f * p.facingDirection, -p.bulletxSpeed * 0.67f, p.bulletGravity, damage);
+                };
+            }
+            else if (objectToBuff is Boss)
+            {
+                Boss b = objectToBuff as Boss;
+                b.maxHP += 50;
+                b.HealDamage(50, b);
+            }
+        }),
+
+        new Item("Kallocain av Karin Boye", "När du står stilla så healar du men du blir också större", applier: (FightableObject objectToBuff) =>
+        {
+            if(objectToBuff is Player)
+            {
+                Player p = objectToBuff as Player;
+
+                p.notmoving += () =>
+                {
+                    p.width += Raylib.GetFrameTime() * 3;
+                    p.height += Raylib.GetFrameTime() * 1.5f;
+                    p.spriteDrawer.SpriteWidth = p.width;
+                    p.spriteDrawer.SpriteHeight = p.height;
+                    p.HealDamage(Raylib.GetFrameTime(),p);
+                };
+            }
+            else if (objectToBuff is Boss)
+            {
+                Boss b = objectToBuff as Boss;
+                b.maxHP += 50;
+                b.HealDamage(50, b);
+            }
+        }),
+
+
 
         new Item("Y8", " \"Y8\"  Dante Hardoff 2025", applier: (FightableObject objectToBuff) =>
         {

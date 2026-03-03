@@ -1,6 +1,5 @@
 class CalleBoss : Boss
 {
-
     public float moveLine = 1920 * 0.79f - 220f;
     public float jumpLine = 850 * 0.45f;
     public bool isPhase2 = false;
@@ -26,7 +25,8 @@ class CalleBoss : Boss
         float gravity = 2300;
 
         await Wait(1000, ct);
-        new FireballBullet(x + 70, y + 70, -10 * speedMultiplier, 9 * speedMultiplier, gravity, bulletWidth, bulletHeight, bulletDamage);
+        FireballBullet båt =new FireballBullet(x + 70, y + 70, -10 * speedMultiplier, 9 * speedMultiplier, gravity, bulletWidth, bulletHeight, bulletDamage);
+        System.Console.WriteLine(båt.gravity);
         new FireballBullet(x + 70, y + 70, -8 * speedMultiplier, 8 * speedMultiplier, gravity, bulletWidth, bulletHeight, bulletDamage);
 
         await Wait(1000, ct);
@@ -50,7 +50,7 @@ class CalleBoss : Boss
         float y = (screenSizeY + 330) * 0.62f;
         await Wait(1500, ct);
 
-        new FireballBullet(screenSizeX, y, -8 * speedMultiplier, 0 * speedMultiplier, gravity, bulletWidth+20, bulletHeight, bulletDamage);
+        new FireballBullet(screenSizeX, y, -8 * speedMultiplier, 0 * speedMultiplier, gravity, bulletWidth + 20, bulletHeight, bulletDamage);
     }
 
     async Task Meteor(CancellationToken ct)

@@ -24,19 +24,9 @@ class BåtBullet : Projectile
         spriteDrawer.LoadSprite(Raylib.LoadTexture(spriteFilePath), width, height);
     }
 
-    BåtBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage)
+    BåtBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage) : base(x, y, width, height, xSpeed, ySpeed, gravity, damage)
     {
-        this.canGoOffscreen = true;
-        this.ignoreGround = false;
-
-        this.x = x;
-        this.y = y;
-        this.xSpeed = xSpeed;
-        this.ySpeed = ySpeed;
-        this.width = width;
-        this.height = height;
-        this.damage = damage;
-        this.gravity = gravity;
+        ignoreGround = false;
     }
 
     public static void KarimShoot(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage)

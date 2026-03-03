@@ -145,7 +145,7 @@ class VoidKöttigBoss : Boss
 
         for (int i = 0; i < amountOfBullets; i++)
         {
-            new BossBullet(x, y, bulletWidth, bulletHeight, (float)Math.Cos(i) * 100, 0, 1700f, bulletDamage * 1.6f, true);
+            // new BossBullet(x, y, bulletWidth, bulletHeight, (float)Math.Cos(i) * 100, 0, 1700f, bulletDamage * 1.6f, true);
             await Wait(20, ct, false);
         }
 

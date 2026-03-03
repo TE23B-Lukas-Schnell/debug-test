@@ -13,16 +13,17 @@ abstract class Player : FightableObject
         {"upshoot",false}
     };
 
+    public SpriteDrawer spriteDrawer = new SpriteDrawer();
+    public string spriteFilePath;
+    public PointingArrow arrow;
+
     public string name = "";
     public ControlLayout currentLayout;
     public int score = 0;
     public int facingDirection = 1;
-    protected SpriteDrawer spriteDrawer = new SpriteDrawer();
-    protected string spriteFilePath;
-    protected PointingArrow arrow;
-    float arrowSize = 2;
-    float arrowRotation = 0;
-    float upPointRotaion = -90;
+    public float arrowSize = 2;
+    public float arrowRotation = 0;
+    public float upPointRotaion = -90;
 
     //player actions
     public Action moveLeft;
@@ -63,9 +64,9 @@ abstract class Player : FightableObject
     public float bulletGravity = 0f;
 
     //variabler
-    float _dashDuration = 0;
-    float _dashCooldown = 0;
-    float _shootCooldown = 0;
+    public float _dashDuration = 0;
+    public float _dashCooldown = 0;
+    public float _shootCooldown = 0;
 
     public string PrintPlayerStats()
     {
@@ -95,40 +96,90 @@ bullet gravity           {bulletGravity}";
         output += GibbManager.ListToString(Inventory);
         return output;
     }
-    //makes all the delegates work 
-    void InitializeDelegates(/*HEJ JAG HETER  ANTON*/)
-    {
-        moveLeft += () => xSpeed = -moveSpeed;
-        moveRight += () => xSpeed = moveSpeed;
-        notmoving += () => xSpeed = 0;
-        fastFall += () => ySpeed = -fastFallSpeed;
-        jump += () => ySpeed = jumpForce;
-        leftDash += () => dashSpeed = -Math.Abs(dashSpeed);
-        rightDash += () => dashSpeed = Math.Abs(dashSpeed);
-        duringDash += () =>
-        {
-            xSpeed = dashSpeed;
-            ySpeed = 0;
-            _dashCooldown = dashCooldown;
-        };
-        shoot += () =>
-        {
-            float damage = bulletDamage * bulletDamageMultiplier;
-            _shootCooldown = shootCooldown;
-            new PlayerBullet(x + width / 2, y + height / 2, bulletWidth, bulletHeight, bulletxSpeed * facingDirection, bulletySpeed, bulletGravity, damage);
-        };
-        upShoot += () =>
-        {
-            float damage = bulletDamage * 1.05f * bulletDamageMultiplier;
-            _shootCooldown = shootCooldown;
-            new PlayerBullet(x + width / 2, y + height / 2, bulletHeight, bulletWidth, bulletySpeed * facingDirection, bulletxSpeed, bulletGravity, damage);
-        };
-        up += () =>
-        {
 
-        };
-        takenDamage += () => invincibilityDuration = invincibilityTime;
+    void InitializeDelegates()
+    {
+        moveLeft += StandardMoveLeftFunction;
+        moveRight += StandardMoveRightFunction;
+        notmoving += StandardNotMovingFunction;
+        fastFall += StandardFastFallFunction;
+        jump += StandardJumpingFunction;
+        leftDash += StandardLeftDashFunction;
+        rightDash += StandardRightDashFunction;
+        duringDash += StandardDuringDashFunction;
+        shoot += StandardShootFunction;
+        upShoot += StandardUpShootFunction;
+        up += StandardUpFunction;
+        takenDamage += StandardTakeDamageFunction;
     }
+
+
+    public void StandardMoveRightFunction()
+    {
+        xSpeed = moveSpeed;
+    }
+
+    public void StandardMoveLeftFunction()
+    {
+        xSpeed = -moveSpeed;
+    }
+
+    public void StandardNotMovingFunction()
+    {
+        xSpeed = 0;
+    }
+
+    public void StandardFastFallFunction()
+    {
+        ySpeed = -fastFallSpeed;
+    }
+
+    public void StandardJumpingFunction()
+    {
+        ySpeed = jumpForce;
+    }
+
+    public void StandardLeftDashFunction()
+    {
+        dashSpeed = -Math.Abs(dashSpeed);
+    }
+
+    public void StandardRightDashFunction()
+    {
+        dashSpeed = Math.Abs(dashSpeed);
+    }
+
+    public void StandardDuringDashFunction()
+    {
+        xSpeed = dashSpeed;
+        ySpeed = 0;
+        _dashCooldown = dashCooldown;
+    }
+
+    public void StandardShootFunction()
+    {
+        float damage = bulletDamage * bulletDamageMultiplier;
+        _shootCooldown = shootCooldown;
+        new PlayerBullet(x + width / 2, y + height / 2, bulletWidth, bulletHeight, bulletxSpeed * facingDirection, bulletySpeed, bulletGravity, damage);
+    }
+
+    public void StandardUpShootFunction()
+    {
+        float damage = bulletDamage * 1.05f * bulletDamageMultiplier;
+        _shootCooldown = shootCooldown;
+        new PlayerBullet(x + width / 2, y + height / 2, bulletHeight, bulletWidth, bulletySpeed * facingDirection, bulletxSpeed, bulletGravity, damage);
+    }
+
+    public void StandardUpFunction()
+    {
+
+    }
+
+    public void StandardTakeDamageFunction()
+    {
+        invincibilityDuration = invincibilityTime;
+    }
+
 
     void MoveCheck(/*HEJ JAG HETER  ANTON*/)
     {

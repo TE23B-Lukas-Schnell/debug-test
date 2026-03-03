@@ -1,9 +1,7 @@
 class ChristianBoss : Boss
 {
-
     public float jumpLine = 500f;
     public float moveLine = 207f;
-
 
     void Moving(float value, float minValue, float maxValue, ref float changeValue)
     {
@@ -34,11 +32,11 @@ class ChristianBoss : Boss
         await Wait(1200, ct);
         contactDamage *= 2;
 
-        KemiBullet.EnemyShoot(bulletWidth * 2.5f, 0, bulletWidth * 2.5f, bulletHeight * 2, 0, 0, 1800f, bulletDamage, true);
+        new KemiBullet(bulletWidth * 2.5f, 0, bulletWidth * 2.5f, bulletHeight * 2, 0, 0, 1800f, bulletDamage);
 
-        KemiBullet.EnemyShoot(screenSizeX / 2 - bulletWidth * 2.5f, 0, bulletWidth * 2.5f, bulletHeight * 2, 0, 0, 1800f, bulletDamage, true);
+        new KemiBullet(screenSizeX / 2 - bulletWidth * 2.5f, 0, bulletWidth * 2.5f, bulletHeight * 2, 0, 0, 1800f, bulletDamage);
 
-        KemiBullet.EnemyShoot(screenSizeX - bulletWidth * 2.5f, 0, bulletWidth * 2.5f, bulletHeight * 2, 0, 0, 1800f, bulletDamage, true);
+        new KemiBullet(screenSizeX - bulletWidth * 2.5f, 0, bulletWidth * 2.5f, bulletHeight * 2, 0, 0, 1800f, bulletDamage);
 
         await Wait(230, ct);
 
@@ -86,7 +84,7 @@ class ChristianBoss : Boss
 
             await Wait(100, ct);
 
-            KemiBullet.EnemyShoot(x, y, bulletWidth * 2.5f, bulletHeight * 2, 1 + xSpeed / 2, 112, 2300f, bulletDamage, false);
+            new KemiBullet(x, y, bulletWidth * 2.5f, bulletHeight * 2, 1 + xSpeed / 2, 112, 2300f, bulletDamage){ignoreGround = false};
 
             await Wait(267, ct);
 
@@ -111,7 +109,7 @@ class ChristianBoss : Boss
 
             await Wait(550, ct);
 
-            KemiBullet.ChristianShoot(x, y, bulletWidth * 10, bulletHeight * 6, 0, 0, 670f, bulletDamage * 1.5f, true);
+            new KemiBullet(x, y, bulletWidth * 10, bulletHeight * 6, 0, 0, 670f, bulletDamage * 1.5f) { spriteFilePath = "./Sprites/assets/killerMeme.jpg", };
 
             await Wait(800, ct);
             gravity = tempGravity;
@@ -147,7 +145,7 @@ class ChristianBoss : Boss
 
         for (int i = 0; i < amountOfBullets; i++)
         {
-            new BossBullet(x, y, bulletWidth, bulletHeight, (float)Math.Cos(i) * 100, 0, 1700f, bulletDamage * 1.6f, true);
+            new BossBullet(x, y, bulletWidth, bulletHeight, (float)Math.Cos(i) * 100, 0, 1700f, bulletDamage * 1.6f);
             await Wait(50, ct, false);
         }
 

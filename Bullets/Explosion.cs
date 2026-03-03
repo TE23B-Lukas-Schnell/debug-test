@@ -23,16 +23,11 @@ class Explosion : Projectile
     }
 
 
-    public Explosion(float x, float y, float width, float height, float damage)
+    public Explosion(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage) : base(x, y, width, height, xSpeed, ySpeed, gravity, damage)
     {
-        ignoreGround = true;
-        this.x = x;
-        this.y = y;
+     
         piercing = true;
 
         canGoOffscreen = false;
-        this.damage = damage;
-        this.width = width;
-        this.height = height;
     }
 }

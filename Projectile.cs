@@ -2,7 +2,7 @@ abstract class Projectile : MoveableObject
 {
     protected float damage;
     protected bool piercing = false;
-    protected float gravity;
+    public float gravity;
     List<MoveableObject> objectsAlreadyHit = [];
 
     // when you collide with an enemy, check whether 
@@ -48,12 +48,27 @@ abstract class Projectile : MoveableObject
     public override void AddToGameList()
     {
         GibbManager.currentRun.AddToGameList(this);
-        
+
     }
 
-    protected Projectile()
+    protected Projectile(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage)
     {
+
+
+        this.x = x;
+        this.y = y;
+        this.xSpeed = xSpeed;
+        this.ySpeed = ySpeed;
+        this.width = width;
+        this.height = height;
+        this.gravity = gravity;
+        this.damage = damage;
+
         objectIdentifier = "projectile";
         hitbox = new(new Rectangle(x, y, width, height), this);
+
+        ignoreGround = true;
+        canGoOffscreen = true;
+
     }
 }
