@@ -40,7 +40,7 @@ abstract class Player : FightableObject
     public Action up;
 
     //player stats 
-    public float gravity = 2300f;
+    public float gravitySet = 2300f;
     public float moveSpeed = 900f;
     public float jumpForce = 1300f;
     public float dashSpeed = 1800f;
@@ -319,7 +319,7 @@ bullet gravity           {bulletGravity}";
 
         UpdateHitboxPosition(x, y, width, height);
 
-        MoveObject(gravity);
+        MoveObject();
     }
 
     public override void Draw()
@@ -396,5 +396,6 @@ bullet gravity           {bulletGravity}";
         y = 450;
         currentLayout = controlLayout;
         InitializeDelegates();
+        gravity = gravitySet;
     }
 }

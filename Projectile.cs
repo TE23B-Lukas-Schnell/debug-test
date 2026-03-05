@@ -2,7 +2,6 @@ abstract class Projectile : MoveableObject
 {
     protected float damage;
     protected bool piercing = false;
-    public float gravity;
     List<MoveableObject> objectsAlreadyHit = [];
 
     // when you collide with an enemy, check whether 

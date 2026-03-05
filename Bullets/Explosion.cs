@@ -1,6 +1,5 @@
 class Explosion : Projectile
 {
-    float gravity = 0;
     string spriteFilePath = "./Sprites/assets/blåsaUpp.png";
     Color color = Color.White;
     SpriteDrawer spriteDrawer = new();
@@ -8,7 +7,7 @@ class Explosion : Projectile
     public override void Update()
     {
         OnHit(damage, "enemy");
-        MoveObject(gravity);
+        MoveObject();
         UpdateHitboxPosition(x, y, width, height);
     }
 

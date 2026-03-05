@@ -1,10 +1,5 @@
-using System.Numerics;
-using System.Runtime.Intrinsics;
-
-class
- FireballBullet : Projectile
+class FireballBullet : Projectile
 {
-    public float gravity;
     string spriteFilePath = "./Sprites/assets/fireball.png";
     readonly Color color = Color.White;
     SpriteDrawer spriteDrawer = new();
@@ -18,7 +13,7 @@ class
         float ypos = y + (height - h) / 2;
 
         OnHit(damage, "player");
-        MoveObject(gravity);
+        MoveObject();
         UpdateHitboxPosition(xpos, ypos, w, h);
     }
 

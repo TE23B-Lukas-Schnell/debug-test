@@ -13,7 +13,7 @@ class DamageNumbers : MoveableObject
         time -= Raylib.GetFrameTime();
         if (time <= 0) remove = true;
         ySpeed = 5;
-        MoveObject(0);
+        MoveObject();
     }
 
     public override void Draw()

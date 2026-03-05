@@ -1,12 +1,11 @@
 class PlayerBullet : Projectile
 {
-    float gravity = 0;
     Color color = new Color(255, 0, 0, 255);
 
     public override void Update()
     {
         OnHit(damage, "enemy");
-        MoveObject(gravity);
+        MoveObject();
         UpdateHitboxPosition(x, y, width, height);
     }
 

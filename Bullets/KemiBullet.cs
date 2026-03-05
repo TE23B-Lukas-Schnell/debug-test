@@ -16,7 +16,7 @@ class KemiBullet : Projectile
     public override void Update()
     {
         OnHit(damage, target);
-        MoveObject(gravity);
+        MoveObject();
         UpdateHitboxPosition(x, y, width, height);
     }
 

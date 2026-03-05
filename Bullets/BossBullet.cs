@@ -1,13 +1,11 @@
 class BossBullet : Projectile
 {
-    public float gravity;
-
     readonly Color color = new Color(200, 50, 0, 255);
 
     public override void Update()
     {
         OnHit(damage, "player");
-        MoveObject(gravity);
+        MoveObject();
         UpdateHitboxPosition(x,y,width,height);
     }
 

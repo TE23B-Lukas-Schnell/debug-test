@@ -25,8 +25,7 @@ class CalleBoss : Boss
         float gravity = 2300;
 
         await Wait(1000, ct);
-        FireballBullet båt =new FireballBullet(x + 70, y + 70, -10 * speedMultiplier, 9 * speedMultiplier, gravity, bulletWidth, bulletHeight, bulletDamage);
-        System.Console.WriteLine(båt.gravity);
+        new FireballBullet(x + 70, y + 70, -10 * speedMultiplier, 9 * speedMultiplier, gravity, bulletWidth, bulletHeight, bulletDamage);
         new FireballBullet(x + 70, y + 70, -8 * speedMultiplier, 8 * speedMultiplier, gravity, bulletWidth, bulletHeight, bulletDamage);
 
         await Wait(1000, ct);
@@ -144,7 +143,7 @@ class CalleBoss : Boss
 
         ContactDamage();
 
-        MoveObject(gravity);
+        MoveObject();
     }
 
     public override void MoveCycle()

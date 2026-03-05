@@ -8,6 +8,7 @@ abstract class MoveableObject
     public float x, y;
     public float xSpeed, ySpeed;
     public float width, height;
+    public float gravity;
     public bool canGoOffscreen = false;
     public bool ignoreGround = false;
 
@@ -136,7 +137,7 @@ abstract class MoveableObject
     }
 
     //flyttar objekt, denna funktion behövs för alla objekt som rör på sig
-    protected void MoveObject(float gravity)
+    protected void MoveObject()
     {
         x += xSpeed * Raylib.GetFrameTime();
         y -= ySpeed * Raylib.GetFrameTime();

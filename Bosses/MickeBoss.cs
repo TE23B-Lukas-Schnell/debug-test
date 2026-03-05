@@ -1,19 +1,16 @@
-class KarimBoss : Boss
+class MickeBoss : Boss
 {
-    public bool Båtdatorprojekt = false;
-    public bool båtModeActivated = false;
-
-    void Moving(float value, float minValue, float maxValue)
+    void Moving(float value, float minValue, float maxValue, ref float changeValue)
     {
-        if (xSpeed == 0) xSpeed = moveSpeed;
+        if (changeValue == 0) changeValue = moveSpeed;
 
         if (value >= maxValue)
         {
-            xSpeed = -Math.Abs(moveSpeed);
+            changeValue = -Math.Abs(moveSpeed);
         }
         else if (value <= minValue)
         {
-            xSpeed = Math.Abs(moveSpeed);
+            changeValue = Math.Abs(moveSpeed);
         }
     }
 
@@ -59,60 +56,6 @@ class KarimBoss : Boss
         await Wait(300, ct, true);
     }
 
-    async Task SpiralAttack(CancellationToken ct)
-    {
-        xSpeed = 0;
-        ySpeed = 0;
-        Color temp = color;
-        if (hp < maxHP / 2)
-        {
-            color = new Color(230, 170, 0);
-        }
-        else
-        {
-            color = new Color(255, 200, 0);
-        }
-
-        int amountOfBullets = 8;
-        if (hp < maxHP / 2)
-        {
-            amountOfBullets = 16;
-        }
-
-        await Wait(1000, ct);
-        for (int i = 0; i < amountOfBullets; i++)
-        {
-            new BossBullet(x, y, bulletWidth, bulletWidth, -800f, (float)Math.Cos(i) * 300f, 0f, bulletDamage){ignoreGround = false};
-            await Wait(100, ct, false);
-        }
-        color = temp;
-        await Wait(400, ct);
-    }
-
-    async Task BåtAttack(CancellationToken ct)
-    {
-        xSpeed = 0;
-        ySpeed = 0;
-        Color temp = color;
-        color = new Color(0, 128, 128);
-        await Wait(600, ct);
-
-        int amountOfBullets = 10;
-
-        xSpeed = 0;
-
-        await Wait(400, ct);
-
-        for (int i = 0; i < amountOfBullets; i++)
-        {
-            BåtBullet.KarimShoot(x + width / 2, y + height / 2, bulletHeight * 2, bulletWidth * 1.8f, -(1130 - (i * 71)), 1040, 1800, bulletDamage);
-            await Wait(140, ct, false);
-        }
-
-        color = temp;
-
-        await Wait(900, ct);
-    }
 
     async Task TeknikarDuschen(CancellationToken ct)
     {
@@ -153,36 +96,16 @@ class KarimBoss : Boss
     void InitializeDelegates()
     {
         bossAttacks.Add(JumpingAttack);
-        bossAttacks.Add(SpiralAttack);
-        bossAttacks.Add(BåtAttack);
         bossAttacks.Add(TeknikarDuschen);
-    }
-
-
-    public override void Despawn()
-    {
-        if (!Båtdatorprojekt || båtModeActivated)
-        {
-            base.Despawn();
-        }
-        else
-        {
-            //aktivera fas 2
-            remove = false;
-            båtModeActivated = true;
-            name = "Karim the final Båtdatorprojekt";
-            maxHP *= 2;
-            HealDamage(maxHP, this);
-        }
     }
 
 
     public override void MoveCycle()
     {
-        Moving(x, 1200, screenSizeX - width);
+        Moving(x, 1200, screenSizeX - width, ref xSpeed);
     }
 
-    public KarimBoss()
+    public MickeBoss()
     {
         screenSizeX = 1800;
         screenSizeY = 900;
@@ -205,9 +128,9 @@ class KarimBoss : Boss
         bulletHeight = 60;
         bulletDamage = 4;
         waitMultiplier = 1;
-        name = "Karim the Ryder";
+        name = "Köttiga Mikael";
         attackDelay = 1750;
 
-        spriteFilePath = @"./Sprites/karimryde-scaled-600x600.jpg";
+        spriteFilePath = "./Sprites/mikaelbergstrom-scaled-600x600.jpg";
     }
 }

@@ -9,14 +9,14 @@ class BåtBullet : Projectile
     public override void Update()
     {
         OnHit(damage, target);
-        MoveObject(gravity);
+        MoveObject();
         UpdateHitboxPosition(x, y, width, height);
     }
 
     public override void Draw()
     {
         // Raylib.DrawRectangle(R(x), R(y), R(width), R(height), color);
-        spriteDrawer.DrawTexture(color, x, y); ;
+        spriteDrawer.DrawTexture(color, x, y);
     }
 
     public override void BeginDraw()
