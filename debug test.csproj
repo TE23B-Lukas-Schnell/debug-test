@@ -3,8 +3,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <!-- byt target framework till 8.0 på skoldatorn och 9.0 hemma -->
-     <TargetFramework>net8.0</TargetFramework>
-    <!-- <TargetFramework>net9.0</TargetFramework> -->
+     <!-- <TargetFramework>net8.0</TargetFramework> -->
+    <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>debug_test</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -15,22 +15,24 @@
     <Content Include="scores.txt" CopyToOutputDirectory="PreserveNewest"/>
     <Content Include="settings.json" CopyToOutputDirectory="PreserveNewest"/>
 
-    <Content Include="./Sprites/karimryde-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
-    <Content Include="./Sprites/mikaelbergstrom-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
-    <Content Include="./Sprites/pontusankre-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
-    <Content Include="./Sprites/mohammed-scaled-600x489.jpg" CopyToOutputDirectory="PreserveNewest"/>
-    <Content Include="./Sprites/simontjerngren-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
-    <Content Include="./Sprites/ulfbeck-scaled-600x427.jpg" CopyToOutputDirectory="PreserveNewest"/>
-    <Content Include="./Sprites/carlengman-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
-    <Content Include="./Sprites/martinsoderblom-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
-    <Content Include="./Sprites/yokohirohataschon-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
-    <Content Include="./Sprites/christiankilliner-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
-    <Content Include="./Sprites/alexanderhudberg-scaled-600x402.jpg" CopyToOutputDirectory="PreserveNewest"/>
-    <Content Include="./Sprites/nathaliezack-scaled-600x469.jpg" CopyToOutputDirectory="PreserveNewest"/>
-    <Content Include="./Sprites/johankateby-scaled-600x443.jpg" CopyToOutputDirectory="PreserveNewest"/>
-    <Content Include="./Sprites/tonywerner-scaled-600x415.jpg" CopyToOutputDirectory="PreserveNewest"/>
-    <Content Include="./Sprites/annalundh-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
-    <Content Include="./Sprites/jessicalindh-scaled-600x401.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/lärare/karimryde-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/lärare/mikaelbergstrom-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/lärare/pontusankre-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/lärare/mohammed-scaled-600x489.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/lärare/simontjerngren-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/lärare/ulfbeck-scaled-600x427.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/lärare/carlengman-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/lärare/martinsoderblom-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/lärare/yokohirohataschon-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/lärare/christiankilliner-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/lärare/alexanderhudberg-scaled-600x402.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/lärare/nathaliezack-scaled-600x469.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/lärare/johankateby-scaled-600x443.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/lärare/tonywerner-scaled-600x415.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/lärare/annalundh-scaled-600x600.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/lärare/jessicalindh-scaled-600x401.jpg" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/lärare/båt.png" CopyToOutputDirectory="PreserveNewest"/>
+
     <Content Include="./Sprites/assets/karimsbåt.jpg" CopyToOutputDirectory="PreserveNewest"/>
     <Content Include="./Sprites/assets/killerMeme.jpg" CopyToOutputDirectory="PreserveNewest"/>
     <Content Include="./Sprites/assets/kemi.png" CopyToOutputDirectory="PreserveNewest"/>
@@ -39,8 +41,12 @@
     <Content Include="./Sprites/assets/hollowArrow.png" CopyToOutputDirectory="PreserveNewest"/>
     <Content Include="./Sprites/assets/arrowFill.png" CopyToOutputDirectory="PreserveNewest"/>
 
+    <Content Include="./Sprites/köttig/krank.png" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="./Sprites/köttig/mikael-berg.gif" CopyToOutputDirectory="PreserveNewest"/>
+    
 
-    <Content Include="./Sprites/båt.png" CopyToOutputDirectory="PreserveNewest"/>
+
+  
 
 
   </ItemGroup>

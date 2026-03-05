@@ -344,6 +344,8 @@ class Run
 
         }
 
+        gameList.RemoveAll(obj => !(obj is Player));
+
         Raylib.CloseWindow();
 
         return loser;

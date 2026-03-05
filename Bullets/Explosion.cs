@@ -18,7 +18,7 @@ class Explosion : Projectile
 
     public override void BeginDraw()
     {
-        spriteDrawer.LoadSprite(Raylib.LoadTexture(spriteFilePath), width, height);
+        spriteDrawer.InitializeSprite(spriteFilePath, width, height);
     }
 
 

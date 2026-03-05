@@ -19,7 +19,7 @@ class CallePlayer : Player
         dashDuration = 0.19f;
         dashSpeed = 1600;
 
-        spriteFilePath = @"./Sprites/carlengman-scaled-600x600.jpg";
+        spriteFilePath = @"./Sprites/lärare/carlengman-scaled-600x600.jpg";
 
         name = "Carl Engman";
     }

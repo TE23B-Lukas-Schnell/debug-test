@@ -28,7 +28,7 @@ class FireballBullet : Projectile
 
     public override void BeginDraw()
     {
-        spriteDrawer.LoadSprite(Raylib.LoadTexture(spriteFilePath), width, height);
+        spriteDrawer.InitializeSprite(spriteFilePath, width, height);
     }
 
     // new FireballBullet(x(), y2, 3.5f * speedMultiplier, 3 * speedMultiplier, gravity, bulletWidth, bulletHeight, bulletDamage);

@@ -125,11 +125,6 @@ contact damage           {contactDamage}";
         MoveObject();
     }
 
-    void DrawDamageNumbers(float damage)
-    {
-        Raylib.DrawText(damage.ToString(), R(x), R(y), 20, Color.Red);
-    }
-
     public override void Draw()
     {
         spriteDrawer.DrawTexture(color, x, y); ;
@@ -138,7 +133,7 @@ contact damage           {contactDamage}";
 
     public override void BeginDraw()
     {
-        spriteDrawer.LoadSprite(Raylib.LoadTexture(spriteFilePath), width, height);
+        spriteDrawer.InitializeSprite(spriteFilePath, width, height);
     }
 
     public override void Despawn()

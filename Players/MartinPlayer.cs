@@ -15,7 +15,7 @@ class MartinPlayer : Player
         dashCooldown = 0.4f;
         dashSpeed = 1300;
 
-        spriteFilePath = @"./Sprites/martinsoderblom-scaled-600x600.jpg";
+        spriteFilePath = @"./Sprites/lärare/martinsoderblom-scaled-600x600.jpg";
 
         name = "Martin";
     }

@@ -1,3 +1,5 @@
+using System.Reflection.Metadata;
+
 abstract class Player : FightableObject
 {
     //sparar alla olika actions spelaren kan göra och om knappen för den actionen är ned tryckt
@@ -370,10 +372,17 @@ bullet gravity           {bulletGravity}";
         }
     }
 
+    bool BAT = true;
+
     public override void BeginDraw()
     {
-        spriteDrawer.LoadSprite(Raylib.LoadTexture(spriteFilePath), width * facingDirection, height);
-        arrow = new(Color.Red, 32 * arrowSize, 17 * arrowSize, true);
+        if (BAT)
+        {
+            spriteDrawer.InitializeSprite(spriteFilePath, width * facingDirection, height);
+            arrow = new(Color.Red, 32 * arrowSize, 17 * arrowSize, true);
+            BAT = false;
+        }
+
     }
 
     public override void TakenDamage(float damage)

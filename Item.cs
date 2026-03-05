@@ -330,8 +330,8 @@ class Item
                 {
                     p.width += Raylib.GetFrameTime() * 3;
                     p.height += Raylib.GetFrameTime() * 1.5f;
-                    p.spriteDrawer.SpriteWidth = p.width;
-                    p.spriteDrawer.SpriteHeight = p.height;
+                    p.spriteDrawer.CurrentSpriteWidth = p.width;
+                    p.spriteDrawer.CurrentSpriteHeight = p.height;
                     p.HealDamage(Raylib.GetFrameTime(),p);
                 };
             }

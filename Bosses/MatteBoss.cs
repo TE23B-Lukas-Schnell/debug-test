@@ -86,6 +86,6 @@ class MatteBoss : Boss
         name = "matte läraren";
         attackDelay = 1700;
 
-        spriteFilePath = @"./Sprites/båt.png";
+        spriteFilePath = @"./Sprites/lärare/båt.png";
     }
 }

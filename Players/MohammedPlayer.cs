@@ -49,7 +49,7 @@ class MohammedPlayer : Player
         bulletWidth = 30f;
         bulletHeight = 30f;
 
-        spriteFilePath = @"./Sprites/mohammed-scaled-600x489.jpg";
+        spriteFilePath = @"./Sprites/lärare/mohammed-scaled-600x489.jpg";
 
         bulletDamage = 10;
 

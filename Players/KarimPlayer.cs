@@ -72,7 +72,7 @@ class KarimPlayer : Player
         dashSpeed = 2000;
         dashDuration = 0.21f;
 
-        spriteFilePath = @"./Sprites/karimryde-scaled-600x600.jpg";
+        spriteFilePath = @"./Sprites/lärare/karimryde-scaled-600x600.jpg";
 
         bulletDamage = 5;
 

@@ -21,7 +21,7 @@ class BåtBullet : Projectile
 
     public override void BeginDraw()
     {
-        spriteDrawer.LoadSprite(Raylib.LoadTexture(spriteFilePath), width, height);
+        spriteDrawer.InitializeSprite(spriteFilePath, width, height);
     }
 
     BåtBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage) : base(x, y, width, height, xSpeed, ySpeed, gravity, damage)

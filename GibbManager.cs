@@ -11,23 +11,23 @@ static class GibbManager
 
     readonly public static List<Type> PeakBossPeakBoss = new()
     {
-        // typeof(CalleBoss), typeof(ChristianBoss), typeof(MickeBoss), typeof(MatteBoss)
+        typeof(CalleBoss), //typeof(ChristianBoss), typeof(MickeBoss), typeof(MatteBoss),
         typeof(MickeBoss)
     };
 
     readonly public static List<Item> allItems = new List<Item>()
     {
-        Item.GetItem("Mickes hjälp"),
-        Item.GetItem("Martins fönster öppnare"),
-        Item.GetItem("Tung väska"),
-        Item.GetItem("Calles krona"),
-        Item.GetItem("Smutje.se"),
-        Item.GetItem("Anton Faren"),
+        // Item.GetItem("Mickes hjälp"),
+        // Item.GetItem("Martins fönster öppnare"),
+        // Item.GetItem("Tung väska"),
+        // Item.GetItem("Calles krona"),
+        // Item.GetItem("Smutje.se"),
+        // Item.GetItem("Anton Faren"),
         Item.GetItem("Maxburgare"),
-        Item.GetItem("Tu's Genomgång"),
+        // Item.GetItem("Tu's Genomgång"),
         Item.GetItem("Skolmaten"),
-        Item.GetItem("Mobil låda"),
-        Item.GetItem("3D printer"),
+        // Item.GetItem("Mobil låda"),
+        // Item.GetItem("3D printer"),
         Item.GetItem("Kallocain av Karin Boye"),
 
          // Item.GetItem("Kemibok"),
@@ -71,7 +71,8 @@ static class GibbManager
             return new()
             {
                 enableDamageNumbers = true,
-                playerColor = new Color(0, 0f, 235f, 255f)
+                playerColor = new Color(0, 0f, 235f, 255f),
+                fps = 600
             };
         }
     }

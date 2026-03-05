@@ -2,30 +2,27 @@ using System.Numerics;
 
 class SpriteDrawer
 {
-    float spriteWidth;
-    float spriteHeight;
     float rotation = 0;
 
-    public Texture2D sprite;
+    public string currentSprite;
 
-    public float SpriteHeight
+    public float CurrentSpriteWidth
     {
-        get => spriteHeight;
+        get => sprites[currentSprite].width;
 
         set
         {
-            spriteHeight = value;
-            sprite = ChangeSpriteSize();
+            sprites[currentSprite].width = value;
         }
     }
-    public float SpriteWidth
+
+    public float CurrentSpriteHeight
     {
-        get => spriteWidth;
+        get => sprites[currentSprite].height;
 
         set
         {
-            spriteWidth = value;
-            sprite = ChangeSpriteSize();
+            sprites[currentSprite].height = value;
         }
     }
 
@@ -39,31 +36,46 @@ class SpriteDrawer
         }
     }
 
-    Texture2D ChangeSpriteSize()
+    Dictionary<string, Sprite> sprites = new();
+
+    void AddSprite(string name, string filePath, float w, float h)
+    {
+        sprites.Add(name, new Sprite(filePath, w, h));
+    }
+
+    Texture2D LoadSprite(string name)
+    {
+        Sprite kött = sprites[name];
+        Texture2D båt = Raylib.LoadTexture(kött.filepath);
+        båt = ChangeSpriteSize(båt, kött.width, kött.height);
+        return båt;
+    }
+
+    Texture2D ChangeSpriteSize(Texture2D sprite, float width, float height)
     {
         Image image = Raylib.LoadImageFromTexture(sprite);
-        Raylib.ImageResize(ref image, (int)MathF.Round(spriteWidth), (int)MathF.Round(spriteHeight));
+        Raylib.ImageResize(ref image, (int)MathF.Round(width), (int)MathF.Round(height));
 
         return Raylib.LoadTextureFromImage(image);
     }
+
     public void DrawTexture(Color color, float x, float y)
     {
-
-        Raylib.DrawTexturePro(sprite,
-        new Rectangle(0, 0, spriteWidth, spriteHeight),      // amount of the source image 
-        new Rectangle(x + spriteWidth / 2, y + spriteHeight / 2, spriteWidth, spriteHeight),      // position and size of the rectangle
-        new Vector2(spriteWidth / 2, spriteHeight / 2),      // origin
-        rotation,                                            // rotaion
+        Raylib.DrawTexturePro(sprites[currentSprite].sprite,
+        new Rectangle(0, 0, CurrentSpriteWidth, CurrentSpriteHeight), // amount of the source image 
+        new Rectangle(x + CurrentSpriteWidth / 2, y + CurrentSpriteHeight / 2, CurrentSpriteWidth, CurrentSpriteHeight),// position and size of the rectangle
+        new Vector2( CurrentSpriteWidth / 2, CurrentSpriteHeight/ 2),// origin
+        rotation,// rotaion
         color);
     }
 
     public void DrawTexture(Color color, float x, float y, float originOffsetX, float originOffsetY)
     {
-        Raylib.DrawTexturePro(sprite,
-        new Rectangle(0, 0, spriteWidth, spriteHeight),      // amount of the source image 
-        new Rectangle(x + spriteWidth / 2, y + spriteHeight / 2, spriteWidth, spriteHeight),      // position and size of the rectangle
-        new Vector2(originOffsetX, originOffsetY),           // origin
-        rotation,                                            // rotaion
+        Raylib.DrawTexturePro(sprites[currentSprite].sprite,
+        new Rectangle(0, 0, CurrentSpriteWidth, CurrentSpriteHeight), // amount of the source image 
+        new Rectangle(x + CurrentSpriteWidth/ 2, y + CurrentSpriteHeight / 2, CurrentSpriteWidth, CurrentSpriteHeight),// position and size of the rectangle
+        new Vector2(originOffsetX, originOffsetY), // origin
+        rotation,// rotaion
         color);
     }
 
@@ -72,12 +84,13 @@ class SpriteDrawer
         return MathF.Atan2(-vel.Y, vel.X) * (180f / MathF.PI);
     }
 
-    public void LoadSprite(Texture2D sprite, float width, float height)
+    // this is for objects that only have 1 sprite, which is most things in this game
+    public void InitializeSprite(string filePath, float width, float height)
     {
-        this.sprite = sprite;
-        spriteWidth = width;
-        spriteHeight = height;
+        
+        AddSprite("sprite", filePath, width, height);
 
-        this.sprite = ChangeSpriteSize();
+        currentSprite = "sprite";
+        sprites[currentSprite].sprite = LoadSprite("sprite");
     }
 }

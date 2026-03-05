@@ -197,6 +197,6 @@ class ChristianBoss : Boss
         name = "Christian the Killiner";
         attackDelay = 1700;
 
-        spriteFilePath = @"./Sprites/christiankilliner-scaled-600x600.jpg";
+        spriteFilePath = @"./Sprites/lärare/christiankilliner-scaled-600x600.jpg";
     }
 }

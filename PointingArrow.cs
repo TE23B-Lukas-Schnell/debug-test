@@ -23,12 +23,12 @@ class PointingArrow
 
     public void LoadArrowSprite()
     {
-        arrowDrawer.LoadSprite(Raylib.LoadTexture(hollowArrowSpriteFilePath), width, height);
-        lightUpArrowDrawer.LoadSprite(Raylib.LoadTexture(lightUpArrowSpriteFilePath), width, height);
-        arrowDrawer.SpriteWidth = width;
-        arrowDrawer.SpriteHeight = height;
-        lightUpArrowDrawer.SpriteWidth = width;
-        lightUpArrowDrawer.SpriteHeight = height;
+        arrowDrawer.InitializeSprite(hollowArrowSpriteFilePath, width, height);
+        lightUpArrowDrawer.InitializeSprite(lightUpArrowSpriteFilePath, width, height);
+        arrowDrawer.CurrentSpriteWidth = width;
+        arrowDrawer.CurrentSpriteHeight = height;
+        lightUpArrowDrawer.CurrentSpriteWidth = width;
+        lightUpArrowDrawer.CurrentSpriteHeight = height;
     }
 
     public PointingArrow(Color color, float width, float height, bool loadNow)

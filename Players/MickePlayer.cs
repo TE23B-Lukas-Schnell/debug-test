@@ -13,7 +13,7 @@ class MickePlayer : Player
         bulletxSpeed = 1800f;
         bulletDamage = 10f;
 
-        spriteFilePath = @"./Sprites/mikaelbergstrom-scaled-600x600.jpg";
+        spriteFilePath = @"./Sprites/lärare/mikaelbergstrom-scaled-600x600.jpg";
 
         name = "Köttig Micke";
     }

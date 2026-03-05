@@ -59,6 +59,8 @@ class MickeBoss : Boss
 
     async Task TeknikarDuschen(CancellationToken ct)
     {
+
+        
         xSpeed = 0;
         ySpeed = 0;
         Color temp = color;
@@ -131,6 +133,6 @@ class MickeBoss : Boss
         name = "Köttiga Mikael";
         attackDelay = 1750;
 
-        spriteFilePath = "./Sprites/mikaelbergstrom-scaled-600x600.jpg";
+        spriteFilePath = "./Sprites/lärare/mikaelbergstrom-scaled-600x600.jpg";
     }
 }

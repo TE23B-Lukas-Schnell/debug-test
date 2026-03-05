@@ -208,6 +208,6 @@ class KarimBoss : Boss
         name = "Karim the Ryder";
         attackDelay = 1750;
 
-        spriteFilePath = @"./Sprites/karimryde-scaled-600x600.jpg";
+        spriteFilePath = @"./Sprites/lärare/karimryde-scaled-600x600.jpg";
     }
 }
