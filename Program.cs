@@ -13,6 +13,11 @@ while (true)
     GibbManager.ExecuteMenu(GibbManager.currentMenu);
 }
 
+/*
+
+sprites funkar inte för att jag bara kör begin draw en gång, fixa så att man kan loada sprites utan att behöva överskrida dictionaryt som sparar sprites
+
+*/
 
 //saker att fixa:
 
