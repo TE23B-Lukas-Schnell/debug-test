@@ -21,7 +21,6 @@ abstract class Boss : FightableObject
     public Color color = new Color(255, 255, 255, 255);
     public float moveSpeed;
     public float jumpForce;
-    public float gravity;
     public float bulletWidth;
     public float bulletHeight;
     public float bulletDamage;
@@ -123,7 +122,7 @@ contact damage           {contactDamage}";
 
         ContactDamage();
 
-        MoveObject(gravity);
+        MoveObject();
     }
 
     void DrawDamageNumbers(float damage)
@@ -166,4 +165,5 @@ contact damage           {contactDamage}";
     {
         contactDamageHitbox = new(new Rectangle(x, y, width, height), this);
     }
+    
 }
