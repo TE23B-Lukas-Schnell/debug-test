@@ -64,7 +64,7 @@ class SpriteDrawer
         Raylib.DrawTexturePro(sprites[currentSprite].sprite,
         new Rectangle(0, 0, CurrentSpriteWidth, CurrentSpriteHeight), // amount of the source image 
         new Rectangle(x + CurrentSpriteWidth / 2, y + CurrentSpriteHeight / 2, CurrentSpriteWidth, CurrentSpriteHeight),// position and size of the rectangle
-        new Vector2( CurrentSpriteWidth / 2, CurrentSpriteHeight/ 2),// origin
+        new Vector2(CurrentSpriteWidth / 2, CurrentSpriteHeight / 2),// origin
         rotation,// rotaion
         color);
     }
@@ -73,7 +73,7 @@ class SpriteDrawer
     {
         Raylib.DrawTexturePro(sprites[currentSprite].sprite,
         new Rectangle(0, 0, CurrentSpriteWidth, CurrentSpriteHeight), // amount of the source image 
-        new Rectangle(x + CurrentSpriteWidth/ 2, y + CurrentSpriteHeight / 2, CurrentSpriteWidth, CurrentSpriteHeight),// position and size of the rectangle
+        new Rectangle(x + CurrentSpriteWidth / 2, y + CurrentSpriteHeight / 2, CurrentSpriteWidth, CurrentSpriteHeight),// position and size of the rectangle
         new Vector2(originOffsetX, originOffsetY), // origin
         rotation,// rotaion
         color);
@@ -84,13 +84,40 @@ class SpriteDrawer
         return MathF.Atan2(-vel.Y, vel.X) * (180f / MathF.PI);
     }
 
-    // this is for objects that only have 1 sprite, which is most things in this game
     public void InitializeSprite(string filePath, float width, float height)
     {
-        
+        PrintDic(1);
+        sprites[currentSprite].sprite = LoadSprite("sprite");
+    }
+
+    // this is for objects that only have 1 sprite, which is most things in this game
+    public void DefineSprites(string filePath, float width, float height)
+    {
         AddSprite("sprite", filePath, width, height);
 
         currentSprite = "sprite";
-        sprites[currentSprite].sprite = LoadSprite("sprite");
+    }
+
+    void PrintDic(int k)
+    {
+        k++;
+        k--;
+        k++;
+        string bat = "";
+
+        string[] keys = sprites.Keys.ToArray();
+
+        for (int i = 0; i < keys.Length; i++)
+        {
+            System.Console.WriteLine($"sprite name: {keys[i]}");
+            printSPriteInfo(sprites[keys[i]]);
+        }
+        System.Console.WriteLine();
+
+    }
+
+    void printSPriteInfo(Sprite info)
+    {
+        System.Console.WriteLine($"fil: {info.filepath}, w:{info.width}, h:{info.height}");
     }
 }

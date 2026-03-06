@@ -27,7 +27,7 @@ class KemiBullet : Projectile
 
     public KemiBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage) : base(x, y, width, height, xSpeed, ySpeed, gravity, damage)
     {
-
+        spriteDrawer.DefineSprites(spriteFilePath, width, height);
     }
 
     static public void PlayerShoot(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage)

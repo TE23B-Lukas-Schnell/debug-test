@@ -87,5 +87,6 @@ class MatteBoss : Boss
         attackDelay = 1700;
 
         spriteFilePath = @"./Sprites/lärare/båt.png";
+          spriteDrawer.DefineSprites(spriteFilePath,width,height);
     }
 }

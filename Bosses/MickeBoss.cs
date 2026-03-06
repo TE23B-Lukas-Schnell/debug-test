@@ -134,5 +134,6 @@ class MickeBoss : Boss
         attackDelay = 1750;
 
         spriteFilePath = "./Sprites/lärare/mikaelbergstrom-scaled-600x600.jpg";
+          spriteDrawer.DefineSprites(spriteFilePath,width,height);
     }
 }

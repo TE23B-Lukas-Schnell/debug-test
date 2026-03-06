@@ -198,5 +198,6 @@ class ChristianBoss : Boss
         attackDelay = 1700;
 
         spriteFilePath = @"./Sprites/lärare/christiankilliner-scaled-600x600.jpg";
+          spriteDrawer.DefineSprites(spriteFilePath,width,height);
     }
 }

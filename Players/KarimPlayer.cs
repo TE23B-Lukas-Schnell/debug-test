@@ -73,6 +73,7 @@ class KarimPlayer : Player
         dashDuration = 0.21f;
 
         spriteFilePath = @"./Sprites/lärare/karimryde-scaled-600x600.jpg";
+        spriteDrawer.DefineSprites(spriteFilePath,width,height);
 
         bulletDamage = 5;
 

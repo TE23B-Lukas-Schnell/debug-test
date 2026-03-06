@@ -35,6 +35,6 @@ class FireballBullet : Projectile
 
     public FireballBullet(float x, float y, float xSpeed, float ySpeed, float gravity, float width, float height, float damage) : base(x, y, width, height, xSpeed, ySpeed, gravity, damage)
     {
-
+        spriteDrawer.DefineSprites(spriteFilePath, width, height);
     }
 }

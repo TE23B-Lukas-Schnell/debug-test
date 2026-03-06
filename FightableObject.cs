@@ -6,6 +6,9 @@ abstract class FightableObject : MoveableObject
     public float healMultiplier = 1;
     public bool healthy = true;
 
+    public SpriteDrawer spriteDrawer = new SpriteDrawer();
+    public string spriteFilePath;
+
     protected float invincibilityDuration = 0;
     protected float hp;
 
@@ -120,7 +123,11 @@ abstract class FightableObject : MoveableObject
 
     public override void AddToGameList()
     {
-       
+
+    }
+    public override void BeginDraw()
+    {
+        spriteDrawer.InitializeSprite(spriteFilePath,width,height);
     }
 
     protected FightableObject()

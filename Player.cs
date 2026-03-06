@@ -1,5 +1,3 @@
-using System.Reflection.Metadata;
-
 abstract class Player : FightableObject
 {
     //sparar alla olika actions spelaren kan göra och om knappen för den actionen är ned tryckt
@@ -14,10 +12,7 @@ abstract class Player : FightableObject
         {"shoot", false },
         {"upshoot",false}
     };
-
-    public SpriteDrawer spriteDrawer = new SpriteDrawer();
-    public string spriteFilePath;
-    public PointingArrow arrow;
+    public OldPointingArrow arrow;
 
     public string name = "";
     public ControlLayout currentLayout;
@@ -364,25 +359,18 @@ bullet gravity           {bulletGravity}";
 
         // float lerpedArrowRotation = 
 
-        arrow.DrawArrow(x, y, -width, 0, arrowRotation);
+        // arrow.DrawArrow(x, y, -width, 0, arrowRotation);
 
         if (keyPressed["shoot"])
         {
-            arrow.LightUpArrow(x, y, -width, 0, arrowRotation);
+            // arrow.LightUpArrow(x, y, -width, 0, arrowRotation);
         }
     }
 
-    bool BAT = true;
-
     public override void BeginDraw()
     {
-        if (BAT)
-        {
-            spriteDrawer.InitializeSprite(spriteFilePath, width * facingDirection, height);
-            arrow = new(Color.Red, 32 * arrowSize, 17 * arrowSize, true);
-            BAT = false;
-        }
-
+        spriteDrawer.InitializeSprite(spriteFilePath, width, height);
+        // arrow = new(Color.Red, 32 * arrowSize, 17 * arrowSize, true);
     }
 
     public override void TakenDamage(float damage)

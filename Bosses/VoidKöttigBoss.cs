@@ -206,6 +206,8 @@ class VoidKöttigBoss : Boss
         name = "Ulf Beck";
         attackDelay = 20;
 
-        // spriteFilePath = @"./Sprites/lärare/ulfbeck-scaled-600x427.jpg";
+        spriteFilePath = @"./Sprites/lärare/ulfbeck-scaled-600x427.jpg";
+        spriteDrawer.DefineSprites(spriteFilePath, width, height);
+
     }
 }

@@ -24,9 +24,9 @@ class Explosion : Projectile
 
     public Explosion(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage) : base(x, y, width, height, xSpeed, ySpeed, gravity, damage)
     {
-     
-        piercing = true;
 
+        piercing = true;
+        spriteDrawer.DefineSprites(spriteFilePath, width, height);
         canGoOffscreen = false;
     }
 }

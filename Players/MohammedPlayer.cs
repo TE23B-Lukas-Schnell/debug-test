@@ -50,6 +50,7 @@ class MohammedPlayer : Player
         bulletHeight = 30f;
 
         spriteFilePath = @"./Sprites/lärare/mohammed-scaled-600x489.jpg";
+        spriteDrawer.DefineSprites(spriteFilePath,width,height);
 
         bulletDamage = 10;
 

@@ -202,5 +202,6 @@ class CalleBoss : Boss
         notAttacking = true;
 
         spriteFilePath = @"./Sprites/lärare/carlengman-scaled-600x600.jpg";
+          spriteDrawer.DefineSprites(spriteFilePath,width,height);
     }
 }

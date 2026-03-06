@@ -5,9 +5,6 @@ abstract class Boss : FightableObject
     public string name;
     protected bool notAttacking;
 
-    protected SpriteDrawer spriteDrawer = new SpriteDrawer();
-    protected string spriteFilePath;
-
     protected float contactDamage;
     protected Hitbox contactDamageHitbox;
     protected float contactDamageHitboxSizeRatio;
@@ -129,11 +126,6 @@ contact damage           {contactDamage}";
     {
         spriteDrawer.DrawTexture(color, x, y); ;
         DisplayHealthBar(50, 50, 1, name, 30);
-    }
-
-    public override void BeginDraw()
-    {
-        spriteDrawer.InitializeSprite(spriteFilePath, width, height);
     }
 
     public override void Despawn()

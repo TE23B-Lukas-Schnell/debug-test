@@ -328,8 +328,8 @@ class Item
 
                 p.notmoving += () =>
                 {
-                    p.width += Raylib.GetFrameTime() * 3;
-                    p.height += Raylib.GetFrameTime() * 1.5f;
+                    p.width += Raylib.GetFrameTime() * 3 * 2;
+                    p.height += Raylib.GetFrameTime() * 1.5f * 2;
                     p.spriteDrawer.CurrentSpriteWidth = p.width;
                     p.spriteDrawer.CurrentSpriteHeight = p.height;
                     p.HealDamage(Raylib.GetFrameTime(),p);

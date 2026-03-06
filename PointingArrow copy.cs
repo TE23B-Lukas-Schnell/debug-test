@@ -1,4 +1,4 @@
-class PointingArrow
+class PointningArrow
 {
     SpriteDrawer arrowDrawer = new();
     SpriteDrawer lightUpArrowDrawer = new();
@@ -31,11 +31,14 @@ class PointingArrow
         lightUpArrowDrawer.CurrentSpriteHeight = height;
     }
 
-    public PointingArrow(Color color, float width, float height, bool loadNow)
+    public PointningArrow
+(Color color, float width, float height, bool loadNow)
     {
         this.color = color;
         this.width = width;
         this.height = height;
         if(loadNow == true) LoadArrowSprite();
+        arrowDrawer.DefineSprites(hollowArrowSpriteFilePath, width, height);
+        arrowDrawer.DefineSprites(lightUpArrowSpriteFilePath, width, height);
     }
 }
