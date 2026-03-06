@@ -12,13 +12,13 @@ class OldPointingArrow
     public void DrawArrow(float x, float y, float offsetX, float offsetY, float rotaionInDegrees)
     {
         arrowDrawer.Rotation = rotaionInDegrees;
-        arrowDrawer.DrawTexture(color, x, y, offsetX, offsetY);
+        // arrowDrawer.DrawTexture(color, x, y, offsetX, offsetY);
     }
 
     public void LightUpArrow(float x, float y, float offsetX, float offsetY, float rotaionInDegrees)
     {
         lightUpArrowDrawer.Rotation = rotaionInDegrees;
-        lightUpArrowDrawer.DrawTexture(color, x, y, offsetX, offsetY);
+        // lightUpArrowDrawer.DrawTexture(color, x, y, offsetX, offsetY);
     }
 
     public void LoadArrowSprite()

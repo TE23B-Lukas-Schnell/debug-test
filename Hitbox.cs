@@ -26,7 +26,7 @@ class Hitbox
 
     public bool remove = false;
     public Rectangle hitbox;
-    public MoveableObject owner;
+    public GamePlayObject owner;
     Color color;
 
     public void DeleteHitbox()
@@ -40,14 +40,14 @@ class Hitbox
         System.Console.WriteLine(hitbox.X + hitbox.Y + hitbox.Width + hitbox.Height);
     }
 
-    public Hitbox(Rectangle hitbox, MoveableObject owner)
+    public Hitbox(Rectangle hitbox, GamePlayObject owner)
     {
         this.hitbox = hitbox;
         this.owner = owner;
         color = Color.Red;
     }
 
-    public Hitbox(Rectangle hitbox, MoveableObject owner, Color color)
+    public Hitbox(Rectangle hitbox, GamePlayObject owner, Color color)
     {
         this.hitbox = hitbox;
         this.owner = owner;

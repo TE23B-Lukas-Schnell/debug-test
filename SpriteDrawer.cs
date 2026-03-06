@@ -69,9 +69,9 @@ class SpriteDrawer
         color);
     }
 
-    public void DrawTexture(Color color, float x, float y, float originOffsetX, float originOffsetY)
+    public void DrawTexture(Color color, float x, float y, float originOffsetX, float originOffsetY, Texture2D sprite)
     {
-        Raylib.DrawTexturePro(sprites[currentSprite].sprite,
+        Raylib.DrawTexturePro(sprite,
         new Rectangle(0, 0, CurrentSpriteWidth, CurrentSpriteHeight), // amount of the source image 
         new Rectangle(x + CurrentSpriteWidth / 2, y + CurrentSpriteHeight / 2, CurrentSpriteWidth, CurrentSpriteHeight),// position and size of the rectangle
         new Vector2(originOffsetX, originOffsetY), // origin

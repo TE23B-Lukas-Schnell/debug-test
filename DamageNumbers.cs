@@ -1,4 +1,4 @@
-class DamageNumbers : MoveableObject
+class DamageNumbers : GamePlayObject
 {
     float time = 2;
     float damage;

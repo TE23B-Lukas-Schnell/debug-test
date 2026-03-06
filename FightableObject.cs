@@ -1,4 +1,4 @@
-abstract class FightableObject : MoveableObject
+abstract class FightableObject : GamePlayObject
 {
     public float maxHP;
     public Color healthBarColor = new Color(100, 100, 100);
@@ -87,7 +87,7 @@ abstract class FightableObject : MoveableObject
     {
         FightableObject? target;
 
-        MoveableObject? träffatObjekt = CheckCollisions(newHitbox);
+        GamePlayObject? träffatObjekt = CheckCollisions(newHitbox);
         if (träffatObjekt is FightableObject)
         {
             target = träffatObjekt as FightableObject;

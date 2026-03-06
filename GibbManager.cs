@@ -228,7 +228,7 @@ static class GibbManager
         else return output;
     }
 
-    public static string ListToString(List<MoveableObject> list)
+    public static string ListToString(List<GamePlayObject> list)
     {
         string output = "";
         for (int i = 0; i < list.Count; i++)

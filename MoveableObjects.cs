@@ -1,4 +1,4 @@
-abstract class MoveableObject
+abstract class GamePlayObject
 {
     public static float globalGravityMultiplier = 1;
 
@@ -23,7 +23,7 @@ abstract class MoveableObject
     }
 
     //returnar objektet som kollideras med 
-    protected MoveableObject? CheckCollisions()
+    protected GamePlayObject? CheckCollisions()
     {
         foreach (Hitbox obj in GibbManager.currentRun.hitboxes)
         {
@@ -37,7 +37,7 @@ abstract class MoveableObject
     }
 
     //returnar objektet som kollideras med den angivna hitboxen
-    protected MoveableObject? CheckCollisions(Hitbox hitbox)
+    protected GamePlayObject? CheckCollisions(Hitbox hitbox)
     {
         foreach (Hitbox obj in GibbManager.currentRun.hitboxes)
         {
@@ -157,7 +157,7 @@ abstract class MoveableObject
 
     abstract public void AddToGameList();
 
-    protected MoveableObject()
+    protected GamePlayObject()
     {
         AddToGameList();
         hitbox = new(new Rectangle(x, y, width, height), this, Color.Green);

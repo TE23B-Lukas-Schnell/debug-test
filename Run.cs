@@ -1,14 +1,14 @@
 class Run
 {
     //lista för alla objekt som ska hanteras, det är lista för att den kan öka och minska under runtime
-    public List<MoveableObject> gameList = new List<MoveableObject>();
+    public List<GamePlayObject> gameList = new List<GamePlayObject>();
 
     //objekt som ska läggas till i main listan efter varje iteration,
-    public readonly List<MoveableObject> pendingAdds = new List<MoveableObject>();
+    public readonly List<GamePlayObject> pendingAdds = new List<GamePlayObject>();
     readonly object gameListLock = new object();
 
     // kan användas säkert i alla threads
-    public void AddToGameList(MoveableObject obj)
+    public void AddToGameList(GamePlayObject obj)
     {
         lock (gameListLock)
         {
@@ -200,7 +200,7 @@ class Run
 
         currentBoss = bossToFight;
 
-        MoveableObject objectThatDied = ActualGibbNoWay(bossToFight);
+        GamePlayObject objectThatDied = ActualGibbNoWay(bossToFight);
         // Console.WriteLine(objectThatDied + " died a deathly death");
 
         bossesToFight[bossToFight] = true;
@@ -229,7 +229,7 @@ class Run
     }
 
     // this is the actual game!!!11 veri important
-    public MoveableObject ActualGibbNoWay(Boss enemy)
+    public GamePlayObject ActualGibbNoWay(Boss enemy)
     {
         // playerReference.InitializePlayer();
         // ClearGameList();
