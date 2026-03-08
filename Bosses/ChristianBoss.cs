@@ -99,7 +99,7 @@ class ChristianBoss : Boss
 
             await Wait(450, ct);
         }
-
+        
         {
             float tempGravity = gravity;
 
@@ -109,7 +109,7 @@ class ChristianBoss : Boss
 
             await Wait(550, ct);
 
-            new KemiBullet(x, y, bulletWidth * 10, bulletHeight * 6, 0, 0, 670f, bulletDamage * 1.5f) { spriteFilePath = "./Sprites/assets/killerMeme.jpg", };
+            new KemiBullet(x, y, bulletWidth * 10, bulletHeight * 6, 0, 0, 670f, bulletDamage * 1.5f) {sprite = "killer"};
 
             await Wait(800, ct);
             gravity = tempGravity;
@@ -198,6 +198,6 @@ class ChristianBoss : Boss
         attackDelay = 1700;
 
         spriteFilePath = @"./Sprites/lärare/christiankilliner-scaled-600x600.jpg";
-          spriteDrawer.DefineSprites(spriteFilePath,width,height);
+          spriteDrawer.DefineSprite(spriteFilePath,width,height);
     }
 }

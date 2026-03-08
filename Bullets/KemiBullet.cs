@@ -1,16 +1,17 @@
 class KemiBullet : Projectile
 {
-    public string spriteFilePath = "./Sprites/assets/kemi.png";
-    readonly Color color = Color.White;
+    string spriteFilePath = "./Sprites/assets/kemi.png";
+    string killerSpriteFilePath = "./Sprites/assets/killerMeme.jpg";
 
     public string target = "player";
+    public string sprite = "sprite";
 
     SpriteDrawer spriteDrawer = new();
 
     public override void Draw()
     {
         // Raylib.DrawRectangle(R(x), R(y), R(width), R(height), color);
-        spriteDrawer.DrawTexture(color, x, y); ;
+        spriteDrawer.DrawTexture(Color.White, x, y); ;
     }
 
     public override void Update()
@@ -22,30 +23,14 @@ class KemiBullet : Projectile
 
     public override void BeginDraw()
     {
-        spriteDrawer.InitializeSprite(spriteFilePath, width, height);
+        spriteDrawer.currentSprite = sprite;
+        spriteDrawer.InitializeSprite();
     }
 
     public KemiBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage) : base(x, y, width, height, xSpeed, ySpeed, gravity, damage)
     {
-        spriteDrawer.DefineSprites(spriteFilePath, width, height);
-    }
+        spriteDrawer.DefineSprite(spriteFilePath, width, height);
+        spriteDrawer.DefineSprite(killerSpriteFilePath, width, height, "killer");
 
-    static public void PlayerShoot(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage)
-    {
-        new KemiBullet(x, y, width, height, xSpeed, ySpeed, gravity, damage)
-        {
-            target = "enemy",
-            ignoreGround = false,
-        };
-    }
-
-    public static void ChristianShoot(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage)
-    {
-        new KemiBullet(x, y, width, height, xSpeed, ySpeed, gravity, damage)
-        {
-            target = "player",
-            spriteFilePath = "./Sprites/assets/killerMeme.jpg",
-            ignoreGround = true,
-        };
     }
 }

@@ -20,7 +20,7 @@ class CallePlayer : Player
         dashSpeed = 1600;
 
         spriteFilePath = @"./Sprites/lärare/carlengman-scaled-600x600.jpg";
-        spriteDrawer.DefineSprites(spriteFilePath,width,height);
+        spriteDrawer.DefineSprite(spriteFilePath,width,height);
 
         name = "Carl Engman";
     }

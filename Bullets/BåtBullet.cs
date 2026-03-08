@@ -21,13 +21,13 @@ class BåtBullet : Projectile
 
     public override void BeginDraw()
     {
-        spriteDrawer.InitializeSprite(spriteFilePath, width, height);
+        spriteDrawer.InitializeSprite();
     }
 
     BåtBullet(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage) : base(x, y, width, height, xSpeed, ySpeed, gravity, damage)
     {
         ignoreGround = false;
-        spriteDrawer.DefineSprites(spriteFilePath, width, height);
+        spriteDrawer.DefineSprite(spriteFilePath, width, height);
     }
 
     public static void KarimShoot(float x, float y, float width, float height, float xSpeed, float ySpeed, float gravity, float damage)

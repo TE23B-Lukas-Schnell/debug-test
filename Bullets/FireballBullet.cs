@@ -19,7 +19,7 @@ class FireballBullet : Projectile
 
     public override void Draw()
     {
-        spriteDrawer.Rotation = spriteDrawer.RotateAccordingToMovement(new(xSpeed, ySpeed));
+        spriteDrawer.Rotation = spriteDrawer.RotateAccordingToMovement(xSpeed, ySpeed);
 
         spriteDrawer.DrawTexture(color, x, y);
         // Raylib.DrawRectangle(R(hitbox.hitbox.X), R(hitbox.hitbox.Y), R(hitbox.hitbox.Width), R(hitbox.hitbox.Height), Color.Red);
@@ -28,13 +28,13 @@ class FireballBullet : Projectile
 
     public override void BeginDraw()
     {
-        spriteDrawer.InitializeSprite(spriteFilePath, width, height);
+        spriteDrawer.InitializeSprite();
     }
 
     // new FireballBullet(x(), y2, 3.5f * speedMultiplier, 3 * speedMultiplier, gravity, bulletWidth, bulletHeight, bulletDamage);
 
     public FireballBullet(float x, float y, float xSpeed, float ySpeed, float gravity, float width, float height, float damage) : base(x, y, width, height, xSpeed, ySpeed, gravity, damage)
     {
-        spriteDrawer.DefineSprites(spriteFilePath, width, height);
+        spriteDrawer.DefineSprite(spriteFilePath, width, height);
     }
 }

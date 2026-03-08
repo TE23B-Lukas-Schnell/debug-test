@@ -18,7 +18,7 @@ class Explosion : Projectile
 
     public override void BeginDraw()
     {
-        spriteDrawer.InitializeSprite(spriteFilePath, width, height);
+        spriteDrawer.InitializeSprite();
     }
 
 
@@ -26,7 +26,7 @@ class Explosion : Projectile
     {
 
         piercing = true;
-        spriteDrawer.DefineSprites(spriteFilePath, width, height);
+        spriteDrawer.DefineSprite(spriteFilePath, width, height);
         canGoOffscreen = false;
     }
 }

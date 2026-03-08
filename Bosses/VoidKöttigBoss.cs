@@ -207,7 +207,7 @@ class VoidKöttigBoss : Boss
         attackDelay = 20;
 
         spriteFilePath = @"./Sprites/lärare/ulfbeck-scaled-600x427.jpg";
-        spriteDrawer.DefineSprites(spriteFilePath, width, height);
+        spriteDrawer.DefineSprite(spriteFilePath, width, height);
 
     }
 }

@@ -14,7 +14,7 @@ class MickePlayer : Player
         bulletDamage = 10f;
 
         spriteFilePath = @"./Sprites/lärare/mikaelbergstrom-scaled-600x600.jpg";
-        spriteDrawer.DefineSprites(spriteFilePath,width,height);
+        spriteDrawer.DefineSprite(spriteFilePath,width,height);
 
         name = "Köttig Micke";
     }

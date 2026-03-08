@@ -1,19 +1,12 @@
-abstract class GamePlayObject
+abstract class MoveableObject : Object
 {
     public static float globalGravityMultiplier = 1;
 
-    public string objectIdentifier = "";
-    public bool remove = false;
     public Hitbox hitbox;
-    public float x, y;
     public float xSpeed, ySpeed;
-    public float width, height;
     public float gravity;
     public bool canGoOffscreen = false;
     public bool ignoreGround = false;
-
-    // detta är min avrundnings funktion
-    protected static int R(float input) => (int)MathF.Round(input);
 
     protected bool Grounded() => y >= Raylib.GetScreenHeight() - height;
 
@@ -23,7 +16,7 @@ abstract class GamePlayObject
     }
 
     //returnar objektet som kollideras med 
-    protected GamePlayObject? CheckCollisions()
+    protected MoveableObject? CheckCollisions()
     {
         foreach (Hitbox obj in GibbManager.currentRun.hitboxes)
         {
@@ -37,7 +30,7 @@ abstract class GamePlayObject
     }
 
     //returnar objektet som kollideras med den angivna hitboxen
-    protected GamePlayObject? CheckCollisions(Hitbox hitbox)
+    protected MoveableObject? CheckCollisions(Hitbox hitbox)
     {
         foreach (Hitbox obj in GibbManager.currentRun.hitboxes)
         {
@@ -146,20 +139,9 @@ abstract class GamePlayObject
         HandleOffscreen();
     }
 
-    //körs varje frame
-    abstract public void Update();
-    //körs varje frame, används för att rita saker till skärmen
-    abstract public void Draw();
-    //körs när objektet tas bort
-    abstract public void Despawn();
-    //körs innan spelet börjar
-    abstract public void BeginDraw();
-
-    abstract public void AddToGameList();
-
-    protected GamePlayObject()
+    protected MoveableObject()
     {
-        AddToGameList();
+       
         hitbox = new(new Rectangle(x, y, width, height), this, Color.Green);
     }
 }

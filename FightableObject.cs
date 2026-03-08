@@ -1,4 +1,4 @@
-abstract class FightableObject : GamePlayObject
+abstract class FightableObject : MoveableObject
 {
     public float maxHP;
     public Color healthBarColor = new Color(100, 100, 100);
@@ -87,7 +87,7 @@ abstract class FightableObject : GamePlayObject
     {
         FightableObject? target;
 
-        GamePlayObject? träffatObjekt = CheckCollisions(newHitbox);
+        MoveableObject? träffatObjekt = CheckCollisions(newHitbox);
         if (träffatObjekt is FightableObject)
         {
             target = träffatObjekt as FightableObject;
@@ -127,7 +127,7 @@ abstract class FightableObject : GamePlayObject
     }
     public override void BeginDraw()
     {
-        spriteDrawer.InitializeSprite(spriteFilePath,width,height);
+        spriteDrawer.InitializeSprite();
     }
 
     protected FightableObject()

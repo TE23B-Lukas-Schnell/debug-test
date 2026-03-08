@@ -1,15 +1,15 @@
-abstract class Projectile : GamePlayObject
+abstract class Projectile : MoveableObject
 {
     protected float damage;
     protected bool piercing = false;
-    List<GamePlayObject> objectsAlreadyHit = [];
+    List<MoveableObject> objectsAlreadyHit = [];
 
     // when you collide with an enemy, check whether 
     public void OnHit(float damage, string objectIdentifier)
     {
         FightableObject? target;
 
-        GamePlayObject? träffatObjekt = CheckCollisions(hitbox);
+        MoveableObject? träffatObjekt = CheckCollisions(hitbox);
         if (träffatObjekt is FightableObject)
         {
             target = träffatObjekt as FightableObject;

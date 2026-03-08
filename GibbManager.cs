@@ -11,8 +11,11 @@ static class GibbManager
 
     readonly public static List<Type> PeakBossPeakBoss = new()
     {
-        typeof(CalleBoss), typeof(ChristianBoss), typeof(MickeBoss), typeof(MatteBoss),
-        typeof(MickeBoss)
+        // typeof(CalleBoss),
+        typeof(ChristianBoss),
+        // typeof(KarimBoss),
+        // typeof(MatteBoss),
+        // typeof(MickeBoss),
     };
 
     readonly public static List<Item> allItems = new List<Item>()
@@ -28,7 +31,7 @@ static class GibbManager
         Item.GetItem("Skolmaten"),
         Item.GetItem("Mobil låda"),
         Item.GetItem("3D printer"),
-        Item.GetItem("Kallocain av Karin Boye"),
+        // Item.GetItem("Kallocain av Karin Boye"),
 
          // Item.GetItem("Kemibok"),
         // Item.GetItem("Internationella relations klubben")
@@ -228,7 +231,7 @@ static class GibbManager
         else return output;
     }
 
-    public static string ListToString(List<GamePlayObject> list)
+    public static string ListToString(List<MoveableObject> list)
     {
         string output = "";
         for (int i = 0; i < list.Count; i++)

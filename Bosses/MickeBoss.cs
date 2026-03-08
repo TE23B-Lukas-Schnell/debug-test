@@ -60,7 +60,7 @@ class MickeBoss : Boss
     async Task TeknikarDuschen(CancellationToken ct)
     {
 
-        
+
         xSpeed = 0;
         ySpeed = 0;
         Color temp = color;
@@ -134,6 +134,6 @@ class MickeBoss : Boss
         attackDelay = 1750;
 
         spriteFilePath = "./Sprites/lärare/mikaelbergstrom-scaled-600x600.jpg";
-          spriteDrawer.DefineSprites(spriteFilePath,width,height);
+        spriteDrawer.DefineSprite(spriteFilePath, width, height);
     }
 }

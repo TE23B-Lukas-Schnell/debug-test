@@ -16,7 +16,7 @@ class MartinPlayer : Player
         dashSpeed = 1300;
 
         spriteFilePath = @"./Sprites/lärare/martinsoderblom-scaled-600x600.jpg";
-        spriteDrawer.DefineSprites(spriteFilePath,width,height);
+        spriteDrawer.DefineSprite(spriteFilePath,width,height);
 
         name = "Martin";
     }

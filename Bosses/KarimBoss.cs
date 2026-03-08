@@ -209,6 +209,6 @@ class KarimBoss : Boss
         attackDelay = 1750;
 
         spriteFilePath = @"./Sprites/lärare/karimryde-scaled-600x600.jpg";
-          spriteDrawer.DefineSprites(spriteFilePath,width,height);
+          spriteDrawer.DefineSprite(spriteFilePath,width,height);
     }
 }

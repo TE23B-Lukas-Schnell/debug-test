@@ -12,15 +12,14 @@ abstract class Player : FightableObject
         {"shoot", false },
         {"upshoot",false}
     };
-    public OldPointingArrow arrow;
 
     public string name = "";
     public ControlLayout currentLayout;
     public int score = 0;
     public int facingDirection = 1;
-    public float arrowSize = 2;
     public float arrowRotation = 0;
     public float upPointRotaion = -90;
+    PointningArrow arrow;
 
     //player actions
     public Action moveLeft;
@@ -280,6 +279,7 @@ bullet gravity           {bulletGravity}";
     {
         GibbManager.currentRun.AddToGameList(this);
         GibbManager.currentRun.AddToHitboxList(hitbox);
+        arrow = new(x, y, this);
     }
 
     public override void Update()
@@ -357,20 +357,18 @@ bullet gravity           {bulletGravity}";
             else arrowRotation = 180;
         }
 
-        // float lerpedArrowRotation = 
-
-        // arrow.DrawArrow(x, y, -width, 0, arrowRotation);
+        // arrow.Rotation =
 
         if (keyPressed["shoot"])
         {
-            // arrow.LightUpArrow(x, y, -width, 0, arrowRotation);
+            arrow.Rotation = upPointRotaion;
         }
     }
 
     public override void BeginDraw()
     {
-        spriteDrawer.InitializeSprite(spriteFilePath, width, height);
-        // arrow = new(Color.Red, 32 * arrowSize, 17 * arrowSize, true);
+
+        spriteDrawer.InitializeSprite();
     }
 
     public override void TakenDamage(float damage)
@@ -394,5 +392,7 @@ bullet gravity           {bulletGravity}";
         currentLayout = controlLayout;
         InitializeDelegates();
         gravity = gravitySet;
+
+        spriteDrawer.currentSprite = "sprite";
     }
 }

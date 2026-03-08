@@ -23,12 +23,12 @@ class OldPointingArrow
 
     public void LoadArrowSprite()
     {
-        arrowDrawer.InitializeSprite(hollowArrowSpriteFilePath, width, height);
-        lightUpArrowDrawer.InitializeSprite(lightUpArrowSpriteFilePath, width, height);
-        arrowDrawer.CurrentSpriteWidth = width;
-        arrowDrawer.CurrentSpriteHeight = height;
-        lightUpArrowDrawer.CurrentSpriteWidth = width;
-        lightUpArrowDrawer.CurrentSpriteHeight = height;
+        // arrowDrawer.InitializeSprite(hollowArrowSpriteFilePath, width, height);
+        // lightUpArrowDrawer.InitializeSprite(lightUpArrowSpriteFilePath, width, height);
+        // arrowDrawer.CurrentSpriteWidth = width;
+        // arrowDrawer.CurrentSpriteHeight = height;
+        // lightUpArrowDrawer.CurrentSpriteWidth = width;
+        // lightUpArrowDrawer.CurrentSpriteHeight = height;
     }
 
     public OldPointingArrow(Color color, float width, float height, bool loadNow)
@@ -37,7 +37,7 @@ class OldPointingArrow
         this.width = width;
         this.height = height;
         if(loadNow == true) LoadArrowSprite();
-        arrowDrawer.DefineSprites(hollowArrowSpriteFilePath, width, height);
-        arrowDrawer.DefineSprites(lightUpArrowSpriteFilePath, width, height);
+        arrowDrawer.DefineSprite(hollowArrowSpriteFilePath, width, height);
+        arrowDrawer.DefineSprite(lightUpArrowSpriteFilePath, width, height);
     }
 }
