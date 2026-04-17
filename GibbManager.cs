@@ -11,11 +11,11 @@ static class GibbManager
 
     readonly public static List<Type> PeakBossPeakBoss = new()
     {
-        // typeof(CalleBoss),
+        typeof(CalleBoss),
         typeof(ChristianBoss),
-        // typeof(KarimBoss),
-        // typeof(MatteBoss),
-        // typeof(MickeBoss),
+        typeof(KarimBoss),
+        typeof(MatteBoss),
+        typeof(MickeBoss),
     };
 
     readonly public static List<Item> allItems = new List<Item>()

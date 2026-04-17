@@ -22,7 +22,7 @@ class MatteBoss : Boss
         if (GibbManager.currentRun.playerReference.x + GibbManager.currentRun.playerReference.width / 2 <= x) return -1;
         else return 1;
     }
-  
+
     async Task ShootArrows(CancellationToken ct)
     {
         xSpeed = 0;
@@ -32,7 +32,7 @@ class MatteBoss : Boss
         await Wait(600, ct);
         int side = 0;
         int xDirection = 1;
-        float bulletSpeed = 1300;
+        float bulletSpeed = 1000;
 
         if (GibbManager.currentRun.playerReference.x < moveLine)
         {
@@ -46,13 +46,34 @@ class MatteBoss : Boss
 
         new BossBullet(side, Raylib.GetScreenHeight() - bulletHeight * 2, bulletWidth, bulletHeight, bulletSpeed * xDirection, 0, 0, bulletDamage);
 
-        await Wait(400, ct);
+        await Wait(800, ct);
+
+        if (GibbManager.currentRun.playerReference.x < moveLine)
+        {
+            side = Raylib.GetScreenWidth();
+            xDirection = -1;
+        }
+
+        new BossBullet(side, bulletHeight, bulletWidth, bulletHeight, bulletSpeed * xDirection, 0, 0, bulletDamage);
+
+        new BossBullet(side, Raylib.GetScreenHeight() / 2 - bulletHeight / 2, bulletWidth, bulletHeight, bulletSpeed * xDirection, 0, 0, bulletDamage);
+
+        new BossBullet(side, Raylib.GetScreenHeight() - bulletHeight * 2, bulletWidth, bulletHeight, bulletSpeed * xDirection, 0, 0, bulletDamage);
+
+        await Wait(800, ct);
         color = temp;
     }
 
+    async Task SvårAttack(CancellationToken ct)
+    {
+        
+    }
+
+
     void InitializeDelegates()
     {
-        bossAttacks.Add(ShootArrows);
+        bossAttacks.Add(ShootArrows); 
+        bossAttacks.Add(SvårAttack);
     }
 
     public override void MoveCycle()
@@ -84,9 +105,9 @@ class MatteBoss : Boss
         bulletDamage = 4.4f;
         waitMultiplier = 1;
         name = "matte läraren";
-        attackDelay = 1700;
+        attackDelay = 2500;
 
         spriteFilePath = @"./Sprites/lärare/båt.png";
-          spriteDrawer.DefineSprite(spriteFilePath,width,height);
+        spriteDrawer.DefineSprite(spriteFilePath, width, height);
     }
 }
